@@ -22,6 +22,9 @@ public class Account {
     @Column(name = "DisplayName")
     private String fullName;
 
+    @Column(name = "Email")
+    private String email;
+
     @Column(name = "Password")
     private String password;
 
