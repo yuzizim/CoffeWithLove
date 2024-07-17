@@ -23,6 +23,9 @@ public class FoodCategory {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "status")
+    private boolean status;
+
     @OneToMany(mappedBy = "foodCategory", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Food> foods = new ArrayList<>();
 }

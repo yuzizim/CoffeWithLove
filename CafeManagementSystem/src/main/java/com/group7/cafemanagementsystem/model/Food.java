@@ -19,6 +19,9 @@ public class Food {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "status")
+    private boolean status;
+
     @ManyToOne
     @JoinColumn(name = "idCategrory", nullable = false)
     private FoodCategory foodCategory;
