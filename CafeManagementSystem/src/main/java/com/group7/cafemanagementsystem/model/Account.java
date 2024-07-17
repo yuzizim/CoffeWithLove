@@ -28,6 +28,6 @@ public class Account {
     @Column(name = "Password")
     private String password;
 
-    @Column(name = "Type")
-    private boolean type;
+    @Column(name = "role")
+    private String role;
 }
