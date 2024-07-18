@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
-public class AuthServiceImpl implements AuthService{
+public class AuthServiceImpl implements AuthService {
     private final UserRepository userRepository;
     private AuthenticationManager authenticationManager;
     private JwtProvider jwtProvider;
@@ -24,11 +24,12 @@ public class AuthServiceImpl implements AuthService{
 
     @Override
     public String login(LoginRequest request) {
-        Account user = userRepository.findByUserName(request.getUserName()).get();
-        String password = request.getPassword();
-        if(!passwordEncoder.matches(password, user.getPassword())){
-            throw new BadCredentialsException("You provided an incorrect password!");
-        }
+//        Account user = userRepository.findByUserName(request.getUserName()).get();
+//        String password = request.getPassword();
+//        if(!passwordEncoder.matches(password, user.getPassword())){
+//            throw new BadCredentialsException("You provided an incorrect password!");
+//        }
+        String name = request.getUserName();
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getUserName(),
