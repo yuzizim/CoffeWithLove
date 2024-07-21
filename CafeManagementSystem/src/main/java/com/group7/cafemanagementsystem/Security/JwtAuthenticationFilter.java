@@ -2,6 +2,7 @@ package com.group7.cafemanagementsystem.Security;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
@@ -23,7 +24,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String token = getTokenFromRequest(request);
+//        String token = null;
+//        if (request.getCookies() != null) {
+//            Cookie[] rc = request.getCookies();
+//            for (int i = 0; i < rc.length; i++) {
+//                if (rc[i].getName().equals("token") == true) {
+//                    token = rc[i].getValue().toString();
+//                }
+//            }
+//        }
+        String token = jwtProvider.getJwtFromCookies(request);
 
         if (token != null && jwtProvider.vailidateToken(token)) {
             String userName = jwtProvider.getUserName(token);
@@ -34,14 +44,5 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         }
         filterChain.doFilter(request, response);
-    }
-
-    private String getTokenFromRequest(HttpServletRequest request) {
-        String bearerToken = request.getHeader("Authorization");
-
-        if (bearerToken == null || !bearerToken.startsWith(JwtConstants.BEARER)) {
-            return null;
-        }
-        return bearerToken.replace(JwtConstants.BEARER, "");
     }
 }
