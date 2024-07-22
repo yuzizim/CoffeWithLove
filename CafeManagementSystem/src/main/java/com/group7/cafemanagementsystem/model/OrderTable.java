@@ -41,6 +41,6 @@ public class OrderTable {
     private String note;
 
     @ManyToOne
-    @JoinColumn(name = "id_table", nullable = false)
+    @JoinColumn(name = "TableFood", nullable = false)
     private TableFood tableFood;
 }

@@ -5,10 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="edcc80d4-25ae-47fa-92e4-1850effdd00b" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/CafeManagementSystem/src/main/resources/templates/dist/order-table.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CafeManagementSystem/src/main/java/com/group7/cafemanagementsystem/Repository/OrderTableRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CafeManagementSystem/src/main/java/com/group7/cafemanagementsystem/model/OrderTable.java" beforeDir="false" afterPath="$PROJECT_DIR$/CafeManagementSystem/src/main/java/com/group7/cafemanagementsystem/model/OrderTable.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,7 +44,7 @@
     "JavaScript Debug.menu.html.executor": "Run",
     "JavaScript Debug.order-table.html.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "KhailQ",
+    "git-widget-placeholder": "KhaiLQ",
     "kotlin-language-version-configured": "true",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -82,7 +81,7 @@
       <option name="presentableId" value="Default" />
       <updated>1721481770283</updated>
       <workItem from="1721481782206" duration="5008000" />
-      <workItem from="1721606940798" duration="1059000" />
+      <workItem from="1721606940798" duration="3702000" />
     </task>
     <servers />
   </component>
