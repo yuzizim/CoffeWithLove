@@ -10,6 +10,21 @@
             rel="stylesheet"
     />
     <link rel="icon" href="../../static/img/favicon.png" />
+    <style>
+        .form-group {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            width: 40%;
+            text-align: right;
+            padding-right: 10px;
+        }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 65%;
+        }
+    </style>
 </head>
 
 <body>
@@ -109,33 +124,33 @@
             <div class="pic-area-text">
                 <div id="login-box">
                     <form id="reservation-form" name="reservation-form" action="index.html" method="post">
-                        <div>
+                        <div class="form-group">
                             <label for="table">Table:</label>
                             <select id="table" name="table">
                                 <option value="ban1">Bàn 1</option>
                             </select>
                         </div>
-                        <div>
+                        <div class="form-group">
                             <label for="date">Order time:</label>
                             <input type="datetime-local" id="date" name="date">
                         </div>
-                        <div>
+                        <div class="form-group">
                             <label for="name">Name:</label>
                             <input type="text" id="name" name="name">
                         </div>
-                        <div>
+                        <div class="form-group">
                             <label for="email">Email:</label>
                             <input type="email" id="email" name="email">
                         </div>
-                        <div>
+                        <div class="form-group">
                             <label for="phone">Phone Number:</label>
                             <input type="tel" id="phone" name="phone">
                         </div>
-                        <div>
+                        <div class="form-group">
                             <label for="num-people">Number of people:</label>
                             <input type="number" id="num-people" name="num-people" min="1" max="20">
                         </div>
-                        <div>
+                        <div class="form-group">
                             <label for="notes">Note:</label>
                             <textarea id="notes" name="notes"></textarea>
                         </div>
