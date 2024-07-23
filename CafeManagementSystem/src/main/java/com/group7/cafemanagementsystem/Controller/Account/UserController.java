@@ -29,7 +29,7 @@ public class UserController {
         List<Account> accounts = userService.getAccountsByPagination(pageNo, pageSize);
         model.addAttribute("accounts", accounts);
         model.addAttribute("currentPage", pageNo);
-        return "account";
+        return "accounntList";
     }
 
     @GetMapping("/new")

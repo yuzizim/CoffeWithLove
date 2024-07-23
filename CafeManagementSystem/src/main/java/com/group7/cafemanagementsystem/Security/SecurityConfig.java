@@ -17,9 +17,10 @@ import org.springframework.stereotype.Component;
 @EnableWebSecurity
 @AllArgsConstructor
 public class SecurityConfig {
-    private CustomUserDetailsService userDetailsService;
-    private JwtAuthenticationEntryPoint authenticationEntryPoint;
-    private JwtAuthenticationFilter authenticationFilter;
+
+    private final CustomUserDetailsService userDetailsService;
+    private final JwtAuthenticationEntryPoint authenticationEntryPoint;
+    private final JwtAuthenticationFilter authenticationFilter;
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -28,9 +29,9 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/auth/**").permitAll()
-                        .requestMatchers("/admin/**").hasAnyAuthority("ADMIN")
-                        .requestMatchers("/staff/**").hasAnyAuthority("STAFF")
-                        .anyRequest().permitAll())
+                        .requestMatchers("/admin/**").hasAuthority("ADMIN")
+                        .requestMatchers("/staff/**").hasAuthority("STAFF")
+                        .anyRequest().authenticated())
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(authenticationEntryPoint))
                 .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();

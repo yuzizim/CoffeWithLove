@@ -17,8 +17,8 @@ import java.security.Principal;
 public class HomeController {
     UserRepository userRepository;
 
-    @GetMapping("/")
+    @GetMapping("/home")
     public String home() {
-        return "/dist/index";
+        return "home";
     }
 }

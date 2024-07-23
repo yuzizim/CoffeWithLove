@@ -22,6 +22,15 @@ public class Food {
     @Column(name = "status")
     private boolean status;
 
+    @Column(name = "images")
+    private String images;
+
+    @Column(name = "description")
+    private String description;
+
+    @Column(name = "SizeDrink")
+    private String SizeDrink;
+
     @ManyToOne
     @JoinColumn(name = "idCategrory", nullable = false)
     private FoodCategory foodCategory;
