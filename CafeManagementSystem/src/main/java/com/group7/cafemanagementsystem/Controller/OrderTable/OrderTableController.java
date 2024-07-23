@@ -13,12 +13,10 @@ import java.util.List;
 @Controller
 public class OrderTableController {
     private final OrderTableService orderTableService;
-    private final OrderTableRepository orderTableRepository;
-
+    
     @Autowired
-    public OrderTableController(OrderTableService orderTableService, OrderTableRepository orderTableRepository) {
+    public OrderTableController(OrderTableService orderTableService) {
         this.orderTableService = orderTableService;
-        this.orderTableRepository = orderTableRepository;
     }
 
     @GetMapping("/addOrderTable")

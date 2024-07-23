@@ -28,4 +28,10 @@ public class Food {
 
     @Column(name = "price")
     private Long price;
+
+    @Column(name = "images")
+    private String images;
+
+    @Column(name = "description")
+    private String description;
 }
