@@ -36,7 +36,13 @@ public class AuthController {
     @PostMapping("/login")
     public String login(Model model, @ModelAttribute LoginRequest request, HttpServletResponse response) {
         String token = authService.login(model, request, response);
-        return "redirect:/";
+
+        Object principle = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String role = ((UserDetails) principle).getAuthorities().toString();
+        if(role.equals("[ADMIN]")){
+            return "redirect:/admin/food/list";
+        }
+        return "redirect:/staff";
     }
 
     @GetMapping("/login")
