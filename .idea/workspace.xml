@@ -25,9 +25,9 @@
   "keyToString": {
     "JavaScript Debug.index.html.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main",
+    "git-widget-placeholder": "ThanhHai",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/Summer2024/Project/CoffeWithLove/CafeManagementSystem/src",
+    "last_opened_file_path": "H:/github/New folder/NEW/CoffeWithLove",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -57,6 +57,7 @@
       <workItem from="1720883788527" duration="623000" />
       <workItem from="1721183498645" duration="51000" />
       <workItem from="1721269375138" duration="323000" />
+      <workItem from="1722088709816" duration="27000" />
     </task>
     <servers />
   </component>
