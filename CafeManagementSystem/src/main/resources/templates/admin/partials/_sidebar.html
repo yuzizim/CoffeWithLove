@@ -5,7 +5,7 @@
     <nav class="sidebar sidebar-offcanvas" id="sidebar">
         <ul class="nav">
             <li class="nav-item">
-                <a class="nav-link" href="../index.html">
+                <a class="nav-link" th:href="@{/admin/dashboard}">
                     <i class="icon-grid menu-icon"></i>
                     <span class="menu-title">Dashboard</span>
                 </a>
@@ -30,20 +30,20 @@
             <!--                    </ul>-->
             <!--                </div>-->
             <!--            </li>-->
-            <!--            <li class="nav-item">-->
-            <!--                <a class="nav-link" data-bs-toggle="collapse" href="#form-elements" aria-expanded="false"-->
-            <!--                   aria-controls="form-elements">-->
-            <!--                    <i class="icon-columns menu-icon"></i>-->
-            <!--                    <span class="menu-title">Form elements</span>-->
-            <!--                    <i class="menu-arrow"></i>-->
-            <!--                </a>-->
-            <!--                <div class="collapse" id="form-elements">-->
-            <!--                    <ul class="nav flex-column sub-menu">-->
-            <!--                        <li class="nav-item"><a class="nav-link" href="../pages/forms/basic_elements.html">Basic-->
-            <!--                            Elements</a></li>-->
-            <!--                    </ul>-->
-            <!--                </div>-->
-            <!--            </li>-->
+            <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="collapse" href="#form-elements" aria-expanded="false"
+                   aria-controls="form-elements">
+                    <i class="icon-columns menu-icon"></i>
+                    <span class="menu-title">Revenue</span>
+                    <i class="menu-arrow"></i>
+                </a>
+                <div class="collapse" id="form-elements">
+                    <ul class="nav flex-column sub-menu">
+                        <li class="nav-item"><a class="nav-link" th:href="@{/admin/revenue}">By Product</a></li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/admin/revenue}">By Order</a></li>
+                    </ul>
+                </div>
+            </li>
             <li class="nav-item">
                 <a class="nav-link" data-bs-toggle="collapse" href="#charts" aria-expanded="false"
                    aria-controls="charts">
@@ -93,7 +93,8 @@
                 </a>
                 <div class="collapse" id="auth">
                     <ul class="nav flex-column sub-menu">
-                        <li class="nav-item"><a class="nav-link" th:href="@{/admin/manage-staff/register}"> Register </a>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/admin/manage-staff/register}">
+                            Register </a>
                         </li>
                         <li class="nav-item"><a class="nav-link" th:href="@{/admin/manage-staff}"> Staff list </a></li>
                     </ul>

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Skydash Admin</title>
+    <!-- plugins:css -->
+    <link rel="stylesheet" th:href="@{/static/assets/vendors/feather/feather.css}">
+    <link rel="stylesheet" th:href="@{/static/assets/vendors/ti-icons/css/themify-icons.css}">
+    <link rel="stylesheet" th:href="@{/static/assets/vendors/css/vendor.bundle.base.css}">
+    <link rel="stylesheet" th:href="@{/static/assets/vendors/font-awesome/css/font-awesome.min.css}">
+    <link rel="stylesheet" th:href="@{/static/assets/vendors/mdi/css/materialdesignicons.min.css}">
+    <!-- endinject -->
+    <!-- Plugin css for this page -->
+    <!-- <link rel="stylesheet" href="assets/vendors/datatables.net-bs4/dataTables.bootstrap4.css"> -->
+    <link rel="stylesheet" th:href="@{/static/assets/vendors/datatables.net-bs5/dataTables.bootstrap5.css}">
+    <link rel="stylesheet" th:href="@{/static/assets/vendors/ti-icons/css/themify-icons.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/static/assets/js/select.dataTables.min.css}">
+    <!-- End plugin css for this page -->
+    <!-- inject:css -->
+    <link rel="stylesheet" th:href="@{/static/assets/css/style.css}">
+    <!-- endinject -->
+    <link rel="shortcut icon" th:href="@{/static/assets/images/favicon.png}"/>
+</head>
+<body>
+<div class="container-scroller">
+    <!-- partial:../../partials/_navbar.html -->
+    <div th:insert="~{admin/partials/_navbar :: navbarFragment}"></div>
+    <!-- partial -->
+    <div class="container-fluid page-body-wrapper">
+        <!-- partial:../../partials/_sidebar.html -->
+        <div th:insert="~{admin/partials/_sidebar :: sidebarFragment}"></div>
+        <div class="main-panel">
+            <div class="content-wrapper">
+                <div class="row">
+                    <div class="col-lg-12 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">Staff manager</h4>
+                                <!-- Search Form -->
+                                <div class="row mb-3">
+                                    <div class="col-lg-3 offset-lg-9 d-flex justify-content-end">
+                                        <form th:action="@{/admin/manage-staff}" method="get"
+                                              class="form-inline">
+                                            <div class="input-group">
+                                                <input type="text" name="keyword" class="form-control"
+                                                       placeholder="Search account" th:value="${search}">
+                                                <div class="input-group-append">
+                                                    <button type="submit" class="mt-2 btn btn-primary">Search</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <!-- End Search Form -->
+                                <!--                                <p class="card-description"> Add class <code>.table-striped</code>-->
+                                </p>
+                                <div class="table-responsive">
+                                    <table class="table table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th> User</th>
+                                            <th> Full Name</th>
+                                            <th> Email</th>
+                                            <th> Phone</th>
+                                            <th> Status</th>
+                                            <th> Action</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr th:each="staff : ${staffs}">
+                                            <td class="py-1">
+                                                <img th:src="@{/static/assets/images/faces/face1.jpg}" alt="image"/>
+                                            </td>
+                                            <td th:text="${staff.fullName}"></td>
+                                            <td th:text="${staff.email}"></td>
+                                            <td th:text="${staff.phoneNumber}"></td>
+                                            <td>
+                                                <form th:action="@{/admin/manage-staff/register/change-status/{id}(id=${staff.ID})}"
+                                                      method="post">
+                                                    <button th:id="'status-button-' + ${staff.ID}"
+                                                            th:text="${staff.status == true ? 'Active' : 'Inactive'}"
+                                                            th:class="${staff.status == true ? 'btn btn-success' : 'btn btn-danger'}"
+                                                            th:onclick="'toggleStatus(' + ${staff.ID} + ', ' + ${staff.status} + ')'">
+                                                    </button>
+                                                </form>
+                                            </td>
+                                            <td>
+                                                <a class="btn btn-info"
+                                                   th:href="@{/admin/manage-staff/details/{id}(id=${staff.ID})}">Details</a>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Pagination -->
+                <div class="wrapper">
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination">
+                            <!-- Previous Link -->
+                            <li class="page-item" th:classappend="${pageNumber == 0} ? 'disabled'">
+                                <a class="page-link" th:if="${search == null}" th:href="@{|?page=${pageNumber - 1}|}"
+                                   tabindex="-1">Previous</a>
+                                <a class="page-link" th:if="${search != null}" th:href="@{|?keyword=${search}&page=${pageNumber - 1}|}"
+                                   tabindex="-1">Previous</a>
+                            </li>
+                            <!-- Page Numbers -->
+                            <li class="page-item" th:each="i : ${#numbers.sequence(0, pageSize - 1)}"
+                                th:classappend="${i == pageNumber} ? 'active'">
+                                <a class="page-link" th:if="${search == null}" th:text="${i + 1}" th:href="@{|?page=${i}|}"></a>
+                                <a class="page-link" th:if="${search != null}" th:text="${i + 1}" th:href="@{|?keyword=${search}&page=${i}|}"></a>
+                            </li>
+                            <!-- Next Link -->
+                            <li class="page-item" th:classappend="${pageNumber + 1 == pageSize} ? 'disabled'">
+                                <a class="page-link" th:if="${search == null}" th:href="@{|?page=${pageNumber + 1}|}">Next</a>
+                                <a class="page-link" th:if="${search != null}" th:href="@{|?keyword=${search}&page=${pageNumber + 1}|}">Next</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+                <!-- Pagination ends -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- plugins:js -->
+<script th:src="@{/static/assets/vendors/js/vendor.bundle.base.js}"></script>
+<!-- endinject -->
+<!-- Plugin js for this page -->
+<!-- End plugin js for this page -->
+<!-- inject:js -->
+<script th:src="@{/static/assets/js/off-canvas.js}"></script>
+<script th:src="@{/static/assets/js/template.js}"></script>
+<script th:src="@{/static/assets/js/settings.js}"></script>
+<script th:src="@{/static/assets/js/todolist.js}"></script>
+<!-- endinject -->
+<!-- Custom js for this page-->
+<!-- End custom js for this page-->
+</body>
+</html>

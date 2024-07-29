@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Skydash Admin</title>
+    <!-- plugins:css -->
+    <link rel="stylesheet" th:href="@{/static/assets/vendors/feather/feather.css}">
+    <link rel="stylesheet" th:href="@{/static/assets/vendors/ti-icons/css/themify-icons.css}">
+    <link rel="stylesheet" th:href="@{/static/assets/vendors/css/vendor.bundle.base.css}">
+    <link rel="stylesheet" th:href="@{/static/assets/vendors/font-awesome/css/font-awesome.min.css}">
+    <link rel="stylesheet" th:href="@{/static/assets/vendors/mdi/css/materialdesignicons.min.css}">
+    <!-- endinject -->
+    <!-- Plugin css for this page -->
+    <!-- <link rel="stylesheet" href="assets/vendors/datatables.net-bs4/dataTables.bootstrap4.css"> -->
+    <link rel="stylesheet" th:href="@{/static/assets/vendors/datatables.net-bs5/dataTables.bootstrap5.css}">
+    <link rel="stylesheet" th:href="@{/static/assets/vendors/ti-icons/css/themify-icons.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/static/assets/js/select.dataTables.min.css}">
+    <!-- End plugin css for this page -->
+    <!-- inject:css -->
+    <link rel="stylesheet" th:href="@{/static/assets/css/style.css}">
+    <!-- endinject -->
+    <link rel="shortcut icon" th:href="@{/static/assets/images/favicon.png}"/>
+</head>
+<body>
+<div class="container-scroller">
+    <!-- partial:../../partials/_navbar.html -->
+    <div th:insert="~{admin/partials/_navbar :: navbarFragment}"></div>
+    <!-- partial -->
+    <div class="container-fluid page-body-wrapper">
+        <!-- partial:../../partials/_sidebar.html -->
+        <div th:insert="~{admin/partials/_sidebar :: sidebarFragment}"></div>
+
+        <section>
+            <div class="container mt-3">
+                <div class="row">
+                    <div class="col-md-12 offset-md-6">
+                        <h2>Register Staff Account</h2>
+                        <form th:action="@{/admin/manage-staff/register/add}" th:object="${user}" method="post">
+                            <div class="form-group">
+                                <label for="userName">Username</label>
+                                <p style="color: red" th:errors="*{userName}"></p>
+                                <p style="color: red" th:text="${msgError}"></p>
+                                <input type="text" class="form-control" id="userName" name="userName"
+                                       th:value="*{userName}" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="password">Password</label>
+                                <p style="color: red" th:errors="*{password}"></p>
+                                <input type="password" class="form-control" id="password" name="password"
+                                       th:value="*{password}" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <p style="color: red" th:errors="*{email}"></p>
+                                <input type="email" class="form-control" id="email" name="email" th:value="*{email}"
+                                       required>
+                            </div>
+                            <div class="form-group">
+                                <label for="fullName">Full Name</label>
+                                <p style="color: red" th:errors="*{fullName}"></p>
+                                <input type="text" class="form-control" id="fullName" name="fullName"
+                                       th:value="*{fullName}" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="phoneNumber">Phone Number</label>
+                                <p style="color: red" th:errors="*{phoneNumber}"></p>
+                                <input type="text" class="form-control" id="phoneNumber" name="phoneNumber"
+                                       th:value="*{phoneNumber}" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+
+<!-- plugins:js -->
+<script th:src="@{/static/assets/vendors/js/vendor.bundle.base.js}"></script>
+<!-- endinject -->
+<!-- Plugin js for this page -->
+<!-- End plugin js for this page -->
+<!-- inject:js -->
+<script th:src="@{/static/assets/js/off-canvas.js}"></script>
+<script th:src="@{/static/assets/js/template.js}"></script>
+<script th:src="@{/static/assets/js/settings.js}"></script>
+<script th:src="@{/static/assets/js/todolist.js}"></script>
+<!-- endinject -->
+<!-- Custom js for this page-->
+<!-- End custom js for this page-->
+</body>
+</html>
