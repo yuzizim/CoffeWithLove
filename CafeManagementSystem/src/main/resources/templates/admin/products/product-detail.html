@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Product List</title>
+    <!-- plugins:css -->
+    <link rel="stylesheet" th:href="@{/static/assets/vendors/feather/feather.css}">
+    <link rel="stylesheet" th:href="@{/static/assets/vendors/ti-icons/css/themify-icons.css}">
+    <link rel="stylesheet" th:href="@{/static/assets/vendors/css/vendor.bundle.base.css}">
+    <link rel="stylesheet" th:href="@{/static/assets/vendors/font-awesome/css/font-awesome.min.css}">
+    <link rel="stylesheet" th:href="@{/static/assets/vendors/mdi/css/materialdesignicons.min.css}">
+    <link rel="stylesheet" th:href="@{/static/css/product-list.css}">
+    <!-- endinject -->
+    <!-- Plugin css for this page -->
+    <link rel="stylesheet" th:href="@{/static/assets/vendors/select2/select2.min.css}">
+    <link rel="stylesheet" th:href="@{/static/assets/vendors/select2-bootstrap-theme/select2-bootstrap.min.css}">
+    <!-- End plugin css for this page -->
+    <!-- inject:css -->
+    <link rel="stylesheet" th:href="@{/static/assets/css/style.css}">
+    <!-- endinject -->
+    <link rel="shortcut icon" th:href="@{/static/assets/images/favicon.png}"/>
+</head>
+<body>
+<div class="container-scroller">
+    <!-- partial:../../partials/_navbar.html -->
+    <div th:insert="~{admin/partials/_navbar :: navbarFragment}"></div>
+    <!-- partial -->
+    <div class="container-fluid page-body-wrapper">
+        <!-- partial:../../partials/_sidebar.html -->
+        <div th:insert="~{admin/partials/_sidebar :: sidebarFragment}"></div>
+        <!--         partial -->
+        <section class="py-5">
+            <div class="container">
+                <div class="row gx-5">
+                    <aside class="col-lg-6">
+                        <div class="border rounded-4 mb-3 d-flex justify-content-center">
+                            <a data-fslightbox="mygalley" class="rounded-4" target="_blank" data-type="image">
+                                <img style="max-width: 100%; max-height: 100vh; margin: auto;" class="rounded-4 fit"
+                                     th:src="@{{image}(image=${food.images})}"/>
+                            </a>
+                        </div>
+                        <div class="d-flex justify-content-center mb-3">
+                            <a data-fslightbox="mygalley" class="item-thumb border mx-1 rounded-2" target="_blank"
+                               data-type="image">
+                                <img width="60" height="60" class="rounded-2"
+                                     th:src="@{{image}(image=${food.images})}"/>
+                            </a>
+                        </div>
+                        <!-- thumbs-wrap.// -->
+                        <!-- gallery-wrap .end// -->
+                    </aside>
+                    <main class="col-lg-6">
+                        <div class="ps-lg-3">
+                            <h4 class="title text-dark" th:text="${food.name}">
+                            </h4>
+
+                            <div class="mb-3">
+                                <span class="h5" th:text="${food.price} + '$'"></span>
+                            </div>
+
+                            <p th:text="${food.description}"></p>
+
+                            <hr/>
+                            <a href="#" class="btn btn-warning shadow-0" data-bs-toggle="modal"
+                               data-bs-target="#updateFoodModal">
+                                Update
+                            </a>
+
+                            <!-- Delete Button -->
+                            <a class="btn btn-primary shadow-0"
+                               th:href="@{/admin/food/delete/{id}(id=${food.id})}"
+                               th:onclick="return confirm('Are you sure you want to delete this category?');">
+                                <i class="me-1 fa fa-shopping-basket"></i>
+                                Delete
+                            </a>
+                        </div>
+                    </main>
+                </div>
+            </div>
+        </section>
+        <!-- content -->
+    </div>
+
+    <!-- Update Modal -->
+    <div class="modal fade" id="updateFoodModal" tabindex="-1" aria-labelledby="updateFoodModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="updateFoodModalLabel">Update Food Item</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="updateFoodForm" method="post" enctype="multipart/form-data" th:object="${food}"
+                          th:action="@{/admin/food/update/{id}(id=${food.id})}">
+                        <div class="mb-3">
+                            <label for="foodName" class="form-label">Name</label>
+                            <input type="text" class="form-control" id="foodName" name="name" th:value="${food.name}"
+                                   required>
+                            <div class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="foodCategory" class="form-label">Category</label>
+                            <select class="form-control" id="foodCategory" name="foodCategory">
+                                <option value="" disabled selected>Select Category</option>
+                                <option th:each="category : ${categories}" th:value="${category.id}"
+                                        th:text="${category.name}"
+                                        th:selected="${food.foodCategory.id == category.id}"></option>
+                            </select>
+                            <div class="text-danger" th:if="${#fields.hasErrors('foodCategory')}"
+                                 th:errors="*{foodCategory}"></div>
+                        </div>
+<!--                        <div class="mb-3">-->
+<!--                            <label for="foodStatus" class="form-label">Status</label>-->
+<!--                            <select class="form-select" id="foodStatus" name="status" required>-->
+<!--                                <option value="true" th:selected="${food.status}">In menu</option>-->
+<!--                                <option value="false" th:selected="${not food.status}">Not in menu</option>-->
+<!--                            </select>-->
+<!--                        </div>-->
+                        <div class="mb-3">
+                            <label for="foodImage" class="form-label">Image</label>
+                            <input type="file" class="form-control" id="foodImage" name="image">
+                            <!-- If you want to display the current image -->
+                            <img th:if="${food.images}" th:src="${food.images}" alt="Current Image"
+                                 class="img-fluid mt-2">
+                        </div>
+                        <div class="mb-3">
+                            <label for="foodDescription" class="form-label">Description</label>
+                            <textarea class="form-control" id="foodDescription" name="description" rows="3"
+                                      th:text="${food.description}"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="foodPrice" class="form-label">Price</label>
+                            <input type="number" class="form-control" id="foodPrice" name="price"
+                                   th:value="${food.price}" step="0.01" required>
+                            <div class="text-danger" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save changes</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- container-scroller -->
+    <!-- plugins:js -->
+    <script th:src="@{/static/assets/vendors/js/vendor.bundle.base.js}"></script>
+    <!-- endinject -->
+    <!-- Plugin js for this page -->
+    <script th:src="@{/static/assets/vendors/typeahead.js/typeahead.bundle.min.js}"></script>
+    <script th:src="@{/static/assets/vendors/select2/select2.min.js}"></script>
+    <!-- End plugin js for this page -->
+    <!-- inject:js -->
+    <script th:src="@{/static/assets/js/off-canvas.js}"></script>
+    <script th:src="@{/static/assets/js/template.js}"></script>
+    <script th:src="@{/static/assets/js/settings.js}"></script>
+    <script th:src="@{/static/assets/js/todolist.js}"></script>
+    <!-- endinject -->
+    <!-- Custom js for this page-->
+    <script th:src="@{/static/assets/js/file-upload.js}"></script>
+    <script th:src="@{/static/assets/js/typeahead.js}"></script>
+    <script th:src="@{/static/assets/js/select2.js}"></script>
+    <!-- End custom js for this page-->
+</body>
+</html>
