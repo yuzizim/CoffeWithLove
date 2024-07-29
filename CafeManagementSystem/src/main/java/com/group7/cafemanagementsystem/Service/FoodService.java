@@ -1,7 +1,10 @@
 package com.group7.cafemanagementsystem.Service;
 
+import com.group7.cafemanagementsystem.Response.FoodRevenueResponse;
 import com.group7.cafemanagementsystem.Response.PageFoodResponse;
 import com.group7.cafemanagementsystem.model.Food;
+
+import java.util.List;
 
 public interface FoodService {
     PageFoodResponse getFoodByPage(Boolean status, int page, int size);
@@ -15,4 +18,10 @@ public interface FoodService {
     Food updateFood(Food food);
 
     Food saveFood(Food food);
+
+    List<FoodRevenueResponse> getFoodRevenueByDay(String day);
+
+    Food updateStatus(int id);
+
+    int totalProductSold();
 }
