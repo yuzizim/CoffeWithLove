@@ -128,10 +128,11 @@
         <div class="pic-area">
             <div class="pic-area-text">
                 <div id="login-box">
-                    <form id="reservation-form" name="reservation-form" th:action="@{/order-table/addOrderTable}" th:object="${orderTable}" method="post">
+                    <form id="reservation-form" name="reservation-form" th:action="@{/order-table/addOrderTable}" th:object="${addOrderTableRequest}" method="post">
                         <div class="form-group">
                             <label for="tableF">Table:</label>
-                            <select id="tableF" name="tableFood.id" th:field="*{tableFood.id}">
+                            <select id="tableF" name="tableFoodId" th:field="*{tableFoodId}">
+                                <option th:value="" th:text="Optional"></option>
                                 <option th:each="tableFood : ${tableFoods}" th:value="${tableFood.id}" th:text="${tableFood.name}"></option>
                             </select>
                         </div>

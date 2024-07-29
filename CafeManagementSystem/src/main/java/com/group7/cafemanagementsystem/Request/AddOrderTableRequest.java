@@ -13,14 +13,6 @@ public class AddOrderTableRequest {
     private String phoneNumber;
     private int numPeople;
     private String note;
-    private int tableFood;
-
-    public int getTableFoodId() {
-        return tableFood;
-    }
-
-    public void setTableFoodId(int tableFood) {
-        this.tableFood = tableFood;
-    }
+    private int tableFoodId;
 }
 

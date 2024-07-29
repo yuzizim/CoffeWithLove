@@ -12,5 +12,5 @@ public interface OrderTableService {
 
     List<TableFood> getAllTableFoods();
 
-    TableFood getIdTableByTableFood(TableFood tableFood);
+    TableFood getTableFoodById(int tableFood);
 }
