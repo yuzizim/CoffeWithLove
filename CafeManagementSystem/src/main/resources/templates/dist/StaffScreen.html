@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý đặt bàn</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            background: url('https://via.placeholder.com/1920x1080') no-repeat center center fixed;
+            background-size: cover;
+        }
+        .container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background-color: rgba(255, 255, 255, 0.8); /* Nền trắng với độ mờ */
+            padding: 20px;
+            border-radius: 15px;
+        }
+        .table-status {
+            margin-bottom: 20px;
+        }
+        .view-button, .menu-button {
+            margin-bottom: 10px;
+        }
+        .menu-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .menu-item img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+        .table-img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        .modal-header {
+            background-color: #007bff;
+            color: white;
+        }
+        .btn-success {
+            background-color: #28a745;
+            border-color: #28a745;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2 class="my-4 text-center">Quản lý đặt bàn</h2>
+    <div class="row">
+        <!-- Trạng thái bàn -->
+        <div class="col-md-6 table-status">
+            <h4>Trạng thái bàn</h4>
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>Bàn</th>
+                    <th>Hình ảnh</th>
+                    <th>Trạng thái</th>
+                    <th>Hành động</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Bàn 1</td>
+                    <td><img src="https://via.placeholder.com/50" alt="Table Image" class="table-img"></td>
+                    <td>
+                        <select class="form-control">
+                            <option>Trống</option>
+                            <option>Đã đặt</option>
+                            <option>Đang sử dụng</option>
+                        </select>
+                    </td>
+                    <td>
+                        <button class="btn btn-primary view-button" data-toggle="modal" data-target="#tableModal">Xem</button>
+                        <button class="btn btn-secondary menu-button" data-toggle="modal" data-target="#menuModal">Menu</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Bàn 2</td>
+                    <td><img src="https://via.placeholder.com/50" alt="Table Image" class="table-img"></td>
+                    <td>
+                        <select class="form-control">
+                            <option>Trống</option>
+                            <option>Đã đặt</option>
+                            <option>Đang sử dụng</option>
+                        </select>
+                    </td>
+                    <td>
+                        <button class="btn btn-primary view-button" data-toggle="modal" data-target="#tableModal">Xem</button>
+                        <button class="btn btn-secondary menu-button" data-toggle="modal" data-target="#menuModal">Menu</button>
+                    </td>
+                </tr>
+                <!-- Thêm các bàn khác tại đây -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Chi tiết bàn và menu -->
+        <div class="col-md-6">
+            <div class="modal fade" id="tableModal" tabindex="-1" role="dialog" aria-labelledby="tableModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="tableModalLabel">Chi tiết bàn</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <h5>Menu</h5>
+                            <div class="menu-item">
+                                <img src="https://via.placeholder.com/50" alt="Food Image">
+                                <span>Món 1</span>
+                                <button class="btn btn-secondary btn-sm ml-auto">Thêm</button>
+                            </div>
+                            <div class="menu-item">
+                                <img src="https://via.placeholder.com/50" alt="Food Image">
+                                <span>Món 2</span>
+                                <button class="btn btn-secondary btn-sm ml-auto">Thêm</button>
+                            </div>
+                            <!-- Thêm các món khác tại đây -->
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-success">Xuất bill</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Menu Modal -->
+            <div class="modal fade" id="menuModal" tabindex="-1" role="dialog" aria-labelledby="menuModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="menuModalLabel">Menu</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="menu-item">
+                                <img src="https://via.placeholder.com/50" alt="Food Image">
+                                <span>Món 1</span>
+                                <button class="btn btn-secondary btn-sm ml-auto">Thêm</button>
+                            </div>
+                            <div class="menu-item">
+                                <img src="https://via.placeholder.com/50" alt="Food Image">
+                                <span>Món 2</span>
+                                <button class="btn btn-secondary btn-sm ml-auto">Thêm</button>
+                            </div>
+                            <!-- Thêm các món khác tại đây -->
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"></script>
+</body>
+</html>
