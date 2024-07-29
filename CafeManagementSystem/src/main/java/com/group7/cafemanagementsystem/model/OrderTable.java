@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Date;
 
@@ -19,11 +20,8 @@ public class OrderTable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "OrderDate")
-    private Date orderDate;
-
     @Column(name = "OrderTime")
-    private LocalTime orderTime;
+    private LocalDateTime orderTime;
 
     @Column(name = "CustomerName")
     private String customerName;
@@ -41,6 +39,7 @@ public class OrderTable {
     private String note;
 
     @ManyToOne
-    @JoinColumn(name = "id_table", nullable = false)
+    @JoinColumn(name = "TableFood", insertable=false, updatable=false)
     private TableFood tableFood;
+
 }
