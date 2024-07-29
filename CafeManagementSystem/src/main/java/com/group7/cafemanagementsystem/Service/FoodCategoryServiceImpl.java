@@ -1,6 +1,7 @@
 package com.group7.cafemanagementsystem.Service;
 
 import com.group7.cafemanagementsystem.Repository.FoodCategoryRepository;
+import com.group7.cafemanagementsystem.Repository.FoodRepository;
 import com.group7.cafemanagementsystem.model.FoodCategory;
 import lombok.AllArgsConstructor;
 import org.hibernate.annotations.NotFound;
@@ -12,6 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 public class FoodCategoryServiceImpl implements FoodCategoryService {
     private final FoodCategoryRepository foodCategoryRepository;
+    private final FoodRepository foodRepository;
 
     @Override
     public List<FoodCategory> getFoodCategories() {
@@ -31,6 +33,9 @@ public class FoodCategoryServiceImpl implements FoodCategoryService {
 
     @Override
     public void deleteCategory(int id) {
+//        FoodCategory foodCategory = foodCategoryRepository.findById(id).get();
+//        foodCategory.setStatus(false);
+//        foodCategoryRepository.save(foodCategory);
         foodCategoryRepository.deleteById(id);
     }
 
