@@ -14,7 +14,6 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -40,7 +39,7 @@ public class AuthController {
         Object principle = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String role = ((UserDetails) principle).getAuthorities().toString();
         if(role.equals("[ADMIN]")){
-            return "redirect:/admin/food/list";
+            return "redirect:/admin/dashboard";
         }
         return "redirect:/staff";
     }
