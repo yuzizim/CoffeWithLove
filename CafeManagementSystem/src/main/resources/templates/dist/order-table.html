@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Drip Cafe - Sign In</title>
+    <title>Drip Cafe - Order table</title>
     <link rel="stylesheet" href="../../static/css/main.css" />
     <link
             href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;700&family=Marck+Script&display=swap"
@@ -49,7 +49,7 @@
                         Sign In
                     </a>
                     <span class="menu-nav__link" id="slash">/</span>
-                    <a href="sign-up.html" class="sign-up menu-nav__link active">
+                    <a href="sign-up.html" class="sign-up menu-nav__link">
                         Sign Up
                     </a>
                 </li>
@@ -60,12 +60,17 @@
                     </a>
                 </li>
                 <li class="menu-nav__item">
-                    <a href="menu.html" class="menu-nav__link">
-                        Menu
+                    <a href="/tables" class="menu-nav__link">
+                        Table
                     </a>
                 </li>
                 <li class="menu-nav__item">
-                    <a href="services.html" class="menu-nav__link">
+                    <a th:href="order-table.hmtl" class="menu-nav__link active" >
+                        Order Table
+                    </a>
+                </li>
+                <li class="menu-nav__item">
+                    <a th:href="services.html" class="menu-nav__link">
                         Services
                     </a>
                 </li>
@@ -123,36 +128,36 @@
         <div class="pic-area">
             <div class="pic-area-text">
                 <div id="login-box">
-                    <form id="reservation-form" name="reservation-form" th:action="@{/save}" th:object="${orderTable}" method="post">
+                    <form id="reservation-form" name="reservation-form" th:action="@{/order-table/addOrderTable}" th:object="${orderTable}" method="post">
                         <div class="form-group">
-                            <label for="table">Table:</label>
-                            <select id="table" name="table">
-                                <option th:each="tableFood : ${tableFood}" th:value="${tableFood.id}" th:text="${tableFood.name}"></option>
+                            <label for="tableF">Table:</label>
+                            <select id="tableF" name="tableFood.id" th:field="*{tableFood.id}">
+                                <option th:each="tableFood : ${tableFoods}" th:value="${tableFood.id}" th:text="${tableFood.name}"></option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="date">Order time:</label>
-                            <input type="datetime-local" id="date" th:field="orderTime">
+                            <label for="orderTime">Order time:</label>
+                            <input type="datetime-local" id="orderTime" th:field="*{orderTime}">
                         </div>
                         <div class="form-group">
-                            <label for="name">Name:</label>
-                            <input type="text" id="name" th:field="customerName">
+                            <label for="customerName">Name:</label>
+                            <input type="text" id="customerName" th:field="*{customerName}">
                         </div>
                         <div class="form-group">
                             <label for="email">Email:</label>
-                            <input type="email" id="email" th:field="email">
+                            <input type="email" id="email" th:field="*{email}">
                         </div>
                         <div class="form-group">
-                            <label for="phone">Phone Number:</label>
-                            <input type="tel" id="phone" th:field="phoneNumber">
+                            <label for="phoneNumber">Phone Number:</label>
+                            <input type="tel" id="phoneNumber" th:field="*{phoneNumber}">
                         </div>
                         <div class="form-group">
-                            <label for="num-people">Number of people:</label>
-                            <input type="number" id="num-people" th:field="numPeople">
+                            <label for="numPeople">Number of people:</label>
+                            <input type="number" id="numPeople" th:field="*{numPeople}">
                         </div>
                         <div class="form-group">
-                            <label for="notes">Note:</label>
-                            <textarea id="notes" th:field="note"></textarea>
+                            <label for="note">Note:</label>
+                            <textarea id="note" th:field="*{note}"></textarea>
                         </div>
                         <button type="submit" class="btn-order">Add order</button>
                     </form>

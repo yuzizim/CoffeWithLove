@@ -37,9 +37,9 @@ public class OrderTable {
 
     @Column(name = "Note")
     private String note;
-    @Column(name = "TableFood")
-    private int tableFood;
+
     @ManyToOne
-    @JoinColumn(name = "TableFood", nullable = false)
-    private TableFood tableF;
+    @JoinColumn(name = "TableFood", insertable=false, updatable=false)
+    private TableFood tableFood;
+
 }

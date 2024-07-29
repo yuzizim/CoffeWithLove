@@ -22,8 +22,8 @@ public class OrderTableServiceImpl implements OrderTableService {
     }
 
     @Override
-    public OrderTable getOrderTableByTableNumber(int tableNumber) {
-        return orderTableRepository.findByTableFood(tableNumber).orElse(null);
+    public OrderTable findOrderByTableFood(TableFood tableFood) {
+        return orderTableRepository.findByTableFood(tableFood).orElse(null);
     }
 
     @Override
@@ -46,5 +46,8 @@ public class OrderTableServiceImpl implements OrderTableService {
         return tableFoodRepository.findAll();
     }
 
-
+    @Override
+    public TableFood getIdTableByTableFood(TableFood tableFood) {
+        return tableFoodRepository.findById(tableFood.getId()).orElse(null);
+    }
 }
