@@ -38,8 +38,8 @@ public class OrderTable {
     @Column(name = "Note")
     private String note;
 
-    @ManyToOne
-    @JoinColumn(name = "TableFood", insertable=false, updatable=false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "TableFood", nullable = false)
     private TableFood tableFood;
 
 }

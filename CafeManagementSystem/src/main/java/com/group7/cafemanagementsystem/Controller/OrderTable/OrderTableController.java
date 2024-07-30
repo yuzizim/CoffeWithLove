@@ -27,7 +27,7 @@ public class OrderTableController {
 
     @GetMapping("/addOrderTable")
     public String addOrderTable(Model model) {
-        model.addAttribute("orderTable", new OrderTable());
+        model.addAttribute("addOrderTableRequest", new AddOrderTableRequest());
         List<TableFood> tableFoods = orderTableService.getAllTableFoods();
         model.addAttribute("tableFoods", tableFoods);
         return "dist/order-table";
@@ -36,8 +36,7 @@ public class OrderTableController {
     @PostMapping("/addOrderTable")
     public String addOrderTable(@ModelAttribute AddOrderTableRequest request, Model model) {
         OrderTable orderTable = new OrderTable();
-        TableFood tableFood = new TableFood();
-        tableFood = orderTableService.getIdTableByTableFood(tableFood);
+        TableFood tableFood = orderTableService.getTableFoodById(request.getTableFoodId());
 
         if (tableFood != null) {
             orderTable.setTableFood(tableFood);

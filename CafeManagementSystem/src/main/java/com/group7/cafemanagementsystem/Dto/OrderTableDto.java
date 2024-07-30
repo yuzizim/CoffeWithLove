@@ -15,5 +15,5 @@ public class OrderTableDto {
     private String phoneNumber;
     private int numPeople;
     private String note;
-    private int tableFood;
+    private int tableFoodId;
 }

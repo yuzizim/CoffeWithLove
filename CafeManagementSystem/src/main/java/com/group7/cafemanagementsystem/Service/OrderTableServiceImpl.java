@@ -47,7 +47,7 @@ public class OrderTableServiceImpl implements OrderTableService {
     }
 
     @Override
-    public TableFood getIdTableByTableFood(TableFood tableFood) {
-        return tableFoodRepository.findById(tableFood.getId()).orElse(null);
+    public TableFood getTableFoodById(int tableFoodId) {
+        return tableFoodRepository.findById(tableFoodId).orElse(null);
     }
 }
