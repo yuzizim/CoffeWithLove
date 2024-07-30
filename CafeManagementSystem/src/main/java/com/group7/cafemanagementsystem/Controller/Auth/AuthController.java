@@ -41,7 +41,7 @@ public class AuthController {
         if(role.equals("[ADMIN]")){
             return "redirect:/admin/dashboard";
         }
-        return "redirect:/staff";
+        return "redirect:/staff/home";
     }
 
     @GetMapping("/login")
