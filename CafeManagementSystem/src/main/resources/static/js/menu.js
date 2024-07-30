@@ -16,6 +16,24 @@ view1CloseBtn.addEventListener("click", function () {
   html.classList.remove("no-scroll");
 });
 
+// Order 1
+const order = document.querySelector(".one__order");
+const orderOpenBtn = document.querySelector(".one__order__openBtn");
+const orderCloseBtn = document.querySelector(".one__order__openBtn");
+const orderOverlay = document.querySelector(".one__order-overlay");
+
+orderOpenBtn.addEventListener("click", function () {
+  order.classList.add("one__showview");
+  orderOverlay.classList.add("one__transparentBcg");
+  html.classList.add("no-scroll");
+});
+
+orderCloseBtn.addEventListener("click", function () {
+  order.classList.remove("one__showview");
+  order.classList.remove("one__transparentBcg");
+  html.classList.remove("no-scroll");
+});
+
 // View 2
 const view2 = document.querySelector(".two__view");
 const view2OpenBtn = document.querySelector(".two__view__openBtn");

@@ -65,7 +65,7 @@
                     </a>
                 </li>
                 <li class="menu-nav__item">
-                    <a th:href="order-table.hmtl" class="menu-nav__link active" >
+                    <a th:href="order-table.html" class="menu-nav__link active" >
                         Order Table
                     </a>
                 </li>
@@ -132,7 +132,6 @@
                         <div class="form-group">
                             <label for="tableF">Table:</label>
                             <select id="tableF" name="tableFoodId" th:field="*{tableFoodId}">
-                                <option th:value="" th:text="Optional"></option>
                                 <option th:each="tableFood : ${tableFoods}" th:value="${tableFood.id}" th:text="${tableFood.name}"></option>
                             </select>
                         </div>
