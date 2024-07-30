@@ -12,25 +12,26 @@
     <link rel="icon" type="image/png" th:href="@{/static/img/favicon.png}"/>
 </head>
 <body>
-<div th:insert="~{dist/navbar :: navbar}"></div>
-
 <main>
-    <section class="home">
-        <div class="pic-area">
-            <div class="pic-area-text">
-                <h2>Welcome to</h2>
-                <h1 class="home__name">
-                    <span class="logo-first">Drip</span>
-                    <span class="logo-last">Cafe</span>
-                </h1>
-                <h3>Where coffee and comfort come together</h3>
-                <a th:href="@{/staff/manage/menu}">
-                    <button class="btn-order">Order Now!</button>
+    <div th:fragment="footer">
+        <footer>
+            <div class="icons">
+                <a href="#!">
+                    <i class="fab fa-twitter"></i>
+                </a>
+                <a href="#!">
+                    <i class="fab fa-facebook"></i>
+                </a>
+                <a href="#!">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="#!">
+                    <i class="fab fa-snapchat-square"></i>
                 </a>
             </div>
-        </div>
-        <div th:insert="~{dist/footer :: footer}"></div>
-    </section>
+            <div class="copyright">&copy; Copyright 2022</div>
+        </footer>
+    </div>
 </main>
 <script th:src="@{../static/js/script.js}"></script>
 <script

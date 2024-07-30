@@ -135,6 +135,7 @@
                             th:object="${user}"
                     >
                         <label>Username: </label> <br/>
+                        <p style="color: red" th:text="${error}"></p>
                         <input
                                 type="text"
                                 name="userid"

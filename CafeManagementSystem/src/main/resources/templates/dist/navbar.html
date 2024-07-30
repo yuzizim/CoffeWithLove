@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Drip Cafe - Home</title>
+    <link rel="stylesheet" th:href="@{/static/css/main.css}"/>
+    <link
+            href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;700&family=Marck+Script&display=swap"
+            rel="stylesheet"
+    />
+    <link rel="icon" type="image/png" th:href="@{/static/img/favicon.png}"/>
+</head>
+<body>
+<header th:fragment="navbar">
+    <div class="second-header">
+        <div class="menu-btn">
+            <span class="menu-btn__burger"></span>
+        </div>
+
+        <nav class="nav">
+            <ul class="menu-nav">
+                <li class="menu-nav__item">
+                    <a href="index.html" class="logo menu-nav__link">
+                        <img src="../../static/img/favicon.png"/>
+                        <span class="logo-first">Drip</span>
+                        <span class="logo-last">Cafe</span>
+                    </a>
+                </li>
+                <li class="menu-nav__item">
+                    <a href="sign-in.html" class="sign-in menu-nav__link">
+                        <i class="fa fa-user" aria-hidden="true"></i>
+                        Sign In
+                    </a>
+                    <span class="menu-nav__link" id="slash">/</span>
+                    <a th:href="@{/auth/logout}" class="sign-up menu-nav__link">
+                        Logout
+                    </a>
+                </li>
+                <br/>
+                <li class="menu-nav__item active">
+                    <a href="index.html" class="menu-nav__link"> Home </a>
+                </li>
+                <li class="menu-nav__item">
+                    <a th:href="@{/staff/manage/menu}" class="menu-nav__link"> Menu </a>
+                </li>
+                <li class="menu-nav__item">
+                    <a href="services.html" class="menu-nav__link"> Revenue </a>
+                </li>
+                <!--                <li class="menu-nav__item">-->
+                <!--                    <a href="contact.html" class="menu-nav__link"> Contact </a>-->
+                <!--                </li>-->
+                <li class="menu-nav__item">
+                    <a href="#!" class="menu-nav__link cart__openBtn">
+                        <i class="fa fa-cart-plus" aria-hidden="true"></i>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+    <!-- Shopping Cart -->
+    <div class="cart-overlay">
+        <div class="cart">
+            <div class="cart__closeBtn">
+                <i class="fas fa-window-close"></i>
+            </div>
+            <h2>
+                <i class="fa fa-cart-arrow-down"></i>
+                <span class="span-primary">Shopping</span> Cart
+                <i class="fa fa-cart-arrow-down"></i>
+            </h2>
+
+            <!-- JS will add items here -->
+            <div class="item1-display">
+            </div>
+            <div class="total"></div>
+        </div>
+    </div>
+</header>
+<script th:src="@{/static/js/script.js}"></script>
+<script src="https://kit.fontawesome.com/c057664144.js"
+        crossorigin="anonymous"
+></script>
+</body>
+</html>
