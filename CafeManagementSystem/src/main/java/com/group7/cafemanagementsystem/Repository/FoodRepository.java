@@ -20,6 +20,9 @@ public interface FoodRepository extends JpaRepository<Food, Integer> {
     @Query("SELECT f FROM Food f ORDER BY f.status DESC")
     Page<Food> findByStatusOrderByStatus(Pageable pageable);
 
+    @Query("SELECT f FROM Food f WHERE f.status = TRUE")
+    Page<Food> findByStatusOrder(Pageable pageable);
+
     Optional<Food> findById(int id);
 
     @Query("SELECT f.name AS name, (f.price * sum(bi.count)) AS price, sum(bi.count) as numSale " +
@@ -35,4 +38,6 @@ public interface FoodRepository extends JpaRepository<Food, Integer> {
             "    JOIN Bill b ON bi.id_bill = b.id\n" +
             "    JOIN Food f ON bi.id_food = f.id", nativeQuery = true)
     Object totalProductSold();
+
+    Page<Food> findByFoodCategoryIdAndStatusTrue(int id, Pageable pageable);
 }
