@@ -25,18 +25,18 @@ public interface FoodRepository extends JpaRepository<Food, Integer> {
 
     Optional<Food> findById(int id);
 
-    @Query("SELECT f.name AS name, (f.price * sum(bi.count)) AS price, sum(bi.count) as numSale " +
-            " FROM BillInfo bi " +
-            " JOIN Bill b on bi.bill.id = b.id " +
-            " JOIN Food f on bi.food.id = f.id " +
-            " WHERE b.dateCheckIn = :day" +
-            " GROUP BY f.name, f.price")
-    List<FoodRevenueResponse> getFoodRevenueByDay(@Param("day") LocalDateTime day);
+//    @Query("SELECT f.name AS name, (f.price * sum(bi.count)) AS price, sum(bi.count) as numSale " +
+//            " FROM BillInfo bi " +
+//            " JOIN Bill b on bi.bill.id = b.id " +
+//            " JOIN Food f on bi.food.id = f.id " +
+//            " WHERE b.dateCheckIn = :day" +
+//            " GROUP BY f.name, f.price")
+//    List<FoodRevenueResponse> getFoodRevenueByDay(@Param("startDay") LocalDateTime startDay);
 
-    @Query(value = "SELECT SUM(bi.count) AS price\n" +
-            "    FROM bill_info as bi\n" +
-            "    JOIN Bill b ON bi.id_bill = b.id\n" +
-            "    JOIN Food f ON bi.id_food = f.id", nativeQuery = true)
+    @Query(value = "SELECT SUM(quantity) AS 'NumberSold'\n" +
+            "FROM order_detail AS od\n" +
+            "JOIN order_table AS ot ON od.order_id = ot.id\n" +
+            "WHERE ot.status = 1;", nativeQuery = true)
     Object totalProductSold();
 
     Page<Food> findByFoodCategoryIdAndStatusTrue(int id, Pageable pageable);

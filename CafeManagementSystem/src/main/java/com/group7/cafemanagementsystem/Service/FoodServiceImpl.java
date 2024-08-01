@@ -77,12 +77,12 @@ public class FoodServiceImpl implements FoodService {
         return foodRepository.save(food);
     }
 
-    @Override
-    public List<FoodRevenueResponse> getFoodRevenueByDay(String day) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        LocalDateTime dateTime = LocalDateTime.parse(day + " 00:00:00", formatter);
-        return foodRepository.getFoodRevenueByDay(dateTime);
-    }
+//    @Override
+//    public List<FoodRevenueResponse> getFoodRevenueByDay(String day) {
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+//        LocalDateTime dateTime = LocalDateTime.parse(day + " 00:00:00", formatter);
+//        return foodRepository.getFoodRevenueByDay(dateTime);
+//    }
 
     @Override
     public Food updateStatus(int id) {

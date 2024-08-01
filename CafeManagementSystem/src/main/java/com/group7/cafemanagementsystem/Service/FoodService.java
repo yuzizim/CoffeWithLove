@@ -19,7 +19,7 @@ public interface FoodService {
 
     Food saveFood(Food food);
 
-    List<FoodRevenueResponse> getFoodRevenueByDay(String day);
+//    List<FoodRevenueResponse> getFoodRevenueByDay(String day);
 
     Food updateStatus(int id);
 
