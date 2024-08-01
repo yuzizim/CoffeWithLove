@@ -1,7 +1,6 @@
 package com.group7.cafemanagementsystem.Controller.Admin;
 
 import com.group7.cafemanagementsystem.Dto.TotalRevenueDTO;
-import com.group7.cafemanagementsystem.Service.BillInforService;
 import com.group7.cafemanagementsystem.Service.BillService;
 import com.group7.cafemanagementsystem.Service.FoodService;
 import lombok.AllArgsConstructor;
@@ -17,13 +16,12 @@ import java.util.Date;
 @AllArgsConstructor
 @RequestMapping("/admin/dashboard")
 public class AdminDashBoardController {
-    private BillInforService billInforService;
     private FoodService foodService;
     private BillService billService;
 
     @GetMapping
     public String dashboard(Model model) {
-        TotalRevenueDTO totalRevenueDTO = billInforService.getTotalRevenueByDay();
+        TotalRevenueDTO totalRevenueDTO = billService.getTotalRevenueByDay();
         int totalProductSold = foodService.totalProductSold();
         int numberBills = billService.numberBills();
 

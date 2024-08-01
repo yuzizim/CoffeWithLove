@@ -27,44 +27,44 @@ import java.util.List;
 public class AdminRevenueController {
     private FoodService foodService;
 
-    @GetMapping
-    public String getRevenue(@RequestParam(name = "datePicker", required = false) String selectedDate,
-                             Model model) {
-        if (selectedDate == null || selectedDate.isEmpty()) {
-            LocalDate currentDate = LocalDate.now();
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            selectedDate = currentDate.format(formatter); // default date or you can use the current date
-        }
-        List<FoodRevenueResponse> revenueResponses = foodService.getFoodRevenueByDay(selectedDate);
-        int totalSale = 0;
-        double totalPrice = 0;
-        for (FoodRevenueResponse item : revenueResponses) {
-            totalSale += item.getNumSale();
-            totalPrice += item.getPrice();
-        }
-        model.addAttribute("revenues", revenueResponses);
-        model.addAttribute("totalSale", totalSale);
-        model.addAttribute("totalPrice", totalPrice);
-        model.addAttribute("datePicker", selectedDate);
-        return "/admin/revenue/revenue";
-    }
+//    @GetMapping
+//    public String getRevenue(@RequestParam(name = "datePicker", required = false) String selectedDate,
+//                             Model model) {
+//        if (selectedDate == null || selectedDate.isEmpty()) {
+//            LocalDate currentDate = LocalDate.now();
+//            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+//            selectedDate = currentDate.format(formatter); // default date or you can use the current date
+//        }
+//        List<FoodRevenueResponse> revenueResponses = foodService.getFoodRevenueByDay(selectedDate);
+//        int totalSale = 0;
+//        double totalPrice = 0;
+//        for (FoodRevenueResponse item : revenueResponses) {
+//            totalSale += item.getNumSale();
+//            totalPrice += item.getPrice();
+//        }
+//        model.addAttribute("revenues", revenueResponses);
+//        model.addAttribute("totalSale", totalSale);
+//        model.addAttribute("totalPrice", totalPrice);
+//        model.addAttribute("datePicker", selectedDate);
+//        return "/admin/revenue/revenue";
+//    }
 
-    @GetMapping("/download")
-    public ResponseEntity<InputStreamResource> getFile(@RequestParam(name = "dateTime", required = false) String selectedDate, HttpServletResponse response) throws IOException {
-        if (selectedDate == null || selectedDate.isEmpty()) {
-            LocalDate currentDate = LocalDate.now();
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            selectedDate = currentDate.format(formatter); // default date or you can use the current date
-        }
-        List<FoodRevenueResponse> revenueResponses = foodService.getFoodRevenueByDay(selectedDate);
-        ByteArrayInputStream in = ExcelHelper.tutorialsToExcel(revenueResponses);
-
-        String filename = "revenue.xlsx";
-//        InputStreamResource file = new InputStreamResource(in);
-
-        return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + filename)
-                .contentType(MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
-                .body(new InputStreamResource(in));
-    }
+//    @GetMapping("/download")
+//    public ResponseEntity<InputStreamResource> getFile(@RequestParam(name = "dateTime", required = false) String selectedDate, HttpServletResponse response) throws IOException {
+//        if (selectedDate == null || selectedDate.isEmpty()) {
+//            LocalDate currentDate = LocalDate.now();
+//            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+//            selectedDate = currentDate.format(formatter); // default date or you can use the current date
+//        }
+//        List<FoodRevenueResponse> revenueResponses = foodService.getFoodRevenueByDay(selectedDate);
+//        ByteArrayInputStream in = ExcelHelper.tutorialsToExcel(revenueResponses);
+//
+//        String filename = "revenue.xlsx";
+////        InputStreamResource file = new InputStreamResource(in);
+//
+//        return ResponseEntity.ok()
+//                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + filename)
+//                .contentType(MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
+//                .body(new InputStreamResource(in));
+//    }
 }
