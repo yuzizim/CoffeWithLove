@@ -36,18 +36,18 @@
 <!-- Page Header Start -->
 <div class="container-fluid bg-secondary mb-5">
     <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
-        <h1 class="font-weight-semi-bold text-uppercase mb-3">Cart</h1>
+        <h1 class="font-weight-semi-bold text-uppercase mb-3">Order Detail</h1>
         <div class="d-inline-flex">
             <p class="m-0"><a href="">Home</a></p>
             <p class="m-0 px-2">-</p>
-            <p class="m-0">Cart</p>
+            <p class="m-0">Order Detail</p>
         </div>
     </div>
 </div>
 <!-- Page Header End -->
 
 
-<!-- Cart Start -->
+<!-- Order detail Start -->
 <div class="container-fluid pt-5">
     <div class="row px-xl-5">
         <div class="col-lg-8 table-responsive mb-5">
@@ -62,17 +62,18 @@
                 </tr>
                 </thead>
                 <tbody class="align-middle">
-                <tr th:each="cart : ${carts}">
+                <tr th:each="item : ${order.orderDetails}">
                     <td class="align-middle">
-                        <img th:src="@{${cart.food.images}}" alt="Food Image" style="width: 50px;">
-                        <span th:text="${cart.food.name}"></span>
+                        <img th:src="@{${item.food.images}}" alt="Food Image" style="width: 50px;">
+                        <span th:text="${item.food.name}"></span>
                     </td>
-                    <td class="align-middle" th:text="'$' + ${cart.food.price}"></td>
+                    <td class="align-middle" th:text="'$' + ${item.food.price}"></td>
                     <td class="align-middle">
                         <div class="input-group quantity mx-auto" style="width: 100px;">
                             <div class="input-group-btn">
-                                <form th:action="@{/staff/manage/cart/update-quantity/{id}(id=${cart.food.id})}"
+                                <form th:action="@{/staff/manage/order-detail/update/product/{id}(id=${item.food.id})}"
                                       method="get">
+                                    <input type="hidden" name="orderId" th:value="${item.orderTable.id}"/>
                                     <input type="hidden" name="quantityChange" id="quantity-input1" value="-1">
                                     <button type="submit" class="btn btn-sm btn-primary btn-minus">
                                         <i class="fa fa-minus"></i>
@@ -80,10 +81,11 @@
                                 </form>
                             </div>
                             <input type="text" class="form-control form-control-sm bg-secondary text-center"
-                                   th:value="${cart.quantity}">
+                                   th:value="${item.quantity}">
                             <div class="input-group-btn">
-                                <form th:action="@{/staff/manage/cart/update-quantity/{id}(id=${cart.food.id})}"
+                                <form th:action="@{/staff/manage/order-detail/update/product/{id}(id=${item.food.id})}"
                                       method="get">
+                                    <input type="hidden" name="orderId" th:value="${item.orderTable.id}"/>
                                     <input type="hidden" name="quantityChange" id="quantity-input2" value="1">
                                     <button type="submit" class="btn btn-sm btn-primary btn-plus">
                                         <i class="fa fa-plus"></i>
@@ -92,9 +94,10 @@
                             </div>
                         </div>
                     </td>
-                    <td class="align-middle" th:text="'$' + ${cart.food.price * cart.quantity}"></td>
+                    <td class="align-middle" th:text="'$' + ${item.food.price * item.quantity}"></td>
                     <td class="align-middle">
-                        <form th:action="@{/staff/manage/cart/delete/{id}(id=${cart.food.id})}">
+                        <form th:action="@{/staff/manage/order-detail/delete/product/{id}(id=${item.food.id})}">
+                            <input type="hidden" name="orderId" th:value="${item.orderTable.id}"/>
                             <button class="btn btn-sm btn-primary"><i class="fa fa-times"></i></button>
                         </form>
                     </td>
@@ -105,28 +108,40 @@
         <div class="col-lg-4">
             <div class="card border-secondary mb-5">
                 <div class="card-header bg-secondary border-0">
-                    <h4 class="font-weight-semi-bold m-0">Cart Summary</h4>
+                    <h4 class="font-weight-semi-bold m-0">User Information</h4>
                 </div>
                 <div class="card-body">
                     <div class="d-flex justify-content-between mb-3 pt-1">
-                        <h6 class="font-weight-medium">Subtotal</h6>
-                        <h6 class="font-weight-medium" th:text="'$' + ${totalMoney}"></h6>
+                        <h6 class="font-weight-medium">Name</h6>
+                        <h6 class="font-weight-medium" th:text="${order.customerName}"></h6>
+                    </div>
+                    <div class="d-flex justify-content-between mb-3 pt-1">
+                        <h6 class="font-weight-medium">Phone</h6>
+                        <h6 class="font-weight-medium" th:text="${order.phoneNumber}"></h6>
+                    </div>
+                    <div class="d-flex justify-content-between mb-3 pt-1">
+                        <h6 class="font-weight-medium">Order Time</h6>
+                        <h6 class="font-weight-medium" th:text="${order.orderTime}"></h6>
+                    </div>
+                    <div class="d-flex justify-content-between mb-3 pt-1">
+                        <h6 class="font-weight-medium">Note</h6>
+                        <h6 class="font-weight-medium" th:text="${order.note}"></h6>
                     </div>
                 </div>
                 <div class="card-footer border-secondary bg-transparent">
                     <div class="d-flex justify-content-between mt-2">
                         <h5 class="font-weight-bold">Total</h5>
-                        <h5 class="font-weight-bold" th:text="'$' + ${totalMoney}"></h5>
+                        <h5 class="font-weight-bold" th:text="'$' + ${order.totalPrice}"></h5>
                     </div>
                     <!--                    <button class="btn btn-block btn-primary my-3 py-3">Make order</button>-->
-                    <a th:href="@{/staff/manage/order}" class="btn btn-block btn-primary my-3 py-3">Make order</a>
+                    <a th:href="@{/staff/manage/order}" class="btn btn-block btn-primary my-3 py-3">Update Order</a>
 
                 </div>
             </div>
         </div>
     </div>
 </div>
-<!-- Cart End -->
+<!-- Order detail End -->
 
 
 <!-- Footer Start -->
