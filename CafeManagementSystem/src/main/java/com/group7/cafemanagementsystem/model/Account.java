@@ -9,6 +9,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Entity
 @Table(name = "Account")
 @Data
@@ -52,4 +54,7 @@ public class Account {
 
     @Column(name = "role")
     private String role;
+
+    @OneToMany(mappedBy = "staff", cascade = CascadeType.ALL)
+    private List<OrderTable> orderTables;
 }
