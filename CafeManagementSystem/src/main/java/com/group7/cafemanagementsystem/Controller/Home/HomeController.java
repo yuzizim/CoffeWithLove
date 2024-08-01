@@ -45,4 +45,22 @@ public class HomeController {
 
         return "/staff/index";
     }
+
+    @GetMapping("/navbar")
+    public String displayNavbar(Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Object principal = authentication.getPrincipal();
+
+        String username;
+        if (principal instanceof UserDetails) {
+            username = ((UserDetails) principal).getUsername();
+        } else {
+            username = principal.toString();
+        }
+
+        List<Cart> carts = cartService.getCartByUser(username);
+        model.addAttribute("numInCart", carts.size());
+        model.addAttribute("username", username);
+        return "/staff/navbar";
+    }
 }
