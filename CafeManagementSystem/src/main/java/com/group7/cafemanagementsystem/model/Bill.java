@@ -28,13 +28,7 @@ public class Bill {
     @Column(name = "DateCheckOut")
     private LocalDateTime dateCheckOut;
 
-    @ManyToOne
-    @JoinColumn(name = "idTable", nullable = false)
-    private TableFood tableFood;
-
-    @Column(name = "status")
-    private boolean status;
-
-    @OneToMany(mappedBy = "bill", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<BillInfo> billInfos = new HashSet<>();
+    @OneToOne
+    @JoinColumn(name = "order_id")
+    private OrderTable orderTable;
 }
