@@ -59,6 +59,7 @@ public class StaffMenuController {
         model.addAttribute("pageNumber", page);
         model.addAttribute("cateId", id);
         model.addAttribute("numInCart", carts.size());
+        model.addAttribute("username", username);
         return "/staff/shop";
     }
 
