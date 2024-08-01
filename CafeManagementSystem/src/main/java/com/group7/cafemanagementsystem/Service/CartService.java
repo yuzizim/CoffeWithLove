@@ -10,4 +10,8 @@ public interface CartService {
     Cart updateQuantity(int id, int quantity);
 
     List<Cart> getCartByUser(String username);
+
+    void deleteItemFromCart(int foodId);
+
+    boolean checkItemExistInCart(int foodId);
 }

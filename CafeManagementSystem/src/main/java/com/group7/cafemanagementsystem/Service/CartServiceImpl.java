@@ -50,4 +50,14 @@ public class CartServiceImpl implements CartService {
         List<Cart> carts = cartRepository.findByAccount_UserName(username);
         return carts;
     }
+
+    @Override
+    public void deleteItemFromCart(int foodId) {
+        cartRepository.deleteByFood_Id(foodId);
+    }
+
+    @Override
+    public boolean checkItemExistInCart(int foodId) {
+        return cartRepository.findByFood_Id(foodId) != null;
+    }
 }
