@@ -24,5 +24,8 @@ public interface FoodService {
     Food updateStatus(int id);
 
     int totalProductSold();
-    List<Food> getAllFood();
+
+    PageFoodResponse getMenuByPage(int page, int size);
+
+    PageFoodResponse getFoodByCategoryId(int cateId, int page, int size);
 }

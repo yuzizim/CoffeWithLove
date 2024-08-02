@@ -99,8 +99,22 @@ public class FoodServiceImpl implements FoodService {
     }
 
     @Override
-    public List<Food> getAllFood() {
-        return foodRepository.findAll();
+    public PageFoodResponse getMenuByPage(int page, int size) {
+        List<Food> foods = new ArrayList<>();
+        Pageable paging = PageRequest.of(page, size);
+        Page<Food> pageFoods = foodRepository.findByStatusOrder(paging);
+        foods = pageFoods.getContent();
+        int totalPages = pageFoods.getTotalPages();
+        return new PageFoodResponse(foods, totalPages);
     }
 
+    @Override
+    public PageFoodResponse getFoodByCategoryId(int cateId, int page, int size) {
+        List<Food> foods = new ArrayList<>();
+        Pageable paging = PageRequest.of(page, size);
+        Page<Food> pageFoods = foodRepository.findByFoodCategoryIdAndStatusTrue(cateId, paging);
+        foods = pageFoods.getContent();
+        int totalPages = pageFoods.getTotalPages();
+        return new PageFoodResponse(foods, totalPages);
+    }
 }

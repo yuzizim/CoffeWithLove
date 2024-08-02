@@ -21,10 +21,10 @@ public class MenuController {
     public MenuController(FoodService foodService) {
         this.foodService = foodService;
     }
-    @GetMapping("/view")
-    public String viewTables(Model model) {
-        List<Food> foods = foodService.getAllFood();
-        model.addAttribute("foods", foods);
-        return "/dist/menu";
-    }
+//    @GetMapping("/view")
+//    public String viewTables(Model model) {
+//        List<Food> foods = foodService.getAllFood();
+//        model.addAttribute("foods", foods);
+//        return "/dist/menu";
+//    }
 }
