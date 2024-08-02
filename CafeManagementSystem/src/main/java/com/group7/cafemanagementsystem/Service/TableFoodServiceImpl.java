@@ -46,4 +46,14 @@ public class TableFoodServiceImpl implements TableFoodService {
         }
         return null;
     }
+
+    @Override
+    public List<TableFood> getAllTablesEmpty() {
+        return tableFoodRepository.findByStatusFalse();
+    }
+
+    @Override
+    public List<TableFood> getAllTablesOrderById() {
+        return tableFoodRepository.findAllOrderById();
+    }
 }
