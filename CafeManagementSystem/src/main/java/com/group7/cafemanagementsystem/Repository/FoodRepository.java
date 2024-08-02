@@ -20,8 +20,8 @@ public interface FoodRepository extends JpaRepository<Food, Integer> {
     @Query("SELECT f FROM Food f ORDER BY f.status DESC")
     Page<Food> findByStatusOrderByStatus(Pageable pageable);
 
-    @Query("SELECT f FROM Food f WHERE f.status = TRUE")
-    Page<Food> findByStatusOrder(Pageable pageable);
+    @Query("SELECT f FROM Food f WHERE f.status = TRUE AND f.name LIKE %:search%")
+    Page<Food> findByStatusOrder(@Param("search") String search, Pageable pageable);
 
     Optional<Food> findById(int id);
 
@@ -39,5 +39,24 @@ public interface FoodRepository extends JpaRepository<Food, Integer> {
             "WHERE ot.status = 1;", nativeQuery = true)
     Object totalProductSold();
 
-    Page<Food> findByFoodCategoryIdAndStatusTrue(int id, Pageable pageable);
+    @Query("select f from Food f " +
+            " where f.foodCategory.id = :categoryId " +
+            " and f.status = true " +
+            " and f.name like %:search%")
+    Page<Food> findByFoodCategoryIdAndSearchAndStatusTrue(@Param("categoryId") int categoryId,
+                                                          @Param("search") String search,
+                                                          Pageable pageable);
+
+    @Query(value = "select f.name as name, sum(od.quantity) as numSale, f.price * sum(od.quantity) as price " +
+            " from OrderDetail od " +
+            " join OrderTable ot on od.orderTable.id = ot.id " +
+            " join Food f on od.food.id = f.id " +
+            " where ot.staff.ID = :staffId " +
+            " and ot.orderTime >= :startDate " +
+            " and ot.orderTime < :endDate " +
+            " and ot.status = true " +
+            " group by f.name, f.price")
+    List<FoodRevenueResponse> getFoodRevenueByStaffAndDay(@Param("staffId") int staffId,
+                                                          @Param("startDate") LocalDateTime startDate,
+                                                          @Param("endDate") LocalDateTime endDate);
 }

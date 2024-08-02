@@ -4,6 +4,7 @@ import com.group7.cafemanagementsystem.Response.FoodRevenueResponse;
 import com.group7.cafemanagementsystem.Response.PageFoodResponse;
 import com.group7.cafemanagementsystem.model.Food;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface FoodService {
@@ -25,7 +26,9 @@ public interface FoodService {
 
     int totalProductSold();
 
-    PageFoodResponse getMenuByPage(int page, int size);
+    PageFoodResponse getMenuByPageAndSearch(String search, int page, int size);
 
-    PageFoodResponse getFoodByCategoryId(int cateId, int page, int size);
+    PageFoodResponse getFoodByCategoryIdAndSearchKey(int cateId, String search, int page, int size);
+
+    List<FoodRevenueResponse> getFoodRevenueByStaffAndDay(int staffId, LocalDateTime startDate, LocalDateTime endDate);
 }
