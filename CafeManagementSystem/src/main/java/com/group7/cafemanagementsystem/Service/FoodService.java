@@ -24,4 +24,5 @@ public interface FoodService {
     Food updateStatus(int id);
 
     int totalProductSold();
+    List<Food> getAllFood();
 }

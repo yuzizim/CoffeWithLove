@@ -1,13 +1,17 @@
 package com.group7.cafemanagementsystem.Controller.Auth;
 
+import com.group7.cafemanagementsystem.Dto.UserDto;
 import com.group7.cafemanagementsystem.Exception.TokenRefreshException;
+import com.group7.cafemanagementsystem.Repository.RefreshTokenRepository;
 import com.group7.cafemanagementsystem.Repository.UserRepository;
+import com.group7.cafemanagementsystem.Request.ForgotPassRequest;
 import com.group7.cafemanagementsystem.Request.LoginRequest;
 import com.group7.cafemanagementsystem.Request.SignUpRequest;
 import com.group7.cafemanagementsystem.Response.LoginResponse;
 import com.group7.cafemanagementsystem.Security.JwtProvider;
 import com.group7.cafemanagementsystem.Service.AuthService;
 import com.group7.cafemanagementsystem.Service.RefreshTokenService;
+import com.group7.cafemanagementsystem.Service.UserServiceImpl;
 import com.group7.cafemanagementsystem.model.Account;
 import com.group7.cafemanagementsystem.model.RefreshToken;
 import jakarta.servlet.http.Cookie;
@@ -16,11 +20,14 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/auth")
@@ -30,6 +37,8 @@ public class AuthController {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final JwtProvider jwtProvider;
+    private final UserServiceImpl userServiceImpl;
+    private final RefreshTokenRepository refreshTokenRepository;
     private RefreshTokenService refreshTokenService;
 
     @PostMapping("/login")
@@ -101,5 +110,41 @@ public class AuthController {
                     .orElseThrow(() -> new TokenRefreshException(refreshToken, "Refresh token is not in database!"));
         }
         return "Refresh Token is empty!";
+    }
+    @GetMapping("/forgotPassword")
+    public String forgotPass(){
+        return "/dist/forgotPassword";
+    }
+
+    @PostMapping("/forgotPassword")
+    public String forgotPass(Model model, @ModelAttribute ForgotPassRequest forgotPassRequest) {
+        String output = "";
+        Account user = userRepository.findByEmail(forgotPassRequest.getEmail());
+        if (user != null) {
+            output = userServiceImpl.sendMail(user);
+        }
+        if (output.equals("Success")) {
+            return "redirect:/auth/login?success";
+        }
+        return "redirect:/auth/login?error";
+    }
+
+    @GetMapping("/reset-password/{token}")
+    public String resetPassword(@PathVariable String token, Model model){
+        Optional<RefreshToken> reset = refreshTokenRepository.findByToken(token);
+        if(reset!=null&& userServiceImpl.hasExpiredToken(reset.get().getExpiryDate()));{
+            model.addAttribute("email",reset.get().getAccount().getEmail());
+            return "dist/reset-password";
+        }
+    }
+    //Error set new password
+    @PostMapping("/reset-password/{token}")
+    public String resetPassword(Model model, @ModelAttribute ForgotPassRequest forgotPassRequest) {
+        Account user = userRepository.findByEmail(forgotPassRequest.getEmail());
+        if (user != null) {
+            user.setPassword(passwordEncoder.encode(forgotPassRequest.getPassword()));
+            userRepository.save(user);
+        }
+        return "redirect:/auth/login";
     }
 }

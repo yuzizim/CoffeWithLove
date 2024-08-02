@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+
 @Service
 
 public class OrderTableServiceImpl implements OrderTableService {
@@ -22,8 +24,8 @@ public class OrderTableServiceImpl implements OrderTableService {
     }
 
     @Override
-    public OrderTable findOrderByTableFood(TableFood tableFood) {
-        return orderTableRepository.findByTableFood(tableFood).orElse(null);
+    public List<OrderTable> findOrderByTableFood(Optional<TableFood> tableFood) {
+        return orderTableRepository.findByTableFood(tableFood);
     }
 
     @Override

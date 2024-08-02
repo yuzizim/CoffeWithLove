@@ -14,7 +14,7 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends JpaRepository<Account, Integer> {
     Optional<Account> findByUserName(String userName);
-
+    Account findByEmail(String email);
     Page<Account> findByStatus(boolean status, Pageable pageable);
 
 //    @Query("SELECT a FROM Account a WHERE a.role = 'STAFF' ORDER BY a.status DESC")

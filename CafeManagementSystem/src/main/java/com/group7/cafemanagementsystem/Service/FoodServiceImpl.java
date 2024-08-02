@@ -97,4 +97,10 @@ public class FoodServiceImpl implements FoodService {
         int totalProductSold = result != null ? Integer.valueOf(result.toString()) : 0;
         return totalProductSold;
     }
+
+    @Override
+    public List<Food> getAllFood() {
+        return foodRepository.findAll();
+    }
+
 }
