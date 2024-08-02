@@ -27,8 +27,5 @@ public class TableFood {
     private boolean status;
 
     @OneToMany(mappedBy = "tableFood", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Bill> bills = new HashSet<>();
-
-    @OneToMany(mappedBy = "tableFood", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<OrderTable> orderTables = new HashSet<>();
 }
