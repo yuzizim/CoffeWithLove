@@ -13,4 +13,6 @@ public interface TableFoodRepository extends JpaRepository<TableFood, Integer> {
 
     @Query("SELECT t from TableFood t ORDER BY t.id DESC ")
     List<TableFood> findAllOrderById();
+
+    TableFood findByName(String tableName);
 }

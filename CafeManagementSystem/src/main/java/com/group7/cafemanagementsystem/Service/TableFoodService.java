@@ -11,7 +11,7 @@ public interface TableFoodService {
 
     TableFood createTable(TableFood tableFood);
 
-    TableFood updateTable(TableFood tableFood);
+    TableFood updateTable(int id, String name);
 
     void deleteTable(int id);
 
@@ -20,4 +20,6 @@ public interface TableFoodService {
     List<TableFood> getAllTablesEmpty();
 
     List<TableFood> getAllTablesOrderById();
+
+    boolean checkExistTableName(String tableName);
 }

@@ -122,4 +122,9 @@ public class FoodServiceImpl implements FoodService {
     public List<FoodRevenueResponse> getFoodRevenueByStaffAndDay(int staffId, LocalDateTime startDate, LocalDateTime endDate) {
         return foodRepository.getFoodRevenueByStaffAndDay(staffId, startDate, endDate);
     }
+
+    @Override
+    public List<FoodRevenueResponse> getFoodRevenueByDay(LocalDateTime startDate, LocalDateTime endDate) {
+        return foodRepository.getFoodRevenueByDay(startDate, endDate);
+    }
 }

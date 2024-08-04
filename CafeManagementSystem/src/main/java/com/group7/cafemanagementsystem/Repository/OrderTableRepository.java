@@ -35,4 +35,22 @@ public interface OrderTableRepository extends JpaRepository<OrderTable, Integer>
 
     @Transactional
     void deleteById(int orderId);
+
+    @Query("SELECT ot FROM OrderTable ot " +
+            "WHERE ot.status = true " +
+            "  AND ot.orderTime >= :startDate " +
+            "  AND ot.orderTime < :toDate " +
+            "ORDER BY ot.orderTime DESC, ot.staff.ID ASC")
+    List<OrderTable> getRevenueByOrder(@Param("startDate") LocalDateTime startDate,
+                                       @Param("toDate") LocalDateTime toDate);
+
+    @Query("SELECT ot FROM OrderTable ot " +
+            "WHERE ot.status = true " +
+            "  AND ot.orderTime >= :startDate " +
+            "  AND ot.orderTime < :toDate " +
+            "  AND ot.staff.ID = :staffId " +
+            "ORDER BY ot.orderTime DESC, ot.staff.ID ASC")
+    List<OrderTable> getRevenueByOrderAndStaffId(@Param("startDate") LocalDateTime startDate,
+                                                 @Param("toDate") LocalDateTime toDate,
+                                                 @Param("staffId") int staffId);
 }

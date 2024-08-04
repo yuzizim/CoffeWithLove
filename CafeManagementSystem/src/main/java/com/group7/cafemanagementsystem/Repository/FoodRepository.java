@@ -59,4 +59,15 @@ public interface FoodRepository extends JpaRepository<Food, Integer> {
     List<FoodRevenueResponse> getFoodRevenueByStaffAndDay(@Param("staffId") int staffId,
                                                           @Param("startDate") LocalDateTime startDate,
                                                           @Param("endDate") LocalDateTime endDate);
+
+    @Query(value = "select f.name as name, sum(od.quantity) as numSale, f.price * sum(od.quantity) as price " +
+            " from OrderDetail od " +
+            " join OrderTable ot on od.orderTable.id = ot.id " +
+            " join Food f on od.food.id = f.id " +
+            " where ot.status = true " +
+            " and ot.orderTime >= :startDate " +
+            " and ot.orderTime < :endDate " +
+            " group by f.name, f.price")
+    List<FoodRevenueResponse> getFoodRevenueByDay(@Param("startDate") LocalDateTime startDate,
+                                                  @Param("endDate") LocalDateTime endDate);
 }

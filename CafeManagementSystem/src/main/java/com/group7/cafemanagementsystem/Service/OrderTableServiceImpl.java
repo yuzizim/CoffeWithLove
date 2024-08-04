@@ -1,6 +1,7 @@
 package com.group7.cafemanagementsystem.Service;
 
 import com.group7.cafemanagementsystem.Repository.*;
+import com.group7.cafemanagementsystem.Request.CustomerOrderRequest;
 import com.group7.cafemanagementsystem.Response.PageFoodResponse;
 import com.group7.cafemanagementsystem.Response.PageOrderResponse;
 import com.group7.cafemanagementsystem.model.*;
@@ -129,5 +130,22 @@ public class OrderTableServiceImpl implements OrderTableService {
     @Override
     public OrderTable findById(int id) {
         return orderTableRepository.findById(id).get();
+    }
+
+    @Override
+    public List<OrderTable> getRevenueByOrder(LocalDateTime startDate, LocalDateTime toDate, int staffId) {
+        if (staffId == -1) {
+            return orderTableRepository.getRevenueByOrder(startDate, toDate);
+        }
+        return orderTableRepository.getRevenueByOrderAndStaffId(startDate, toDate, staffId);
+    }
+
+    @Override
+    public OrderTable updateCustomerInformation(CustomerOrderRequest request, int orderId) {
+        OrderTable order = findById(orderId);
+        order.setCustomerName(request.getCustomerName());
+        order.setPhoneNumber(request.getPhoneNumber());
+        order.setNote(request.getNote());
+        return orderTableRepository.save(order);
     }
 }

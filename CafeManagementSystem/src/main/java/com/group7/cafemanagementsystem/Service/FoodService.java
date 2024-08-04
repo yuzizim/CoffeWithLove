@@ -31,4 +31,6 @@ public interface FoodService {
     PageFoodResponse getFoodByCategoryIdAndSearchKey(int cateId, String search, int page, int size);
 
     List<FoodRevenueResponse> getFoodRevenueByStaffAndDay(int staffId, LocalDateTime startDate, LocalDateTime endDate);
+    List<FoodRevenueResponse> getFoodRevenueByDay(LocalDateTime startDate, LocalDateTime endDate);
+
 }
