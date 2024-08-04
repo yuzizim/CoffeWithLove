@@ -11,4 +11,6 @@ public interface BillRepository extends JpaRepository<Bill, Integer> {
             "FROM order_table AS o\n" +
             "WHERE o.status = 1", nativeQuery = true)
     Object findTotalRevenue();
+
+    Bill findByOrderTableId(int orderId);
 }
