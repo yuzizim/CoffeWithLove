@@ -40,9 +40,12 @@
                                 <h4 class="card-title">Revenue of product by day</h4>
                                 <form th:action="@{/admin/revenue}" method="get">
                                     <div class="form-group col-md-3">
-                                        <label for="datePicker">Select Date:</label>
-                                        <input type="date" class="form-control" id="datePicker" name="datePicker"
-                                               th:value="${datePicker}">
+                                        <label for="startDate">Select Date:</label>
+                                        <input type="date" class="form-control" id="startDate" name="startDate"
+                                               th:value="${startDate}">
+                                        <label for="toDate">Select Date:</label>
+                                        <input type="date" class="form-control" id="toDate" name="toDate"
+                                               th:value="${toDate}">
                                         <button type="submit" class="btn btn-primary mt-2">Submit</button>
                                     </div>
                                 </form>
@@ -62,13 +65,13 @@
                                             <td th:text="${iter.count}"></td>
                                             <td th:text="${revenue.name}"></td>
                                             <td th:text="${revenue.numSale}"></td>
-                                            <td th:text="${revenue.price} + ' $'"></td>
+                                            <td th:text="'$' + ${revenue.price}"></td>
                                         </tr>
-                                        <tr class="table-info">
+                                        <tr class="table-info" style="font-weight: bold">
                                             <td></td>
                                             <td>TOTAL</td>
                                             <td th:text="${totalSale}"></td>
-                                            <td th:text="${totalPrice} + ' $'"></td>
+                                            <td th:text="'$' + ${totalPrice}"></td>
                                         </tr>
                                         </tbody>
                                     </table>
@@ -77,9 +80,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="d-flex justify-content-end mt-3">
+                <div class="d-flex justify-content-end mt-3" th:if="${totalSale > 0}">
                     <form th:action="@{/admin/revenue/download}" method="get">
-                        <input type="hidden" th:value="${datePicker}" name="dateTime"/>
+                        <input type="hidden" th:value="${startDate}" name="startDate"/>
+                        <input type="hidden" th:value="${toDate}" name="toDate"/>
                         <button type="submit" class="btn btn-info btn-icon-text"> Print <i
                                 class="ti-printer btn-icon-append"></i></button>
                     </form>
