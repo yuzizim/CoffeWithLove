@@ -9,7 +9,7 @@
     <meta content="Free HTML Templates" name="description">
 
     <!-- Favicon -->
-    <link th:href="@{/static/img/favicon.ico}" rel="icon">
+    <link th:href="@{/static/img/favicon.png}" rel="icon">
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -54,20 +54,8 @@
             <!-- Price Start -->
             <div class="border-bottom mb-4 pb-4">
                 <h5 class="font-weight-semi-bold mb-4">Filter by category</h5>
-                <!--                <form th:action="@{/staff/manage/filter-by-category}" method="get">-->
-                <!--                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">-->
-                <!--                        <input type="checkbox" class="custom-control-input" checked id="price-all">-->
-                <!--                        <label class="custom-control-label" for="price-all">All category</label>-->
-                <!--                    </div>-->
-                <!--                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3"-->
-                <!--                         th:each="category : ${categories}">-->
-                <!--                        <input type="checkbox" class="custom-control-input" th:id="'price-' + ${category.id}"-->
-                <!--                               th:value="${category.id}" onchange="this.form.submit()">-->
-                <!--                        <label class="custom-control-label" th:for="'price-' + ${category.id}"-->
-                <!--                               th:text="${category.name}"></label>-->
-                <!--                    </div>-->
-                <!--                </form>-->
                 <form th:action="@{/staff/manage/menu}" method="get">
+                    <input type="hidden" name="orderId" th:value="${orderId}" />
                     <div class="custom-control custom-radio d-flex align-items-center justify-content-between mb-3">
                         <input type="radio" class="custom-control-input" id="price-all" name="category" value="-1"
                                th:checked="${cateId == -2}"
@@ -96,28 +84,23 @@
             <div class="row pb-3">
                 <div class="col-12 pb-1">
                     <div class="d-flex align-items-center justify-content-between mb-4">
-                        <form action="">
+                        <form th:action="@{/staff/manage/menu}" method="get">
                             <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Search by name">
+                                <input type="hidden" name="orderId" th:value="${orderId}" />
+                                <input type="hidden" th:value="${cateId}" name="category"/>
+                                <input type="text" class="form-control" placeholder="Search by name" name="search"
+                                       th:value="${search}">
                                 <div class="input-group-append">
-                                        <span class="input-group-text bg-transparent text-primary">
-                                            <i class="fa fa-search"></i>
-                                        </span>
+                                    <button type="submit" class="btn bg-transparent text-primary">
+                                        <i class="fa fa-search"></i>
+                                    </button>
                                 </div>
                             </div>
                         </form>
-                        <!--                        <div class="dropdown ml-4">-->
-                        <!--                            <button class="btn border dropdown-toggle" type="button" id="triggerId"-->
-                        <!--                                    data-toggle="dropdown" aria-haspopup="true"-->
-                        <!--                                    aria-expanded="false">-->
-                        <!--                                Sort by-->
-                        <!--                            </button>-->
-                        <!--                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="triggerId">-->
-                        <!--                                <a class="dropdown-item" href="#">Latest</a>-->
-                        <!--                                <a class="dropdown-item" href="#">Popularity</a>-->
-                        <!--                                <a class="dropdown-item" href="#">Best Rating</a>-->
-                        <!--                            </div>-->
-                        <!--                        </div>-->
+                        <div th:if="${orderId != -1}">
+                            <a th:href="@{/staff/manage/order-detail/{id}(id=${orderId})}"
+                               class="btn bg-transparent text-primary">Back to order detail</a>
+                        </div>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6 col-sm-12 pb-1" th:each="item : ${menu}">
@@ -129,21 +112,31 @@
                             <h6 class="text-truncate mb-3" th:text="${item.name}"></h6>
                             <div class="d-flex justify-content-center">
                                 <h6 th:text="'$' + ${item.price}"></h6>
-                                <!--                                <h6 class="text-muted ml-2">-->
-                                <!--                                    <del>$123.00</del>-->
-                                <!--                                </h6>-->
                             </div>
                         </div>
                         <div class="card-footer d-flex justify-content-between bg-light border">
-                            <a th:href="@{/staff/manage/detail/{id}(id=${item.id})}" class="btn btn-sm text-dark p-0"><i
-                                    class="fas fa-eye text-primary mr-1"></i>View
-                                Detail</a>
+                            <a th:href="@{/staff/manage/detail/{id}(id=${item.id})}"
+                               th:if="${orderId == -1}"
+                               class="btn btn-sm text-dark p-0">
+                                <i class="fas fa-eye text-primary mr-1"></i>
+                                ViewDetail
+                            </a>
                             <form th:action="@{/staff/manage/add-to-cart/{id}(id=${item.id})}" method="post"
+                                  th:if="${orderId == -1}"
                                   style="display:inline;">
                                 <input type="hidden" name="id" value="{id}">
                                 <button type="submit" class="btn btn-sm text-dark p-0"
                                         style="background: none; border: none;">
                                     <i class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart
+                                </button>
+                            </form>
+                            <form th:action="@{/staff/manage/order-detail/add/product/{id}(id=${item.id})}" method="post"
+                                  th:if="${orderId != -1}"
+                                  style="display:inline;">
+                                <input type="hidden" name="orderId" th:value="${orderId}">
+                                <button type="submit" class="btn btn-sm text-dark p-0"
+                                        style="background: none; border: none;">
+                                    <i class="fas fa-shopping-cart text-primary mr-1"></i>Add To Order
                                 </button>
                             </form>
                         </div>
@@ -159,7 +152,8 @@
                                     <span class="sr-only">Previous</span>
                                 </a>
                                 <a class="page-link" th:if="${cateId != -2}"
-                                   th:href="@{|?category=${cateId}&page=${pageNumber - 1}|}" aria-label="Previous">
+                                   th:href="@{|?category=${cateId}&search=${search}&page=${pageNumber - 1}|}"
+                                   aria-label="Previous">
                                     <span aria-hidden="true">&laquo;</span>
                                     <span class="sr-only">Previous</span>
                                 </a>
@@ -169,7 +163,7 @@
                                 <a class="page-link" th:if="${cateId == -2}" th:text="${i + 1}"
                                    th:href="@{|?page=${i}|}"></a>
                                 <a class="page-link" th:if="${cateId != -2}" th:text="${i + 1}"
-                                   th:href="@{|?category=${cateId}&page=${i}|}"></a>
+                                   th:href="@{|?category=${cateId}&search=${search}&page=${i}|}"></a>
                             </li>
                             <li class="page-item" th:classappend="${pageNumber + 1 == pageSize} ? 'disabled'">
                                 <a class="page-link" th:if="${cateId == -2}" th:href="@{|?page=${pageNumber + 1}|}"
@@ -178,7 +172,8 @@
                                     <span class="sr-only">Next</span>
                                 </a>
                                 <a class="page-link" th:if="${cateId != -2}"
-                                   th:href="@{|?category=${cateId}&page=${pageNumber + 1}|}" aria-label="Next">
+                                   th:href="@{|?category=${cateId}&search=${search}&page=${pageNumber + 1}|}"
+                                   aria-label="Next">
                                     <span aria-hidden="true">&raquo;</span>
                                     <span class="sr-only">Next</span>
                                 </a>

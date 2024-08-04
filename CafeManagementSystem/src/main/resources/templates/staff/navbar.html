@@ -32,7 +32,7 @@
     <div class="container-fluid">
         <div class="row align-items-center py-3 px-xl-5">
             <div class="col-lg-3 d-none d-lg-block">
-                <a href="" class="text-decoration-none">
+                <a th:href="@{/staff/home}" class="text-decoration-none">
                     <h1 class="m-0 display-5 font-weight-semi-bold"><span
                             class="text-primary font-weight-bold border px-3 mr-1">E</span>Coffee</h1>
                 </a>
@@ -86,7 +86,7 @@
                             <a th:href="@{/staff/home}" class="nav-item nav-link">Home</a>
                             <a th:href="@{/staff/manage/menu}" class="nav-item nav-link">Menu</a>
                             <a th:href="@{/staff/manage/order/list}" class="nav-item nav-link">Order</a>
-                            <a href="detail.html" class="nav-item nav-link">Revenue</a>
+                            <a th:href="@{/staff/manage/revenue}" class="nav-item nav-link">Revenue</a>
                             <div class="nav-item dropdown">
                                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Account</a>
                                 <div class="dropdown-menu rounded-0 m-0">

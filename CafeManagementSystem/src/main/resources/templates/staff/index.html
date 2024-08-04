@@ -9,7 +9,7 @@
     <meta content="Free HTML Templates" name="description">
 
     <!-- Favicon -->
-    <link th:href="@{/static/img/favicon.ico}" rel="icon">
+    <link th:href="@{/static/img/favicon.png}" rel="icon">
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -31,7 +31,7 @@
 <div class="container-fluid">
     <div class="row align-items-center py-3 px-xl-5">
         <div class="col-lg-3 d-none d-lg-block">
-            <a href="" class="text-decoration-none">
+            <a th:href="@{/staff/home}" class="text-decoration-none">
                 <h1 class="m-0 display-5 font-weight-semi-bold"><span
                         class="text-primary font-weight-bold border px-3 mr-1">E</span>Coffee</h1>
             </a>
@@ -59,7 +59,7 @@
                 <h6 class="m-0">Categories</h6>
                 <i class="fa fa-angle-down text-dark"></i>
             </a>
-            <nav class="collapse show navbar navbar-vertical navbar-light align-items-start p-0 border border-top-0 border-bottom-0"
+            <nav class="collapse navbar navbar-vertical navbar-light align-items-start p-0 border border-top-0 border-bottom-0"
                  id="navbar-vertical">
                 <div class="navbar-nav w-100 overflow-hidden" style="height: 410px">
                     <a href="" class="nav-item nav-link">Coffee</a>
@@ -83,8 +83,8 @@
                     <div class="navbar-nav mr-auto py-0">
                         <a th:href="@{/staff/home}" class="nav-item nav-link active">Home</a>
                         <a th:href="@{/staff/manage/menu}" class="nav-item nav-link">Menu</a>
-                        <a href="detail.html" class="nav-item nav-link">Order</a>
-                        <a href="detail.html" class="nav-item nav-link">Revenue</a>
+                        <a th:href="@{/staff/manage/order/list}" class="nav-item nav-link">Order</a>
+                        <a th:href="@{/staff/manage/revenue}" class="nav-item nav-link">Revenue</a>
                         <div class="nav-item dropdown">
                             <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Account</a>
                             <div class="dropdown-menu rounded-0 m-0">
@@ -176,30 +176,30 @@
 
 
 <!-- Offer Start -->
-<div class="container-fluid offer pt-5">
-    <div class="row px-xl-5">
-        <div class="col-md-6 pb-4">
-            <div class="position-relative bg-secondary text-center text-md-right text-white mb-2 py-5 px-5">
-                <img th:src="@{/static/img/landing_page/pexels-adam-lukac-254247-773958.jpg}" alt="">
-                <div class="position-relative" style="z-index: 1;">
-                    <h5 class="text-uppercase text-primary mb-3">20% off the all order</h5>
-                    <h1 class="mb-4 font-weight-semi-bold">Spring Collection</h1>
-                    <a href="" class="btn btn-outline-primary py-md-2 px-md-3">Shop Now</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6 pb-4">
-            <div class="position-relative bg-secondary text-center text-md-left text-white mb-2 py-5 px-5">
-                <img th:src="@{/static/landing_page/pexels-apgpotr-683039.jpg}" alt="">
-                <div class="position-relative" style="z-index: 1;">
-                    <h5 class="text-uppercase text-primary mb-3">20% off the all order</h5>
-                    <h1 class="mb-4 font-weight-semi-bold">Winter Collection</h1>
-                    <a href="" class="btn btn-outline-primary py-md-2 px-md-3">Shop Now</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+<!--<div class="container-fluid offer pt-5">-->
+<!--    <div class="row px-xl-5">-->
+<!--        <div class="col-md-6 pb-4">-->
+<!--            <div class="position-relative bg-secondary text-center text-md-right text-white mb-2 py-5 px-5">-->
+<!--                <img th:src="@{/static/img/landing_page/pexels-adam-lukac-254247-773958.jpg}" alt="">-->
+<!--                <div class="position-relative" style="z-index: 1;">-->
+<!--                    <h5 class="text-uppercase text-primary mb-3">20% off the all order</h5>-->
+<!--                    <h1 class="mb-4 font-weight-semi-bold">Spring Collection</h1>-->
+<!--                    <a href="" class="btn btn-outline-primary py-md-2 px-md-3">Shop Now</a>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div class="col-md-6 pb-4">-->
+<!--            <div class="position-relative bg-secondary text-center text-md-left text-white mb-2 py-5 px-5">-->
+<!--                <img th:src="@{/static/landing_page/pexels-apgpotr-683039.jpg}" alt="">-->
+<!--                <div class="position-relative" style="z-index: 1;">-->
+<!--                    <h5 class="text-uppercase text-primary mb-3">20% off the all order</h5>-->
+<!--                    <h1 class="mb-4 font-weight-semi-bold">Winter Collection</h1>-->
+<!--                    <a href="" class="btn btn-outline-primary py-md-2 px-md-3">Shop Now</a>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
 <!-- Offer End -->
 
 

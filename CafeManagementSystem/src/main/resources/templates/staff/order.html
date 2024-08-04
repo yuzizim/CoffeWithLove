@@ -3,13 +3,13 @@
 
 <head>
     <meta charset="utf-8">
-    <title>ECoffee - Cart</title>
+    <title>ECoffee - Order</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="Free HTML Templates" name="keywords">
     <meta content="Free HTML Templates" name="description">
 
     <!-- Favicon -->
-    <link th:href="@{/static/img/favicon.ico}" rel="icon">
+    <link th:href="@{/static/img/favicon.png}" rel="icon">
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -84,6 +84,8 @@
                     <th>Total Price</th>
                     <th>Status</th>
                     <th>Detail</th>
+                    <th>Delete</th>
+                    <th>Action</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -105,6 +107,24 @@
                     </td>
                     <td>
                         <a class="btn btn-sm btn-info" th:href="@{/staff/manage/order-detail/{id}(id=${order.id})}">Detail</a>
+                    </td>
+                    <td>
+                        <!--                        <form th:action="@{/}" method="get">-->
+                        <!--                            <button class="btn btn-sm btn-danger" th:if="${order.status == false}">Delete</button>-->
+                        <!--                        </form>-->
+                        <!-- Delete Button -->
+                        <a class="btn btn-primary btn-danger"
+                           th:href="@{/staff/manage/order/{id}/delete(id=${order.id})}"
+                           th:if="${order.status == false}"
+                           th:onclick="return confirm('Are you sure you want to delete this order?')">
+                            <i class="me-1 fa fa-shopping-basket"></i>
+                            Delete
+                        </a>
+                    </td>
+                    <td>
+                        <form th:action="@{/staff/manage/order/{id}/print-bill(id=${order.id})}">
+                            <button class="btn btn-sm btn-success" th:if="${order.status}">Print bill</button>
+                        </form>
                     </td>
                 </tr>
                 </tbody>
