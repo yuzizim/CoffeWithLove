@@ -1,5 +1,6 @@
 package com.group7.cafemanagementsystem.Controller.Staff;
 
+import com.group7.cafemanagementsystem.Request.CustomerOrderRequest;
 import com.group7.cafemanagementsystem.Service.CartService;
 import com.group7.cafemanagementsystem.Service.OrderDetailService;
 import com.group7.cafemanagementsystem.Service.OrderTableService;
@@ -11,10 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -44,9 +42,15 @@ public class StaffOrderDetailController {
         //get order by id
         OrderTable orderTable = orderTableService.findById(id);
 
+        CustomerOrderRequest request = new CustomerOrderRequest();
+        request.setCustomerName(orderTable.getCustomerName());
+        request.setPhoneNumber(orderTable.getPhoneNumber());
+        request.setNote(orderTable.getNote());
+
         model.addAttribute("numInCart", carts.size());
         model.addAttribute("username", username);
         model.addAttribute("order", orderTable);
+        model.addAttribute("request", request);
 
         return "/staff/order-detail";
     }
@@ -70,5 +74,17 @@ public class StaffOrderDetailController {
     public String deleteOrder(@PathVariable int id) {
         orderTableService.deleteOrderTable(id);
         return "redirect:/staff/manage/order/list";
+    }
+
+    @GetMapping("/add/product")
+    public String displayMenuToAddProductIntoOrder(@RequestParam("orderId") int id) {
+        return "redirect:/staff/manage/menu?orderId=" + id;
+    }
+
+    @PostMapping("/add/product/{id}")
+    public String addProductIntoOrder(@PathVariable int id,
+                                      @RequestParam("orderId") int orderId) {
+        orderDetailService.addProductIntoOrder(orderId, id);
+        return "redirect:/staff/manage/menu?orderId=" + orderId;
     }
 }

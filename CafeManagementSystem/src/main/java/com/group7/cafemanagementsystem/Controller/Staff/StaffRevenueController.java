@@ -67,8 +67,10 @@ public class StaffRevenueController {
 
         List<FoodRevenueResponse> foodRevenueResponses = foodService.getFoodRevenueByStaffAndDay(account.getID(), startDateTime, toDateTime.plusDays(1));
 
+        int totalNumber = 0;
         double totalPrice = 0;
         for (FoodRevenueResponse foodRevenueResponse : foodRevenueResponses) {
+            totalNumber += foodRevenueResponse.getNumSale();
             totalPrice += foodRevenueResponse.getPrice();
         }
 
@@ -76,7 +78,7 @@ public class StaffRevenueController {
         model.addAttribute("startDate", startDate);
         model.addAttribute("toDate", toDate);
         model.addAttribute("totalPrice", totalPrice);
-        model.addAttribute("totalNumber", foodRevenueResponses.size());
+        model.addAttribute("totalNumber", totalNumber);
         model.addAttribute("username", username);
         model.addAttribute("products", foodRevenueResponses);
 

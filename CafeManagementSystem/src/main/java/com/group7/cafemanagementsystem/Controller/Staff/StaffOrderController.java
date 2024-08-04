@@ -1,18 +1,24 @@
 package com.group7.cafemanagementsystem.Controller.Staff;
 
+import com.group7.cafemanagementsystem.Repository.BillRepository;
 import com.group7.cafemanagementsystem.Repository.UserRepository;
+import com.group7.cafemanagementsystem.Request.CustomerOrderRequest;
 import com.group7.cafemanagementsystem.Response.PageOrderResponse;
 import com.group7.cafemanagementsystem.Service.CartService;
 import com.group7.cafemanagementsystem.Service.OrderTableService;
 import com.group7.cafemanagementsystem.Service.TableFoodService;
-import com.group7.cafemanagementsystem.Service.UserService;
 import com.group7.cafemanagementsystem.Utils.DateUtil;
-import com.group7.cafemanagementsystem.model.Account;
-import com.group7.cafemanagementsystem.model.Cart;
-import com.group7.cafemanagementsystem.model.OrderTable;
-import com.group7.cafemanagementsystem.model.TableFood;
+import com.group7.cafemanagementsystem.Utils.PDFUtil;
+import com.group7.cafemanagementsystem.model.*;
+import com.itextpdf.kernel.geom.PageSize;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.layout.Document;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.bouncycastle.math.raw.Mod;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,6 +28,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -35,6 +43,7 @@ public class StaffOrderController {
     private TableFoodService tableFoodService;
     private OrderTableService orderTableService;
     private UserRepository userRepository;
+    private BillRepository billRepository;
 
     @GetMapping
     public String orderScreen(Model model) {
@@ -92,7 +101,7 @@ public class StaffOrderController {
 
         orderTableService.createOrder(orderTable, selectedTable, username, totalMoney, carts);
 
-        return "redirect:/staff/manage/order";
+        return "redirect:/staff/manage/order/list";
     }
 
     @GetMapping("/list")
@@ -150,6 +159,58 @@ public class StaffOrderController {
     @GetMapping("/{id}/change-status")
     public String makeOrderIsPaid(@PathVariable int id) {
         orderTableService.changeStatusBecomePaid(id);
+        return "redirect:/staff/manage/order/list";
+    }
+
+    @GetMapping("/{id}/print-bill")
+    public ResponseEntity<byte[]> printBill(@PathVariable int id) throws FileNotFoundException {
+        Bill bill = billRepository.findByOrderTableId(id);
+
+        // Create PDF in memory
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        PdfWriter pdfWriter = new PdfWriter(outputStream);
+        PdfDocument pdfDocument = new PdfDocument(pdfWriter);
+        pdfDocument.setDefaultPageSize(PageSize.A4);
+        Document document = new Document(pdfDocument);
+
+        PDFUtil.generatePDF(bill, document); // Pass document to PDFUtil
+
+        document.close();
+
+        // Prepare response headers
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=bill.pdf");
+        headers.add(HttpHeaders.CONTENT_TYPE, "application/pdf");
+
+        return ResponseEntity
+                .ok()
+                .headers(headers)
+                .body(outputStream.toByteArray());
+    }
+
+    @GetMapping("/update/{id}")
+    public String updateCustomerInformation(@PathVariable int id,
+                                            @Valid CustomerOrderRequest request,
+                                            BindingResult result,
+                                            RedirectAttributes redirectAttributes,
+                                            Model model) {
+        if (result.hasErrors()) {
+            redirectAttributes.addFlashAttribute("messageError", "There is error on field customer name or phone");
+            return "redirect:/staff/manage/order-detail/" + id;
+        }
+        if (request.getCustomerName().trim().replaceAll("\\s", "").isEmpty()
+                || request.getPhoneNumber().trim().replaceAll("\\s", "").isEmpty()) {
+            redirectAttributes.addFlashAttribute("messageError", "Customer name and phone number can not empty");
+            return "redirect:/staff/manage/order-detail/" + id;
+        }
+        OrderTable order = orderTableService.updateCustomerInformation(request, id);
+
+        return "redirect:/staff/manage/order-detail/" + id;
+    }
+
+    @GetMapping("/{id}/delete")
+    public String deleteOrder(@PathVariable int id) {
+        orderTableService.deleteOrderTable(id);
         return "redirect:/staff/manage/order/list";
     }
 }

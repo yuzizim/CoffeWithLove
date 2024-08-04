@@ -73,7 +73,7 @@ public class StaffCartController {
             }
             List<Cart> carts = cartService.getCartByUser(username);
 
-            cartService.addItemToCart(id, username);
+            cartService.addItemToCart(id, username, quantity);
         }
 
         return "redirect:/staff/manage/detail/{id}";
