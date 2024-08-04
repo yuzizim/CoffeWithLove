@@ -146,9 +146,11 @@ public class AuthController {
     @PostMapping("/reset-password/{token}")
     public String resetPassword(Model model, @ModelAttribute ForgotPassRequest forgotPassRequest) {
         Account user = userRepository.findByEmail(forgotPassRequest.getEmail());
+        RefreshToken existingToken = refreshTokenRepository.findByAccount(user);
         if (user != null) {
             user.setPassword(passwordEncoder.encode(forgotPassRequest.getPassword()));
             userRepository.save(user);
+            refreshTokenRepository.delete(existingToken);
         }
         return "redirect:/auth/login";
     }
