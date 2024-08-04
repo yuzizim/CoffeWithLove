@@ -3,6 +3,8 @@ package com.group7.cafemanagementsystem.Service;
 import com.group7.cafemanagementsystem.Response.PageUserResponse;
 import com.group7.cafemanagementsystem.model.Account;
 
+import java.util.List;
+
 public interface UserService {
     PageUserResponse getUserByPage(Boolean status, String search, int page, int size);
 
@@ -15,4 +17,6 @@ public interface UserService {
     Account findById(int id);
 
     boolean findByUserName(String username);
+
+    List<Account> findByRole(String role);
 }
