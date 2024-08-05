@@ -1,6 +1,7 @@
 package com.group7.cafemanagementsystem.Service;
 
 import com.group7.cafemanagementsystem.Repository.FoodRepository;
+import com.group7.cafemanagementsystem.Response.FoodReportResponse;
 import com.group7.cafemanagementsystem.Response.FoodRevenueResponse;
 import com.group7.cafemanagementsystem.Response.PageFoodResponse;
 import com.group7.cafemanagementsystem.model.Food;
@@ -77,12 +78,12 @@ public class FoodServiceImpl implements FoodService {
         return foodRepository.save(food);
     }
 
-    @Override
-    public List<FoodRevenueResponse> getFoodRevenueByDay(String day) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        LocalDateTime dateTime = LocalDateTime.parse(day + " 00:00:00", formatter);
-        return foodRepository.getFoodRevenueByDay(dateTime);
-    }
+//    @Override
+//    public List<FoodRevenueResponse> getFoodRevenueByDay(String day) {
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+//        LocalDateTime dateTime = LocalDateTime.parse(day + " 00:00:00", formatter);
+//        return foodRepository.getFoodRevenueByDay(dateTime);
+//    }
 
     @Override
     public Food updateStatus(int id) {
@@ -99,22 +100,38 @@ public class FoodServiceImpl implements FoodService {
     }
 
     @Override
-    public PageFoodResponse getMenuByPage(int page, int size) {
+    public PageFoodResponse getMenuByPageAndSearch(String search, int page, int size) {
         List<Food> foods = new ArrayList<>();
         Pageable paging = PageRequest.of(page, size);
-        Page<Food> pageFoods = foodRepository.findByStatusOrder(paging);
+        Page<Food> pageFoods = foodRepository.findByStatusOrder(search, paging);
         foods = pageFoods.getContent();
         int totalPages = pageFoods.getTotalPages();
         return new PageFoodResponse(foods, totalPages);
     }
 
     @Override
-    public PageFoodResponse getFoodByCategoryId(int cateId, int page, int size) {
+    public PageFoodResponse getFoodByCategoryIdAndSearchKey(int cateId, String search, int page, int size) {
         List<Food> foods = new ArrayList<>();
         Pageable paging = PageRequest.of(page, size);
-        Page<Food> pageFoods = foodRepository.findByFoodCategoryIdAndStatusTrue(cateId, paging);
+        Page<Food> pageFoods = foodRepository.findByFoodCategoryIdAndSearchAndStatusTrue(cateId, search, paging);
         foods = pageFoods.getContent();
         int totalPages = pageFoods.getTotalPages();
         return new PageFoodResponse(foods, totalPages);
+    }
+
+    @Override
+    public List<FoodRevenueResponse> getFoodRevenueByStaffAndDay(int staffId, LocalDateTime startDate, LocalDateTime endDate) {
+        return foodRepository.getFoodRevenueByStaffAndDay(staffId, startDate, endDate);
+    }
+
+    @Override
+    public List<FoodRevenueResponse> getFoodRevenueByDay(LocalDateTime startDate, LocalDateTime endDate) {
+        return foodRepository.getFoodRevenueByDay(startDate, endDate);
+    }
+
+    @Override
+    public List<FoodReportResponse> getTopProducts(int num) {
+        Pageable pageable = PageRequest.of(0, num);
+        return foodRepository.getTopProducts(pageable);
     }
 }

@@ -38,13 +38,44 @@ public class StaffCartController {
 
         model.addAttribute("carts", carts);
         model.addAttribute("totalMoney", totalMoney);
+        model.addAttribute("numInCart", carts.size());
+        model.addAttribute("username", username);
         return "/staff/cart";
     }
 
     @GetMapping("/update-quantity/{id}")
     public String updateQuantity(@PathVariable int id,
-                                 @RequestParam int quantity) {
+                                 @RequestParam(name = "quantityChange") int quantity) {
+        int a = quantity;
         Cart cart = cartService.updateQuantity(id, quantity);
         return "redirect:/staff/manage/cart";
+    }
+
+    @GetMapping("/delete/{id}")
+    public String deleteItemFromCart(@PathVariable int id) {
+        cartService.deleteItemFromCart(id);
+        return "redirect:/staff/manage/cart";
+    }
+
+    @GetMapping("/add/{id}")
+    public String addItemWithQuantity(@PathVariable int id,
+                                      @RequestParam(name = "quantity") int quantity) {
+        if (cartService.checkItemExistInCart(id)) {
+            cartService.updateQuantity(id, quantity);
+        } else {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            Object principal = authentication.getPrincipal();
+            String username;
+            if (principal instanceof UserDetails) {
+                username = ((UserDetails) principal).getUsername();
+            } else {
+                username = principal.toString();
+            }
+            List<Cart> carts = cartService.getCartByUser(username);
+
+            cartService.addItemToCart(id, username, quantity);
+        }
+
+        return "redirect:/staff/manage/detail/{id}";
     }
 }

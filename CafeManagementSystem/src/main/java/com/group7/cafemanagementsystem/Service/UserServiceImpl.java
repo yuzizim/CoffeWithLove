@@ -125,5 +125,8 @@ public class UserServiceImpl implements UserService {
     public boolean hasExpiredToken(Instant expiryDate) {
         return Instant.now().isAfter(expiryDate);
     }
-
+    @Override
+    public List<Account> findByRole(String role) {
+        return userRepository.findAccountByRole(role);
+    }
 }

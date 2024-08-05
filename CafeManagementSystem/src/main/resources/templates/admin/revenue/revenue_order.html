@@ -37,16 +37,34 @@
                     <div class="col-lg-12 stretch-card">
                         <div class="card">
                             <div class="card-body">
-                                <h4 class="card-title">Revenue of product by day</h4>
-                                <form th:action="@{/admin/revenue}" method="get">
-                                    <div class="form-group col-md-3">
-                                        <label for="startDate">Select Date:</label>
-                                        <input type="date" class="form-control" id="startDate" name="startDate"
-                                               th:value="${startDate}">
-                                        <label for="toDate">Select Date:</label>
-                                        <input type="date" class="form-control" id="toDate" name="toDate"
-                                               th:value="${toDate}">
-                                        <button type="submit" class="btn btn-primary mt-2">Submit</button>
+                                <h4 class="card-title">Order Statistics</h4>
+                                <form th:action="@{/admin/revenue/order}" method="get">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="startDate">Start Date:</label>
+                                                <input type="date" class="form-control" id="startDate" name="startDate"
+                                                       th:value="${startDate}">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="toDate">End Date:</label>
+                                                <input type="date" class="form-control" id="toDate" name="toDate"
+                                                       th:value="${toDate}">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 align-items-end">
+                                            <select class="form-select" aria-label="Select Category" name="staffId">
+                                                <option selected value="-1">Select staff</option>
+                                                <option th:each="staff : ${staffs}"
+                                                        th:selected="${staffId == staff.ID}"
+                                                        th:value="${staff.ID}"
+                                                        th:text="${staff.fullName}">
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <button type="submit" class="btn btn-primary mt-2">Submit</button>
+                                        </div>
                                     </div>
                                 </form>
 
@@ -55,23 +73,34 @@
                                         <thead>
                                         <tr>
                                             <th> #</th>
-                                            <th> Product Name</th>
-                                            <th> Num sale</th>
+                                            <th> Customer name</th>
+                                            <th> Phone number</th>
+                                            <th> Order Time</th>
                                             <th> Price</th>
+                                            <th> Create by</th>
+                                            <th> Action</th>
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr class="table-info" th:each="revenue, iter : ${revenues}">
+                                        <tr class="table-info" th:each="order, iter : ${orders}">
                                             <td th:text="${iter.count}"></td>
-                                            <td th:text="${revenue.name}"></td>
-                                            <td th:text="${revenue.numSale}"></td>
-                                            <td th:text="'$' + ${revenue.price}"></td>
+                                            <td th:text="${order.customerName}"></td>
+                                            <td th:text="${order.phoneNumber}"></td>
+                                            <td th:text="${order.orderTime}"></td>
+                                            <td th:text="${order.totalPrice}"></td>
+                                            <td th:text="${order.staff.fullName}"></td>
+                                            <td>
+                                                <button class="btn btn-primary btn-sm">Detail</button>
+                                            </td>
                                         </tr>
                                         <tr class="table-info" style="font-weight: bold">
                                             <td></td>
+                                            <td></td>
+                                            <td></td>
                                             <td>TOTAL</td>
-                                            <td th:text="${totalSale}"></td>
-                                            <td th:text="'$' + ${totalPrice}"></td>
+                                            <td th:text="${totalPrice}"></td>
+                                            <td></td>
+                                            <td></td>
                                         </tr>
                                         </tbody>
                                     </table>
@@ -80,10 +109,11 @@
                         </div>
                     </div>
                 </div>
-                <div class="d-flex justify-content-end mt-3" th:if="${totalSale > 0}">
-                    <form th:action="@{/admin/revenue/download}" method="get">
+                <div class="d-flex justify-content-end mt-3" th:if="${totalPrice > 0}">
+                    <form th:action="@{/admin/revenue/order/download}" method="get">
                         <input type="hidden" th:value="${startDate}" name="startDate"/>
                         <input type="hidden" th:value="${toDate}" name="toDate"/>
+                        <input type="hidden" th:value="${staffId}" name="staffId"/>
                         <button type="submit" class="btn btn-info btn-icon-text"> Print <i
                                 class="ti-printer btn-icon-append"></i></button>
                     </form>

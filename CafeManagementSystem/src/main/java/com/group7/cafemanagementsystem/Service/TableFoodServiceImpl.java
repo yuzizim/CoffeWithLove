@@ -24,11 +24,14 @@ public class TableFoodServiceImpl implements TableFoodService {
 
     @Override
     public TableFood createTable(TableFood tableFood) {
+        tableFood.setStatus(false);
         return tableFoodRepository.save(tableFood);
     }
 
     @Override
-    public TableFood updateTable(TableFood tableFood) {
+    public TableFood updateTable(int id, String name) {
+        TableFood tableFood = getTableById(id);
+        tableFood.setName(name);
         return tableFoodRepository.save(tableFood);
     }
 
@@ -45,5 +48,20 @@ public class TableFoodServiceImpl implements TableFoodService {
             return tableFoodRepository.save(tableFood);
         }
         return null;
+    }
+
+    @Override
+    public List<TableFood> getAllTablesEmpty() {
+        return tableFoodRepository.findByStatusFalse();
+    }
+
+    @Override
+    public List<TableFood> getAllTablesOrderById() {
+        return tableFoodRepository.findAllOrderById();
+    }
+
+    @Override
+    public boolean checkExistTableName(String tableName) {
+        return tableFoodRepository.findByName(tableName) != null;
     }
 }

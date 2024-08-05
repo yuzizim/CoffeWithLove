@@ -28,17 +28,23 @@ public class StaffMenuController {
     @GetMapping("/menu")
     public String displayMenu(Model model,
                               @RequestParam(name = "category", defaultValue = "-2") int id,
+                              @RequestParam(name = "search", defaultValue = "") String search,
+                              @RequestParam(name = "orderId", defaultValue = "-1") int orderId,
                               @RequestParam(defaultValue = "0") int page,
                               @RequestParam(defaultValue = "8") int size) {
         if (id == -2) {
-            PageFoodResponse response = foodService.getMenuByPage(page, size);
+            PageFoodResponse response = foodService.getMenuByPageAndSearch(search, page, size);
             model.addAttribute("menu", response.getFoods());
             model.addAttribute("pageSize", response.getTotalPages());
         } else {
             if (id == -1) {
-                return "redirect:/staff/manage/menu";
+                if (orderId == -1) {
+                    return "redirect:/staff/manage/menu";
+                } else {
+                    return "redirect:/staff/manage/menu?orderId=" + orderId;
+                }
             } else {
-                PageFoodResponse response = foodService.getFoodByCategoryId(id, page, size);
+                PageFoodResponse response = foodService.getFoodByCategoryIdAndSearchKey(id, search, page, size);
                 model.addAttribute("menu", response.getFoods());
                 model.addAttribute("pageSize", response.getTotalPages());
             }
@@ -58,7 +64,10 @@ public class StaffMenuController {
         model.addAttribute("categories", categories);
         model.addAttribute("pageNumber", page);
         model.addAttribute("cateId", id);
+        model.addAttribute("search", search);
         model.addAttribute("numInCart", carts.size());
+        model.addAttribute("username", username);
+        model.addAttribute("orderId", orderId);
         return "/staff/shop";
     }
 
@@ -74,7 +83,7 @@ public class StaffMenuController {
             username = principal.toString();
         }
 
-        cartService.addItemToCart(id, username);
+        cartService.addItemToCart(id, username, 1);
         return "redirect:/staff/manage/menu";
     }
 }

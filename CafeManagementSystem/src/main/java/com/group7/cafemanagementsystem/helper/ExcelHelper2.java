@@ -1,20 +1,22 @@
 package com.group7.cafemanagementsystem.helper;
 
 import com.group7.cafemanagementsystem.Response.FoodRevenueResponse;
+import com.group7.cafemanagementsystem.model.OrderTable;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-public class ExcelHelper {
+public class ExcelHelper2 {
     public static String TYPE = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-    static String[] HEADERs = {"Id", "Product name", "Number sale", "Price"};
-    static String SHEET = "Revenue_Product_By_Day";
+    static String[] HEADERs = {"#", "Customer name", "Phone number", "Order time", "Price", "Created by"};
+    static String SHEET = "Revenue_By_Order";
 
-    public static ByteArrayInputStream tutorialsToExcel(List<FoodRevenueResponse> foodRevenueResponses) {
+    public static ByteArrayInputStream tutorialsToExcel(List<OrderTable> orderTables) {
 
         try (Workbook workbook = new XSSFWorkbook(); ByteArrayOutputStream out = new ByteArrayOutputStream();) {
             Sheet sheet = workbook.createSheet(SHEET);
@@ -29,6 +31,13 @@ public class ExcelHelper {
             headerFont.setBold(true);
             headerCellStyle.setFont(headerFont);
 
+            // Date CellStyle
+            CellStyle dateCellStyle = workbook.createCellStyle();
+            CreationHelper createHelper = workbook.getCreationHelper();
+            dateCellStyle.setDataFormat(createHelper.createDataFormat().getFormat("yyyy-MM-dd HH:mm:ss"));
+
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
             // Header
             Row headerRow = sheet.createRow(0);
 
@@ -40,25 +49,23 @@ public class ExcelHelper {
 
             int rowIdx = 1;
             int count = 1;
-            int totalNumber = 0;
             double totalPrice = 0;
-            for (FoodRevenueResponse foodRevenue : foodRevenueResponses) {
+            for (OrderTable order : orderTables) {
                 Row row = sheet.createRow(rowIdx++);
 
                 row.createCell(0).setCellValue(count++);
-                row.createCell(1).setCellValue(foodRevenue.getName());
-                row.createCell(2).setCellValue(foodRevenue.getNumSale());
-                row.createCell(3).setCellValue("$" + foodRevenue.getPrice());
+                row.createCell(1).setCellValue(order.getCustomerName());
+                row.createCell(2).setCellValue(order.getPhoneNumber());
 
-                totalNumber += foodRevenue.getNumSale();
-                totalPrice += foodRevenue.getPrice();
+                Cell orderTimeCell = row.createCell(3);
+                orderTimeCell.setCellValue(order.getOrderTime().format(formatter));
+                orderTimeCell.setCellStyle(dateCellStyle);
+
+                row.createCell(4).setCellValue(order.getTotalPrice());
+                row.createCell(5).setCellValue(order.getStaff().getFullName());
+
+                totalPrice += order.getTotalPrice();
             }
-
-//            Row row = sheet.createRow(rowIdx++);
-//            row.createCell(0).setCellValue("");
-//            row.createCell(1).setCellValue("TOTAL");
-//            row.createCell(2).setCellValue(totalNumber);
-//            row.createCell(3).setCellValue(totalPrice);
 
             // Total row CellStyle
             CellStyle totalRowCellStyle = workbook.createCellStyle();
@@ -73,16 +80,24 @@ public class ExcelHelper {
             cell0.setCellStyle(totalRowCellStyle);
 
             Cell cell1 = totalRow.createCell(1);
-            cell1.setCellValue("TOTAL");
+            cell1.setCellValue("");
             cell1.setCellStyle(totalRowCellStyle);
 
             Cell cell2 = totalRow.createCell(2);
-            cell2.setCellValue(totalNumber);
+            cell2.setCellValue("");
             cell2.setCellStyle(totalRowCellStyle);
 
             Cell cell3 = totalRow.createCell(3);
-            cell3.setCellValue("$" + totalPrice);
+            cell3.setCellValue("TOTAL");
             cell3.setCellStyle(totalRowCellStyle);
+
+            Cell cell4 = totalRow.createCell(4);
+            cell4.setCellValue(totalPrice);
+            cell4.setCellStyle(totalRowCellStyle);
+
+            Cell cell5 = totalRow.createCell(5);
+            cell5.setCellValue("");
+            cell5.setCellStyle(totalRowCellStyle);
 
             workbook.write(out);
             return new ByteArrayInputStream(out.toByteArray());

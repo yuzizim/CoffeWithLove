@@ -44,7 +44,6 @@ public class OrderTableController {
 
         orderTable.setOrderTime(request.getOrderTime());
         orderTable.setCustomerName(request.getCustomerName());
-        orderTable.setEmail(request.getEmail());
         orderTable.setPhoneNumber(request.getPhoneNumber());
         orderTable.setNumPeople(request.getNumPeople());
         orderTable.setNote(request.getNote());

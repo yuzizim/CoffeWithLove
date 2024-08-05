@@ -4,28 +4,24 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Cascade;
 
 @Entity
-@Table(name = "BillInfo")
+@Table(name = "OrderDetail")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class BillInfo {
+public class OrderDetail {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @ManyToOne
-    @JoinColumn(name = "idBill", nullable = false)
-    private Bill bill;
-
-    @OneToOne
-    @JoinColumn(name = "idFood")
-    @Cascade(org.hibernate.annotations.CascadeType.REMOVE)
     private Food food;
 
-    @Column(name = "count")
-    private int count;
+    private int quantity;
+
+    @ManyToOne
+    @JoinColumn(name = "order_id", nullable = false)
+    private OrderTable orderTable;
 }

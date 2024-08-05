@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -28,4 +29,6 @@ public interface UserRepository extends JpaRepository<Account, Integer> {
             " a.phoneNumber LIKE %:keyword%)" +
             " ORDER BY a.status DESC")
     Page<Account> findByStatusOrderByStatus(Pageable pageable, @Param("keyword") String keyword);
+
+    List<Account> findAccountByRole(String role);
 }

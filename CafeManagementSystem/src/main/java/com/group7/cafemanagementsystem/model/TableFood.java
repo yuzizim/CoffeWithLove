@@ -1,6 +1,7 @@
 package com.group7.cafemanagementsystem.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,14 +21,12 @@ public class TableFood {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @NotBlank(message = "Name cannot be blank")
     @Column(name = "name")
     private String name;
 
     @Column(name = "status")
     private boolean status;
-
-    @OneToMany(mappedBy = "tableFood", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Bill> bills = new HashSet<>();
 
     @OneToMany(mappedBy = "tableFood", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<OrderTable> orderTables = new HashSet<>();
