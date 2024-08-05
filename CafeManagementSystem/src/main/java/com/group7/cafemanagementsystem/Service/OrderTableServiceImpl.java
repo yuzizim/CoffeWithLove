@@ -4,6 +4,7 @@ import com.group7.cafemanagementsystem.Repository.*;
 import com.group7.cafemanagementsystem.Request.CustomerOrderRequest;
 import com.group7.cafemanagementsystem.Response.PageFoodResponse;
 import com.group7.cafemanagementsystem.Response.PageOrderResponse;
+import com.group7.cafemanagementsystem.Response.RevenuePriceRepsonse;
 import com.group7.cafemanagementsystem.model.*;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -147,5 +148,10 @@ public class OrderTableServiceImpl implements OrderTableService {
         order.setPhoneNumber(request.getPhoneNumber());
         order.setNote(request.getNote());
         return orderTableRepository.save(order);
+    }
+
+    @Override
+    public List<RevenuePriceRepsonse> getRevenueOfEachMonth() {
+        return orderTableRepository.getRevenueEachMonth();
     }
 }

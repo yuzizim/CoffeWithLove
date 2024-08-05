@@ -2,6 +2,7 @@ package com.group7.cafemanagementsystem.Service;
 
 import com.group7.cafemanagementsystem.Request.CustomerOrderRequest;
 import com.group7.cafemanagementsystem.Response.PageOrderResponse;
+import com.group7.cafemanagementsystem.Response.RevenuePriceRepsonse;
 import com.group7.cafemanagementsystem.model.Cart;
 import com.group7.cafemanagementsystem.model.OrderTable;
 import com.group7.cafemanagementsystem.model.TableFood;
@@ -42,4 +43,6 @@ public interface OrderTableService {
     List<OrderTable> getRevenueByOrder(LocalDateTime startDate, LocalDateTime toDate, int staffId);
 
     OrderTable updateCustomerInformation(CustomerOrderRequest request, int orderId);
+
+    List<RevenuePriceRepsonse> getRevenueOfEachMonth();
 }

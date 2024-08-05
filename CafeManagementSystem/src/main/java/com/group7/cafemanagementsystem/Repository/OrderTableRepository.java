@@ -1,5 +1,6 @@
 package com.group7.cafemanagementsystem.Repository;
 
+import com.group7.cafemanagementsystem.Response.RevenuePriceRepsonse;
 import com.group7.cafemanagementsystem.model.Food;
 import com.group7.cafemanagementsystem.model.OrderTable;
 import com.group7.cafemanagementsystem.model.TableFood;
@@ -53,4 +54,27 @@ public interface OrderTableRepository extends JpaRepository<OrderTable, Integer>
     List<OrderTable> getRevenueByOrderAndStaffId(@Param("startDate") LocalDateTime startDate,
                                                  @Param("toDate") LocalDateTime toDate,
                                                  @Param("staffId") int staffId);
+
+    @Query(value = "WITH Months AS (\n" +
+            "    SELECT 1 AS month UNION ALL\n" +
+            "    SELECT 2 UNION ALL\n" +
+            "    SELECT 3 UNION ALL\n" +
+            "    SELECT 4 UNION ALL\n" +
+            "    SELECT 5 UNION ALL\n" +
+            "    SELECT 6 UNION ALL\n" +
+            "    SELECT 7 UNION ALL\n" +
+            "    SELECT 8 UNION ALL\n" +
+            "    SELECT 9 UNION ALL\n" +
+            "    SELECT 10 UNION ALL\n" +
+            "    SELECT 11 UNION ALL\n" +
+            "    SELECT 12\n" +
+            ")\n" +
+            "SELECT\n" +
+            "    m.month as month,\n" +
+            "    ISNULL(SUM(ot.total_price), 0) AS revenue\n" +
+            "FROM Months m\n" +
+            "LEFT JOIN order_table ot ON MONTH(ot.order_time) = m.month\n" +
+            "GROUP BY m.month\n" +
+            "ORDER BY m.month", nativeQuery = true)
+    List<RevenuePriceRepsonse> getRevenueEachMonth();
 }
