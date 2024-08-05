@@ -32,19 +32,19 @@ public class TableController {
         return "/dist/tables";
     }
 
-    @GetMapping("/order/{tableId}")
-    @ResponseBody
-    public Map<String, Object> viewOrder(@PathVariable("tableId") int tableId) {
-        Optional<TableFood> tableFood = Optional.ofNullable(tableFoodService.getTableById(tableId));
-        if (tableFood.isPresent()) {
-            List<OrderTable> orders = orderTableService.findOrderByTableFood(tableFood);
-            Map<String, Object> response = new HashMap<>();
-            response.put("tableFood", tableFood.get());
-            response.put("orders", orders);
-            return response;
-        }
-        return Collections.emptyMap();
-    }
+//    @GetMapping("/order/{tableId}")
+//    @ResponseBody
+//    public Map<String, Object> viewOrder(@PathVariable("tableId") int tableId) {
+//        Optional<TableFood> tableFood = Optional.ofNullable(tableFoodService.getTableById(tableId));
+//        if (tableFood.isPresent()) {
+//            List<OrderTable> orders = orderTableService.findOrderByTableFood(tableFood);
+//            Map<String, Object> response = new HashMap<>();
+//            response.put("tableFood", tableFood.get());
+//            response.put("orders", orders);
+//            return response;
+//        }
+//        return Collections.emptyMap();
+//    }
 
 
 }
