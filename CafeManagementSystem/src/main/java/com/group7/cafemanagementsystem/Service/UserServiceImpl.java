@@ -88,7 +88,6 @@ public class UserServiceImpl implements UserService {
     public boolean findByUserName(String username) {
         return userRepository.findByUserName(username).isPresent();
     }
-    //zzfi gyah hfii qgyo
     public String sendMail(Account user){
         try{
             String resetLink = generateResetToken(user);

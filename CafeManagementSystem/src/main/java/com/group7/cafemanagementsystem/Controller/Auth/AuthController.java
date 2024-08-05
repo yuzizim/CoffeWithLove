@@ -26,6 +26,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Optional;
 
@@ -117,12 +118,15 @@ public class AuthController {
         return "Refresh Token is empty!";
     }
     @GetMapping("/forgotPassword")
-    public String forgotPass(){
+    public String forgotPass(Model model){
+        if (!model.containsAttribute("error")) {
+            model.addAttribute("error", "");
+        }
         return "/dist/forgotPassword";
     }
 
     @PostMapping("/forgotPassword")
-    public String forgotPass(Model model, @ModelAttribute ForgotPassRequest forgotPassRequest) {
+    public String forgotPass(Model model, @ModelAttribute ForgotPassRequest forgotPassRequest, RedirectAttributes redirectAttributes) {
         String output = "";
         Account user = userRepository.findByEmail(forgotPassRequest.getEmail());
         if (user != null) {
@@ -130,8 +134,10 @@ public class AuthController {
         }
         if (output.equals("Success")) {
             return "redirect:/auth/login?success";
+        }else {
+            redirectAttributes.addFlashAttribute("error", "Failed to send reset email. Please try again.");
+            return "redirect:/auth/forgotPassword";
         }
-        return "redirect:/auth/login?error";
     }
 
     @GetMapping("/reset-password/{token}")

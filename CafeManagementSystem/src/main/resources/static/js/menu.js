@@ -18,43 +18,71 @@ view1CloseBtn.addEventListener("click", function () {
 
 // Order 1
 const order = document.querySelector(".order");
-const orderOpenBtn = document.querySelectorAll(".order__openBtn");
+const orderOpenBtns = document.querySelectorAll(".order__openBtn");
 const orderCloseBtn = document.querySelector(".order__closeBtn");
 const orderOverlay = document.querySelector(".order-overlay");
 const orderContent = document.querySelector(".order-content");
+const html = document.querySelector("html");
 
-orderOpenBtn.forEach(btn => {
-  btn.addEventListener("click", function () {
-    const tableId = this.getAttribute("data-table-id");
+orderOpenBtns.forEach(btn => {
+    btn.addEventListener("click", function() {
+        const tableId = this.getAttribute("data-table-id");
+        console.log("Fetching order details for table ID:", tableId);
 
-    fetch(`/tables/order/${tableId}`)
-        .then(response => response.json())
-        .then(data => {
-          orderContent.innerHTML = `
-          <h2>Order Details for Table: ${data.tableFood.name}</h2>
-          <ul>
-            ${data.orders.map(order => `
-              <li>
-                <h3>Order Time: ${order.orderTime}</h3>
-                <p>Customer Name: ${order.customerName}</p>
-                <p>Email: ${order.email}</p>
-                <p>Phone Number: ${order.phoneNumber}</p>
-                <p>Number of People: ${order.numPeople}</p>
-                <p>Note: ${order.note}</p>
-              </li>
-            `).join('')}
-          </ul>
-        `;
-          order.classList.add("showview");
-          orderOverlay.classList.add("transparentBcg");
-          html.classList.add("no-scroll");
-        })
-        .catch(error => console.error('Error:', error));
-  });
+        fetch(`/tables/order/${tableId}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Network response was not ok (${response.statusText})`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log("Data received:", data);
+                const orderDetails = data.orders.map(order => `
+                  <div class="one__order">
+                      <div class="one__order__closeBtn">
+                          <i class="fas fa-window-close"></i>
+                      </div>
+                      <div class="one__view-content">
+                          <h2>
+                              <i class="fas fa-mug-hot"></i>
+                              <span class="span-primary">Order for</span> ${order.customerName}
+                              <i class="fas fa-mug-hot"></i>
+                          </h2>
+                          <div class="description">
+                              Order placed at ${order.orderTime} for ${order.numPeople} people.
+                              <br />
+                              Note: ${order.note || 'No additional notes.'}
+                          </div>
+                          <img src="../../static/img/caffe-americano.jpg" alt="Order Image" />
+                          <div class="nutritional_info">
+                              <h2><span class="span-primary">Contact</span> Information</h2>
+                              <div class="bar-medium">
+                                  <b>Email</b> ${order.email}
+                              </div>
+                              <div class="bar-medium">
+                                  <b>Phone Number</b> ${order.phoneNumber}
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                `).join('');
+
+                orderContent.innerHTML = `
+                  <h2>Order Details for Table: ${data.tableFood.name}</h2>
+                  ${orderDetails}
+                `;
+                orderOverlay.classList.add("show");
+                html.classList.add("no-scroll");
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+                alert('Failed to fetch order details. Please check console for details.');
+            });
+    });
 });
 
-orderCloseBtn.addEventListener("click", function () {
-  order.classList.remove("showview");
-  orderOverlay.classList.remove("transparentBcg");
-  html.classList.remove("no-scroll");
+orderCloseBtn.addEventListener("click", function() {
+    orderOverlay.classList.remove("show");
+    html.classList.remove("no-scroll");
 });
