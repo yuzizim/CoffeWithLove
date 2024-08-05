@@ -1,6 +1,7 @@
 package com.group7.cafemanagementsystem.Service;
 
 import com.group7.cafemanagementsystem.Repository.FoodRepository;
+import com.group7.cafemanagementsystem.Response.FoodReportResponse;
 import com.group7.cafemanagementsystem.Response.FoodRevenueResponse;
 import com.group7.cafemanagementsystem.Response.PageFoodResponse;
 import com.group7.cafemanagementsystem.model.Food;
@@ -126,5 +127,11 @@ public class FoodServiceImpl implements FoodService {
     @Override
     public List<FoodRevenueResponse> getFoodRevenueByDay(LocalDateTime startDate, LocalDateTime endDate) {
         return foodRepository.getFoodRevenueByDay(startDate, endDate);
+    }
+
+    @Override
+    public List<FoodReportResponse> getTopProducts(int num) {
+        Pageable pageable = PageRequest.of(0, num);
+        return foodRepository.getTopProducts(pageable);
     }
 }

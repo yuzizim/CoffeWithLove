@@ -1,5 +1,6 @@
 package com.group7.cafemanagementsystem.Repository;
 
+import com.group7.cafemanagementsystem.Response.FoodReportResponse;
 import com.group7.cafemanagementsystem.Response.FoodRevenueResponse;
 import com.group7.cafemanagementsystem.model.Food;
 import org.springframework.data.domain.Page;
@@ -70,4 +71,13 @@ public interface FoodRepository extends JpaRepository<Food, Integer> {
             " group by f.name, f.price")
     List<FoodRevenueResponse> getFoodRevenueByDay(@Param("startDate") LocalDateTime startDate,
                                                   @Param("endDate") LocalDateTime endDate);
+
+    @Query("select f.name as name, sum(od.quantity) as quantity " +
+            "from OrderDetail od " +
+            " join OrderTable ot on od.orderTable.id = ot.id " +
+            " join Food f on od.food.id = f.id " +
+            " where ot.status = true " +
+            " group by f.name, f.price " +
+            " order by quantity desc, name asc")
+    List<FoodReportResponse> getTopProducts(Pageable pageable);
 }
