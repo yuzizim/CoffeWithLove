@@ -76,13 +76,11 @@ public class StaffOrderController {
     }
 
     @PostMapping
-    public String createOrder(@Valid @ModelAttribute OrderTable orderTable,
-                              @RequestParam(name = "selectedTable") int selectedTable,
+    public String createOrder(@Valid @ModelAttribute("order") OrderTable orderTable,
                               BindingResult result,
-                              RedirectAttributes redirectAttributes) {
-        if (result.hasErrors()) {
-            return "redirect:/staff/manage/order";
-        }
+                              RedirectAttributes redirectAttributes,
+                              @RequestParam(name = "selectedTable", defaultValue = "-1") int selectedTable,
+                              Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Object principal = authentication.getPrincipal();
         String username;
@@ -97,6 +95,25 @@ public class StaffOrderController {
         double totalMoney = 0;
         for (Cart cart : carts) {
             totalMoney += cart.getFood().getPrice() * cart.getQuantity();
+        }
+
+        if (result.hasErrors() || selectedTable == -1) {
+            List<TableFood> tableFoods = tableFoodService.getAllTablesEmpty();
+
+            model.addAttribute("carts", carts);
+            model.addAttribute("totalMoney", totalMoney);
+            model.addAttribute("tables", tableFoods);
+            model.addAttribute("numInCart", carts.size());
+            model.addAttribute("username", username);
+            model.addAttribute("order", orderTable);
+
+            if (selectedTable == -1) {
+                model.addAttribute("messageError", "You need choose 1 table");
+            } else {
+                model.addAttribute("selectedTable", selectedTable);
+            }
+
+            return "/staff/checkout";
         }
 
         orderTableService.createOrder(orderTable, selectedTable, username, totalMoney, carts);
@@ -190,19 +207,37 @@ public class StaffOrderController {
 
     @GetMapping("/update/{id}")
     public String updateCustomerInformation(@PathVariable int id,
-                                            @Valid CustomerOrderRequest request,
+                                            @Valid @ModelAttribute("request") CustomerOrderRequest request,
                                             BindingResult result,
-                                            RedirectAttributes redirectAttributes,
                                             Model model) {
         if (result.hasErrors()) {
-            redirectAttributes.addFlashAttribute("messageError", "There is error on field customer name or phone");
-            return "redirect:/staff/manage/order-detail/" + id;
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            Object principal = authentication.getPrincipal();
+            String username;
+            if (principal instanceof UserDetails) {
+                username = ((UserDetails) principal).getUsername();
+            } else {
+                username = principal.toString();
+            }
+
+            // get cart by staff id
+            List<Cart> carts = cartService.getCartByUser(username);
+
+            //get order by id
+            OrderTable orderTable = orderTableService.findById(id);
+
+            model.addAttribute("numInCart", carts.size());
+            model.addAttribute("username", username);
+            model.addAttribute("order", orderTable);
+            model.addAttribute("request", request);
+
+            return "/staff/order-detail";
         }
-        if (request.getCustomerName().trim().replaceAll("\\s", "").isEmpty()
-                || request.getPhoneNumber().trim().replaceAll("\\s", "").isEmpty()) {
-            redirectAttributes.addFlashAttribute("messageError", "Customer name and phone number can not empty");
-            return "redirect:/staff/manage/order-detail/" + id;
-        }
+//        if (request.getCustomerName().trim().replaceAll("\\s", "").isEmpty()
+//                || request.getPhoneNumber().trim().replaceAll("\\s", "").isEmpty()) {
+//            redirectAttributes.addFlashAttribute("messageError", "Customer name and phone number can not empty");
+//            return "redirect:/staff/manage/order-detail/" + id;
+//        }
         OrderTable order = orderTableService.updateCustomerInformation(request, id);
 
         return "redirect:/staff/manage/order-detail/" + id;
