@@ -54,7 +54,7 @@ public class OrderTableServiceImpl implements OrderTableService {
     public void deleteOrderTable(int id) {
         OrderTable orderTable = findById(id);
         TableFood tableFood = orderTable.getTableFood();
-        tableFood.setStatus(true);
+        tableFood.setStatus(false);
         tableFoodRepository.save(tableFood);
 
         orderTableRepository.deleteById(id);
