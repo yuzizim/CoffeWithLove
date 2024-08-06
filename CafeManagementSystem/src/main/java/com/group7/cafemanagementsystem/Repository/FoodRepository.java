@@ -16,10 +16,21 @@ import java.util.Optional;
 
 @Repository
 public interface FoodRepository extends JpaRepository<Food, Integer> {
-    Page<Food> findByStatus(boolean status, Pageable pageable);
+    Page<Food> findByStatusOrderByIdDesc(boolean status, Pageable pageable);
 
-    @Query("SELECT f FROM Food f ORDER BY f.status DESC")
-    Page<Food> findByStatusOrderByStatus(Pageable pageable);
+    @Query("SELECT f FROM Food f " +
+            " WHERE f.name LIKE %:search%" +
+            " AND f.foodCategory.id = :categoryId" +
+            " ORDER BY f.status DESC, f.id DESC")
+    Page<Food> findByStatusOrderByStatusAndSearchAndCategory(@Param("search") String search,
+                                                             @Param("categoryId") int categoryId,
+                                                             Pageable pageable);
+
+    @Query("SELECT f FROM Food f " +
+            " WHERE f.name LIKE %:search%" +
+            " ORDER BY f.status DESC, f.id DESC")
+    Page<Food> findByStatusOrderByStatus(@Param("search") String search,
+                                         Pageable pageable);
 
     @Query("SELECT f FROM Food f WHERE f.status = TRUE AND f.name LIKE %:search%")
     Page<Food> findByStatusOrder(@Param("search") String search, Pageable pageable);
@@ -80,4 +91,6 @@ public interface FoodRepository extends JpaRepository<Food, Integer> {
             " group by f.name, f.price " +
             " order by quantity desc, name asc")
     List<FoodReportResponse> getTopProducts(Pageable pageable);
+
+    Food findByName(String name);
 }
