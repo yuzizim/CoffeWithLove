@@ -52,6 +52,11 @@ public class OrderTableServiceImpl implements OrderTableService {
 
     @Override
     public void deleteOrderTable(int id) {
+        OrderTable orderTable = findById(id);
+        TableFood tableFood = orderTable.getTableFood();
+        tableFood.setStatus(true);
+        tableFoodRepository.save(tableFood);
+
         orderTableRepository.deleteById(id);
         orderDetailRepository.deleteByOrderTableId(id);
     }
@@ -151,7 +156,7 @@ public class OrderTableServiceImpl implements OrderTableService {
     }
 
     @Override
-    public List<RevenuePriceRepsonse> getRevenueOfEachMonth() {
-        return orderTableRepository.getRevenueEachMonth();
+    public List<RevenuePriceRepsonse> getRevenueOfEachMonth(int year) {
+        return orderTableRepository.getRevenueEachMonth(year);
     }
 }

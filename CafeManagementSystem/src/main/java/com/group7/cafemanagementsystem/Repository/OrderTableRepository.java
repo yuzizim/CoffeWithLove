@@ -74,7 +74,8 @@ public interface OrderTableRepository extends JpaRepository<OrderTable, Integer>
             "    ISNULL(SUM(ot.total_price), 0) AS revenue\n" +
             "FROM Months m\n" +
             "LEFT JOIN order_table ot ON MONTH(ot.order_time) = m.month\n" +
+            "AND YEAR(ot.order_time) = :year\n" +
             "GROUP BY m.month\n" +
             "ORDER BY m.month", nativeQuery = true)
-    List<RevenuePriceRepsonse> getRevenueEachMonth();
+    List<RevenuePriceRepsonse> getRevenueEachMonth(@Param("year") int year);
 }
