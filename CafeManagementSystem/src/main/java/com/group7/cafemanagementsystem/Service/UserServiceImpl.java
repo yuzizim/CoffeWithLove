@@ -1,6 +1,7 @@
 package com.group7.cafemanagementsystem.Service;
 
 import com.group7.cafemanagementsystem.Repository.UserRepository;
+import com.group7.cafemanagementsystem.Request.UpdateStaffInfoRequest;
 import com.group7.cafemanagementsystem.Response.PageFoodResponse;
 import com.group7.cafemanagementsystem.Response.PageUserResponse;
 import com.group7.cafemanagementsystem.model.Account;
@@ -78,5 +79,19 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<Account> findByRole(String role) {
         return userRepository.findAccountByRole(role);
+    }
+
+    @Override
+    public Account updateStaffInfoByAdmin(int staffId, UpdateStaffInfoRequest request, String image) {
+        Account staff = findById(staffId);
+        staff.setUserName(request.getUserName());
+        staff.setPhoneNumber(request.getPhoneNumber());
+        staff.setFullName(request.getFullName());
+        staff.setEmail(request.getEmail());
+
+        if (!image.equals("")) {
+            staff.setAvatar("/static/img/account/" + image);
+        }
+        return userRepository.save(staff);
     }
 }
