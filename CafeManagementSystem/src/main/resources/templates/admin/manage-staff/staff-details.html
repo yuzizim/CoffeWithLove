@@ -34,61 +34,74 @@
         <div class="container rounded bg-white mt-5 mb-5">
             <div class="card">
                 <div class="card-body">
-                    <div class="row">
+                    <!--                    <div class="row">-->
+                    <form class="row" th:action="@{/admin/manage-staff/update/{id}(id=${staff.ID})}"
+                          th:object="${request}"
+                          enctype="multipart/form-data"
+                          method="post">
                         <div class="col-md-3 border-right">
                             <div class="d-flex flex-column align-items-center text-center p-3 py-5"><img
                                     class="rounded-circle mt-5" width="150px"
-                                    src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg"><span
-                                    class="font-weight-bold" th:text="${staff.fullName}"></span><span
-                                    class="text-black-50" th:text="${staff.email}"></span><span> </span></div>
+                                    th:src="${staff.avatar}">
+                                <input type="file" class="form-control" id="avatar" name="avatar"
+                                       accept="image/png, image/jpeg">
+                                <span class="font-weight-bold" th:text="${staff.fullName}"></span>
+                            </div>
                         </div>
                         <div class="col-md-5 border-right">
                             <div class="p-3 py-5">
                                 <div class="d-flex justify-content-between align-items-center mb-3">
-                                    <h4 class="text-right">Profile Settings</h4>
+                                    <h4 class="text-right">Profile Staff Settings</h4>
                                 </div>
+                                <div th:if="${messageError}" class="alert alert-danger" role="alert">
+                                    <span th:text="${messageError}"></span>
+                                </div>
+                                <div th:if="${messageSuccess}" class="alert alert-success" role="alert">
+                                    <span th:text="${messageSuccess}"></span>
+                                </div>
+                                <p style="color: red" th:errors="*{userName}"></p>
+                                <p style="color: red" th:errors="*{fullName}"></p>
                                 <div class="row mt-2">
                                     <div class="col-md-6">
                                         <label class="labels">Username</label>
-                                        <input type="text" class="form-control" placeholder="first name"
-                                               th:value="${staff.userName}" readonly>
+                                        <input type="text" class="form-control" placeholder="User name" name="userName"
+                                               th:field="*{userName}">
                                     </div>
                                     <div class="col-md-6">
                                         <label class="labels">Full Name</label>
-                                        <input type="text"
-                                               class="form-control"
-                                               th:value="${staff.fullName}" readonly>
+                                        <input type="text" class="form-control" placeholder="Full name" name="fullName"
+                                               th:field="*{fullName}">
                                     </div>
                                 </div>
                                 <div class="row mt-3">
                                     <div class="col-md-12">
+                                        <label class="labels">Email</label>
+                                        <p style="color: red" th:errors="*{email}"></p>
+                                        <input type="text" class="form-control" placeholder="Email" name="email"
+                                               th:field="*{email}">
+                                    </div>
+                                    <div class="col-md-12">
                                         <label class="labels">Mobile Number</label>
-                                        <input type="text"
-                                               class="form-control"
-                                               placeholder="enter phone number"
-                                               readonly
-                                               th:value="${staff.phoneNumber}">
+                                        <p style="color: red" th:errors="*{phoneNumber}"></p>
+                                        <input type="text" class="form-control" placeholder="enter phone number"
+                                               name="phoneNumber" th:field="*{phoneNumber}">
                                     </div>
                                     <div class="col-md-12">
                                         <label class="labels">Role</label>
                                         <input type="text"
                                                class="form-control"
-                                               placeholder="enter address line 1"
                                                readonly
                                                th:value="${staff.role}">
                                     </div>
-                                    <div class="col-md-12">
-                                        <label class="labels">Status</label>
-                                        <input type="text"
-                                               class="form-control"
-                                               placeholder="enter address line 2"
-                                               readonly
-                                               th:value="${staff.status == true ? 'ACTIVE' : 'INACTIVE'}">
-                                    </div>
                                 </div>
                             </div>
+                            <!-- Centering button -->
+                            <div class="d-flex justify-content-center mt-4">
+                                <button class="btn btn-secondary">Update</button>
+                            </div>
                         </div>
-                    </div>
+                    </form>
+                    <!--                    </div>-->
                 </div>
             </div>
         </div>
