@@ -28,12 +28,16 @@ public class AdminTableController {
     }
 
     @PostMapping("/add-new")
-    public String addNewTable(@Valid @ModelAttribute TableFood tableFood,
+    public String addNewTable(@Valid @ModelAttribute("table") TableFood tableFood,
                               BindingResult result,
                               RedirectAttributes redirectAttributes,
                               Model model) {
         if (result.hasErrors()) {
-            model.addAttribute("table", new TableFood());
+            List<TableFood> tableFoods = tableFoodService.getAllTablesOrderById();
+
+            model.addAttribute("tables", tableFoods);
+            model.addAttribute("table", tableFood);
+            model.addAttribute("showAddTableModal", true);
             return "/admin/tables/table";
         }
         if (tableFoodService.checkExistTableName(tableFood.getName())) {
