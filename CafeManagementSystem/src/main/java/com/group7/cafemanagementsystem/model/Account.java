@@ -28,6 +28,7 @@ public class Account {
     private String userName;
 
     @Column(name = "DisplayName")
+    @Pattern(regexp = "^[a-zA-Z ]*$", message = "Username can only contain letters")
     @NotEmpty(message = "Full name is required")
     private String fullName;
 
