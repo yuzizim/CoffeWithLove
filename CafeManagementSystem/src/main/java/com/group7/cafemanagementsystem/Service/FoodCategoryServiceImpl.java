@@ -49,4 +49,10 @@ public class FoodCategoryServiceImpl implements FoodCategoryService {
     public FoodCategory save(FoodCategory foodCategory) {
         return foodCategoryRepository.save(foodCategory);
     }
+
+    @Override
+    public boolean isCategoryExist(String name) {
+        FoodCategory category = foodCategoryRepository.findByName(name);
+        return category != null;
+    }
 }
