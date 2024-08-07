@@ -31,6 +31,7 @@ public class StaffProfileController {
             Optional<Account> accountOpt = userRepository.findByUserName(username);
             if (accountOpt.isPresent()) {
                 model.addAttribute("account", accountOpt.get());
+                model.addAttribute("username", username);
                 return "staff/profile";
             }
         }
