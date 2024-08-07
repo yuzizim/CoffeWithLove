@@ -1,14 +1,21 @@
 package com.group7.cafemanagementsystem.Controller.Admin;
 
+import com.group7.cafemanagementsystem.Request.UpdateStaffInfoRequest;
 import com.group7.cafemanagementsystem.Response.PageUserResponse;
 import com.group7.cafemanagementsystem.Service.UserService;
+import com.group7.cafemanagementsystem.Utils.FileUploadUtil;
 import com.group7.cafemanagementsystem.model.Account;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.io.IOException;
 
 @Controller
 @AllArgsConstructor
@@ -61,7 +68,45 @@ public class AdminStaffController {
     @GetMapping("/details/{id}")
     public String getStaffDetails(@PathVariable int id, Model model) {
         Account account = userService.findById(id);
+        UpdateStaffInfoRequest request = new UpdateStaffInfoRequest();
+        request.setUserName(account.getUserName());
+        request.setFullName(account.getFullName());
+        request.setPhoneNumber(account.getPhoneNumber());
+        request.setEmail(account.getEmail());
         model.addAttribute("staff", account);
+        model.addAttribute("request", request);
         return "/admin/manage-staff/staff-details";
+    }
+
+    @PostMapping("/update/{id}")
+    public String updateStaffInfo(@PathVariable int id,
+                                  @Valid @ModelAttribute("request") UpdateStaffInfoRequest request,
+                                  BindingResult result,
+                                  RedirectAttributes redirectAttributes,
+                                  @RequestParam(value = "avatar", required = false) MultipartFile multipartFile,
+                                  Model model) throws IOException {
+        if (result.hasErrors()) {
+            Account account = userService.findById(id);
+            model.addAttribute("staff", account);
+            return "/admin/manage-staff/staff-details";
+        }
+
+        Account account = userService.findById(id);
+        if (!account.getUserName().equals(request.getUserName())) {
+            if (userService.findByUserName(account.getUserName())) {
+                redirectAttributes.addFlashAttribute("messageError", "User name is exist!");
+                return "redirect:/admin/manage-staff/details/" + id;
+            }
+        }
+
+        String image = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+        Account staff = userService.updateStaffInfoByAdmin(id, request, image);
+        if (!image.isEmpty()) {
+            String uploadDir = "src/main/resources/static/img/account";
+            FileUploadUtil.saveFile(uploadDir, image, multipartFile);
+        }
+
+        redirectAttributes.addFlashAttribute("messageSuccess", "Update success");
+        return "redirect:/admin/manage-staff/details/" + id;
     }
 }

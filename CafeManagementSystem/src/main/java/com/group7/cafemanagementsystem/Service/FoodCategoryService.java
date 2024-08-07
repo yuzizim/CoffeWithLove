@@ -14,4 +14,6 @@ public interface FoodCategoryService {
     FoodCategory findById(int id);
 
     FoodCategory save(FoodCategory foodCategory);
+
+    boolean isCategoryExist(String name);
 }

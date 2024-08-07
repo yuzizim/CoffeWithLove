@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface FoodService {
-    PageFoodResponse getFoodByPage(Boolean status, int page, int size);
+    PageFoodResponse getFoodByPage(String search, int categoryId, int page, int size);
 
     Food createDrink(Food food, String image);
 
@@ -17,7 +17,7 @@ public interface FoodService {
 
     void deleteFood(int id);
 
-    Food updateFood(Food food);
+    Food updateFood(int id, Food food, String image);
 
     Food saveFood(Food food);
 
@@ -36,4 +36,6 @@ public interface FoodService {
     List<FoodRevenueResponse> getFoodRevenueByDay(LocalDateTime startDate, LocalDateTime endDate);
 
     List<FoodReportResponse> getTopProducts(int num);
+
+    boolean checkExistProduct(String name);
 }

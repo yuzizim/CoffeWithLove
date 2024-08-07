@@ -40,7 +40,12 @@
                                 <h4 class="card-title">Staff manager</h4>
                                 <!-- Search Form -->
                                 <div class="row mb-3">
-                                    <div class="col-lg-3 offset-lg-9 d-flex justify-content-end">
+                                    <div class="col-md-6 col-lg-3 d-flex">
+                                        <a class="btn btn-primary mb-3" th:href="@{/admin/manage-staff/register}">
+                                            Add New Staff
+                                        </a>
+                                    </div>
+                                    <div class="col-md-6 col-lg-9 d-flex justify-content-end">
                                         <form th:action="@{/admin/manage-staff}" method="get"
                                               class="form-inline">
                                             <div class="input-group">
@@ -71,7 +76,7 @@
                                         <tbody>
                                         <tr th:each="staff : ${staffs}">
                                             <td class="py-1">
-                                                <img th:src="@{/static/assets/images/faces/face1.jpg}" alt="image"/>
+                                                <img th:src="${staff.avatar}" alt="image"/>
                                             </td>
                                             <td th:text="${staff.fullName}"></td>
                                             <td th:text="${staff.email}"></td>
@@ -106,19 +111,23 @@
                             <li class="page-item" th:classappend="${pageNumber == 0} ? 'disabled'">
                                 <a class="page-link" th:if="${search == null}" th:href="@{|?page=${pageNumber - 1}|}"
                                    tabindex="-1">Previous</a>
-                                <a class="page-link" th:if="${search != null}" th:href="@{|?keyword=${search}&page=${pageNumber - 1}|}"
+                                <a class="page-link" th:if="${search != null}"
+                                   th:href="@{|?keyword=${search}&page=${pageNumber - 1}|}"
                                    tabindex="-1">Previous</a>
                             </li>
                             <!-- Page Numbers -->
                             <li class="page-item" th:each="i : ${#numbers.sequence(0, pageSize - 1)}"
                                 th:classappend="${i == pageNumber} ? 'active'">
-                                <a class="page-link" th:if="${search == null}" th:text="${i + 1}" th:href="@{|?page=${i}|}"></a>
-                                <a class="page-link" th:if="${search != null}" th:text="${i + 1}" th:href="@{|?keyword=${search}&page=${i}|}"></a>
+                                <a class="page-link" th:if="${search == null}" th:text="${i + 1}"
+                                   th:href="@{|?page=${i}|}"></a>
+                                <a class="page-link" th:if="${search != null}" th:text="${i + 1}"
+                                   th:href="@{|?keyword=${search}&page=${i}|}"></a>
                             </li>
                             <!-- Next Link -->
                             <li class="page-item" th:classappend="${pageNumber + 1 == pageSize} ? 'disabled'">
                                 <a class="page-link" th:if="${search == null}" th:href="@{|?page=${pageNumber + 1}|}">Next</a>
-                                <a class="page-link" th:if="${search != null}" th:href="@{|?keyword=${search}&page=${pageNumber + 1}|}">Next</a>
+                                <a class="page-link" th:if="${search != null}"
+                                   th:href="@{|?keyword=${search}&page=${pageNumber + 1}|}">Next</a>
                             </li>
                         </ul>
                     </nav>

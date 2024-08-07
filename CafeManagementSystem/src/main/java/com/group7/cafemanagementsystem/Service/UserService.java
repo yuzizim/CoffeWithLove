@@ -1,5 +1,6 @@
 package com.group7.cafemanagementsystem.Service;
 
+import com.group7.cafemanagementsystem.Request.UpdateStaffInfoRequest;
 import com.group7.cafemanagementsystem.Response.PageUserResponse;
 import com.group7.cafemanagementsystem.model.Account;
 
@@ -21,4 +22,6 @@ public interface UserService {
     List<Account> findByRole(String role);
 
     Account findByUserNameForChangePass(String username);
+
+    Account updateStaffInfoByAdmin(int staffId, UpdateStaffInfoRequest request, String image);
 }

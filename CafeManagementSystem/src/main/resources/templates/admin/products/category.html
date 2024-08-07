@@ -39,7 +39,12 @@
                                         data-bs-target="#addCategoryModal">
                                     Add New Category
                                 </button>
-                                </p>
+                                <div th:if="${messageError}" class="alert alert-danger" role="alert">
+                                    <span th:text="${messageError}"></span>
+                                </div>
+                                <div th:if="${messageSuccess}" class="alert alert-success" role="alert">
+                                    <span th:text="${messageSuccess}"></span>
+                                </div>
                                 <div class="table-responsive pt-3">
                                     <table class="table table-bordered">
                                         <thead>
@@ -51,8 +56,8 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr th:each="category: ${categories}">
-                                            <td th:text="${category.id}"></td>
+                                        <tr th:each="category, iter: ${categories}">
+                                            <td th:text="${iter.count}"></td>
                                             <td th:text="${category.name}"></td>
                                             <td th:text="${category.foods.size()}"></td>
                                             <td>
@@ -86,13 +91,15 @@
                                                         </div>
                                                         <div class="modal-body">
                                                             <form id="updateCategoryForm" method="post"
+                                                                  th:object="${category}"
                                                                   th:action="@{/admin/food/category/update/{id}(id=${category.id})}">
                                                                 <div class="mb-3">
                                                                     <label for="updateCategoryName" class="form-label">Category
                                                                         Name</label>
+                                                                    <div class="text-danger" th:errors="*{name}"></div>
                                                                     <input type="text" class="form-control"
                                                                            id="updateCategoryName" name="name"
-                                                                           th:value="${category.name}"
+                                                                           th:value="*{name}"
                                                                            required>
                                                                 </div>
                                                                 <div class="modal-footer">
@@ -122,7 +129,9 @@
 
             <!-- Add Category Modal -->
             <div class="modal fade" id="addCategoryModal" tabindex="-1" aria-labelledby="addCategoryModalLabel"
-                 aria-hidden="true">
+                 aria-hidden="true"
+                 th:classappend="${showAddCategoryModal} ? 'show' : ''"
+                 th:style="${showAddCategoryModal} ? 'display:block;' : 'display:none;'">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -134,11 +143,9 @@
                                   th:object="${category}">
                                 <div class="mb-3">
                                     <label for="categoryName" class="form-label">Category Name</label>
+                                    <div class="text-danger" th:errors="*{name}"></div>
                                     <input type="text" class="form-control" id="categoryName" name="name"
                                            th:field="*{name}" required>
-
-                                    <div class="text-danger" th:if="${#fields.hasErrors('name')}"
-                                         th:errors="*{name}"></div>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close
@@ -181,5 +188,33 @@
 <!-- endinject -->
 <!-- Custom js for this page-->
 <!-- End custom js for this page-->
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    document.addEventListener("DOMContentLoaded", function () {
+        var showModal = /*[[${showAddCategoryModal}]]*/ false;
+        var showUpdateCategoryModal = /*[[${showUpdateCategoryModal}]]*/ false;
+        var cateId = /*[[${cateId}]]*/;
+        if (showModal) {
+            var addCategoryModal = new bootstrap.Modal(document.getElementById('updateCategoryModal' + cateId));
+            addCategoryModal.show();
+        }
+
+        if (showUpdateCategoryModal) {
+            var updateCategoryModal = new bootstrap.Modal(document.getElementById('updateCategoryModal' + cateId));
+            updateCategoryModal.show();
+        }
+
+        document.querySelectorAll('[data-bs-dismiss="modal"]').forEach(function (element) {
+            element.addEventListener('click', function () {
+                var modalEl = document.getElementById('addCategoryModal');
+                var modalEl = document.getElementById('updateCategoryModal' + cateId);
+                var modal = bootstrap.Modal.getInstance(modalEl);
+                modal.hide();
+            });
+        });
+    });
+    /*]]>*/
+</script>
 </body>
 </html>

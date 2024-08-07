@@ -33,37 +33,63 @@ public class AdminFoodController {
 
     @GetMapping("/list")
     public String getFoodsByStatus(
-            @RequestParam(required = false) Boolean status,
+            @RequestParam(name = "search", defaultValue = "") String search,
+            @RequestParam(name = "categoryId", defaultValue = "-1") int categoryId,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "8") int size,
             Model model
     ) {
-        PageFoodResponse pageFoodResponse = foodService.getFoodByPage(status, page, size);
+        PageFoodResponse pageFoodResponse = foodService.getFoodByPage(search, categoryId, page, size);
         List<FoodCategory> foodCategories = foodCategoryService.getFoodCategories();
         model.addAttribute("foods", pageFoodResponse.getFoods());
         model.addAttribute("food", new Food());
         model.addAttribute("pageNumber", page);
         model.addAttribute("pageSize", pageFoodResponse.getTotalPages());
         model.addAttribute("categories", foodCategories);
+        model.addAttribute("search", search);
+        model.addAttribute("categoryId", categoryId);
         return "/admin/products/product-list";
     }
 
     @PostMapping("/add-new")
     public String createDrink(@Valid @ModelAttribute Food food,
-                              @RequestParam("image") MultipartFile multipartFile,
                               BindingResult result,
                               RedirectAttributes redirectAttributes,
+                              @RequestParam("image") MultipartFile multipartFile,
+                              @RequestParam(name = "search") String search,
+                              @RequestParam(name = "categoryId") int categoryId,
+                              @RequestParam int page,
                               Model model) throws IOException {
         if (result.hasErrors()) {
+            PageFoodResponse pageFoodResponse = foodService.getFoodByPage(search, categoryId, page, 8);
             List<FoodCategory> foodCategories = foodCategoryService.getFoodCategories();
+            model.addAttribute("foods", pageFoodResponse.getFoods());
+            model.addAttribute("food", food);
+            model.addAttribute("pageNumber", page);
+            model.addAttribute("pageSize", pageFoodResponse.getTotalPages());
             model.addAttribute("categories", foodCategories);
+            model.addAttribute("search", search);
+            model.addAttribute("categoryId", categoryId);
             model.addAttribute("showAddDrinkModal", true);
+            return "/admin/products/product-list";
+        }
+
+        String messageError = "";
+        if (foodService.checkExistProduct(food.getName())) {
+            messageError += "Can not add duplicate product";
+            redirectAttributes.addFlashAttribute("messageError", messageError);
+            return "redirect:/admin/food/list";
+        }
+        if (food.getPrice() == 0) {
+            messageError += "Price can not equal 0";
+            redirectAttributes.addFlashAttribute("messageError", messageError);
             return "redirect:/admin/food/list";
         }
         String image = StringUtils.cleanPath(multipartFile.getOriginalFilename());
         Food savedFood = foodService.createDrink(food, image);
         String uploadDir = "src/main/resources/static/img/food";
         FileUploadUtil.saveFile(uploadDir, image, multipartFile);
+        redirectAttributes.addFlashAttribute("messageSuccess", "Add new product success");
 
         return "redirect:/admin/food/list";
     }
@@ -71,9 +97,11 @@ public class AdminFoodController {
     @GetMapping("/details/{id}")
     public String detailProduct(@PathVariable int id, Model model) {
         Food food = foodService.getFoodById(id);
+        Food foodModal = food;
         List<FoodCategory> foodCategories = foodCategoryService.getFoodCategories();
         model.addAttribute("categories", foodCategories);
         model.addAttribute("food", food);
+        model.addAttribute("foodModal", foodModal);
         return "/admin/products/product-detail";
     }
 
@@ -85,32 +113,34 @@ public class AdminFoodController {
 
     @PostMapping("/update/{id}")
     public String updateFood(@PathVariable int id,
-                             @ModelAttribute Food food,
-                             @RequestParam("image") MultipartFile multipartFile,
+                             @Valid @ModelAttribute("foodModal") Food food,
+                             BindingResult result,
+                             RedirectAttributes redirectAttributes,
+                             @RequestParam(value = "image", required = false) MultipartFile multipartFile,
                              Model model) throws IOException {
-        Food existingFood = foodService.getFoodById(id);
-        if (existingFood == null) {
-            model.addAttribute("errorMessage", "Food item not found");
-            return "redirect:/admin/food/list"; // Redirect to a list page or error page
+        Food foodExist = foodService.getFoodById(id);
+        food.setImages(foodExist.getImages());
+        if (result.hasErrors() || food.getPrice() == 0) {
+            List<FoodCategory> foodCategories = foodCategoryService.getFoodCategories();
+            model.addAttribute("categories", foodCategories);
+            model.addAttribute("food", foodExist);
+            model.addAttribute("foodModal", food);
+            model.addAttribute("showUpdateDrinkModal", true);
+            if (food.getPrice() == 0) {
+                model.addAttribute("messageError", "Price can not be 0");
+            }
+            return "/admin/products/product-detail";
         }
 
-        // Update existingFood with new values
-        existingFood.setName(food.getName());
-        //existingFood.setStatus(food.isStatus());
-        existingFood.setDescription(food.getDescription());
-        existingFood.setFoodCategory(food.getFoodCategory());
-        existingFood.setPrice(food.getPrice());
         String image = StringUtils.cleanPath(multipartFile.getOriginalFilename());
-        if (!image.equals("")) {
-            existingFood.setImages("/static/img/food/" + image);
+        Food existingFood = foodService.updateFood(id, food, image);
 
+        if (!image.isEmpty()) {
             String uploadDir = "src/main/resources/static/img/food";
             FileUploadUtil.saveFile(uploadDir, image, multipartFile);
         }
-        // Save updated Food item
-        foodService.saveFood(existingFood);
 
-        return "redirect:/admin/food/list";
+        return "redirect:/admin/food/details/" + id;
     }
 
     @PostMapping("/update/status/{id}")
@@ -128,12 +158,22 @@ public class AdminFoodController {
     }
 
     @PostMapping("/category/add-new")
-    public String createCategory(@Valid @ModelAttribute FoodCategory foodCategory,
-                                 BindingResult result) {
+    public String createCategory(@Valid @ModelAttribute("category") FoodCategory foodCategory,
+                                 BindingResult result,
+                                 RedirectAttributes redirectAttributes,
+                                 Model model) {
         if (result.hasErrors()) {
+            List<FoodCategory> foodCategories = foodCategoryService.getFoodCategories();
+            model.addAttribute("categories", foodCategories);
+            model.addAttribute("showAddCategoryModal", true);
             return "/admin/products/category";
         }
+        if (foodCategoryService.isCategoryExist(foodCategory.getName())) {
+            redirectAttributes.addFlashAttribute("messageError", "Can not add duplicate category");
+            return "redirect:/admin/food/category";
+        }
         foodCategoryService.createFoodCategory(foodCategory);
+        redirectAttributes.addFlashAttribute("messageSuccess", "Create category success");
         return "redirect:/admin/food/category";
     }
 
@@ -144,10 +184,28 @@ public class AdminFoodController {
     }
 
     @PostMapping("/category/update/{id}")
-    public String updateCategory(@PathVariable int id, @RequestParam("name") String name) {
+    public String updateCategory(@PathVariable int id,
+                                 @Valid @ModelAttribute("category") FoodCategory foodCategory,
+                                 BindingResult result,
+                                 RedirectAttributes redirectAttributes,
+                                 Model model) {
+        if (result.hasErrors()) {
+            List<FoodCategory> foodCategories = foodCategoryService.getFoodCategories();
+            model.addAttribute("categories", foodCategories);
+            model.addAttribute("showUpdateCategoryModal", true);
+            model.addAttribute("cateId", id);
+            return "/admin/products/category";
+        }
         FoodCategory category = foodCategoryService.findById(id);
-        category.setName(name);
-        foodCategoryService.save(category);
+        if (!category.getName().equals(foodCategory.getName())) {
+            if (foodCategoryService.isCategoryExist(foodCategory.getName())) {
+                redirectAttributes.addFlashAttribute("messageError", "Can not add duplicate category");
+                return "redirect:/admin/food/category";
+            }
+            category.setName(foodCategory.getName());
+            foodCategoryService.save(category);
+            redirectAttributes.addFlashAttribute("messageSuccess", "Update category success");
+        }
         return "redirect:/admin/food/category"; // Redirect to the category list or appropriate page
     }
 }

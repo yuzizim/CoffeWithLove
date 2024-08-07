@@ -22,15 +22,15 @@ public class FoodServiceImpl implements FoodService {
     private FoodRepository foodRepository;
 
     @Override
-    public PageFoodResponse getFoodByPage(Boolean status, int page, int size) {
+    public PageFoodResponse getFoodByPage(String search, int categoryId, int page, int size) {
         List<Food> foods = new ArrayList<>();
         Pageable paging = PageRequest.of(page, size);
 
         Page<Food> pageFoods;
-        if (status == null) {
-            pageFoods = foodRepository.findByStatusOrderByStatus(paging);
+        if (categoryId == -1) {
+            pageFoods = foodRepository.findByStatusOrderByStatus(search, paging);
         } else {
-            pageFoods = foodRepository.findByStatus(status, paging);
+            pageFoods = foodRepository.findByStatusOrderByStatusAndSearchAndCategory(search, categoryId, paging);
         }
 
         foods = pageFoods.getContent();
@@ -64,13 +64,16 @@ public class FoodServiceImpl implements FoodService {
     }
 
     @Override
-    public Food updateFood(Food food) {
-        food.setName(food.getName());
-//        food.setStatus(food.isStatus());
-        food.setDescription(food.getDescription());
-        food.setFoodCategory(food.getFoodCategory());
-        food.setPrice(food.getPrice());
-        return foodRepository.save(food);
+    public Food updateFood(int id, Food food, String image) {
+        Food existingFood = getFoodById(id);
+        existingFood.setName(food.getName());
+        existingFood.setDescription(food.getDescription());
+        existingFood.setFoodCategory(food.getFoodCategory());
+        existingFood.setPrice(food.getPrice());
+        if (!image.equals("")) {
+            existingFood.setImages("/static/img/food/" + image);
+        }
+        return foodRepository.save(existingFood);
     }
 
     @Override
@@ -133,5 +136,10 @@ public class FoodServiceImpl implements FoodService {
     public List<FoodReportResponse> getTopProducts(int num) {
         Pageable pageable = PageRequest.of(0, num);
         return foodRepository.getTopProducts(pageable);
+    }
+
+    @Override
+    public boolean checkExistProduct(String name) {
+        return foodRepository.findByName(name) != null;
     }
 }

@@ -41,7 +41,8 @@
 
             </div>
             <div class="col-lg-3 col-6 text-right">
-                <a th:href="@{/staff/manage/cart}" class="btn border">
+                <a th:classappend="${numInCart == 0} ? 'disabled' : ''"
+                   th:href="@{/staff/manage/cart}" class="btn border">
                     <i class="fas fa-shopping-cart text-primary"></i>
                     <span class="badge" th:text="${numInCart}"></span>
                 </a>
@@ -94,7 +95,7 @@
                                     <a th:href="@{/staff/manage/changepass}" class="dropdown-item">Change password</a>
                                 </div>
                             </div>
-<!--                            <a href="contact.html" class="nav-item nav-link">Contact</a>-->
+                            <!--                            <a href="contact.html" class="nav-item nav-link">Contact</a>-->
                         </div>
                         <div class="navbar-nav ml-auto py-0">
                             <a class="nav-item nav-link" th:text="'Welcome ' + ${username}"></a>

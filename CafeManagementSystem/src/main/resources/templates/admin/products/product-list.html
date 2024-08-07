@@ -38,40 +38,73 @@
                         <div class="header">
                             <h2>All Foods</h2>
                         </div>
+                        <div th:if="${messageError}" class="alert alert-danger" role="alert">
+                            <span th:text="${messageError}"></span>
+                        </div>
+                        <div th:if="${messageSuccess}" class="alert alert-success" role="alert">
+                            <span th:text="${messageSuccess}"></span>
+                        </div>
                     </div>
                 </div>
                 <button class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#addDrinkModal">
                     Add New Drink
                 </button>
 
+                <!-- Search and Filter Section -->
+                <form th:action="@{/admin/food/list}" method="get">
+                    <div class="row mt-3">
+                        <div class="col-md-3">
+                            <input type="text" name="search" class="form-control" id="search"
+                                   th:value="${search}"
+                                   placeholder="Search for products...">
+                        </div>
+                        <div class="col-md-3">
+                            <select style="height: 100%" class="form-control" id="categoryFilter" name="categoryId">
+                                <option value="-1" th:selected="${categoryId == -1}">All Categories</option>
+                                <option th:each="category : ${categories}"
+                                        th:selected="${categoryId == category.id}"
+                                        th:value="${category.id}"
+                                        th:text="${category.name}">
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <button type="submit" class="btn btn-primary">Filter</button>
+                        </div>
+                    </div>
+                </form>
+
                 <div class="row mt-3">
                     <!-- Single Product -->
                     <div th:each="food : ${foods}" class="col-md-6 col-lg-4 col-xl-3">
-                        <div class="single-product"
-                             th:style="'background: url(http://localhost:8080' + ${food.images} + ') no-repeat center; background-size: cover; transition: all 0.3s;'">
-                            <div class="part-1">
-                                <span th:if="${!food.status}" class="new">Deleted</span>
-                                <span th:if="${food.status}" class="discount">In sale</span>
-                                <ul>
-                                    <li th:if="${food.status == false}">
-<!--                                        <a href="#"><i class="fa fa-plus-square"></i></a>-->
-                                        <form th:action="@{/admin/food/update/status/{id}(id=${food.id})}" method="post" style="display:inline;">
-                                            <button type="submit" style="border:none; background:none; padding:0;">
-                                                <a href="#"><i class="fa fa-plus-square"></i></a>
+                        <div class="card">
+                            <div class="card-header">
+                                <span th:if="${!food.status}" class="badge bg-secondary">Deleted</span>
+                                <span th:if="${food.status}" class="badge bg-danger">In sale</span>
+                            </div>
+                            <div class="card-body">
+                                <div class="image-container position-relative">
+                                    <img th:src="@{${food.images}}" class="card-img-top" alt="Product Image">
+                                    <a th:href="@{/admin/food/details/{id}(id=${food.id})}"
+                                       class="position-absolute top-0 end-0 m-2">
+                                        <form th:action="@{/admin/food/update/status/{id}(id=${food.id})}" method="post"
+                                              style="display:inline;">
+                                            <button th:if="${food.status == false}" type="submit"
+                                                    style="border:none; background:none; padding:0;">
+                                                <i class="mdi mdi-plus-circle-outline text-primary"
+                                                   style="font-size: 1.5rem;"></i>
                                             </button>
                                         </form>
-                                    </li>
-<!--                                    <li><a href="#"><i class="fa fa-minus-square"></i></a></li>-->
-                                </ul>
-                            </div>
-                            <a th:href="@{/admin/food/details/{id}(id=${food.id})}">
-                                <div class="part-2">
-                                    <h3 class="product-title" th:text="${food.name}"></h3>
-                                    <h4 class="product-price" th:text="${food.price}"></h4>
+                                    </a>
                                 </div>
-                            </a>
+                                <h5 class="card-title mt-3">
+                                    <a th:href="@{/admin/food/details/{id}(id=${food.id})}" th:text="${food.name}"></a>
+                                </h5>
+                                <p class="card-text" th:text="'$' + ${food.price}"></p>
+                            </div>
                         </div>
                     </div>
+                    <!-- Single Product ends -->
                 </div>
             </div>
         </section>
@@ -83,16 +116,79 @@
             <ul class="pagination">
                 <!-- Previous Link -->
                 <li class="page-item" th:classappend="${pageNumber == 0} ? 'disabled'">
-                    <a class="page-link" th:href="@{|list?page=${pageNumber - 1}|}" tabindex="-1">Previous</a>
+                    <a class="page-link"
+                       th:if="${search.equals('') and categoryId == -1}"
+                       th:href="@{|list?page=${pageNumber - 1}|}"
+                       tabindex="-1">Previous</a>
+                    <a class="page-link"
+                       th:if="${search.equals('') and categoryId != -1}"
+                       th:href="@{|list?categoryId=${categoryId}&page=${pageNumber - 1}|}"
+                       tabindex="-1">
+                        Previous
+                    </a>
+                    <a class="page-link"
+                       th:if="${!search.equals('') and categoryId == -1}"
+                       th:href="@{|list?search=${search}&page=${pageNumber - 1}|}"
+                       tabindex="-1">
+                        Previous
+                    </a>
+                    <a class="page-link"
+                       th:if="${!search.equals('') and categoryId != -1}"
+                       th:href="@{|list?search=${search}&categoryId=${categoryId}&page=${pageNumber - 1}|}"
+                       tabindex="-1">
+                        Previous
+                    </a>
                 </li>
                 <!-- Page Numbers -->
                 <li class="page-item" th:each="i : ${#numbers.sequence(0, pageSize - 1)}"
                     th:classappend="${i == pageNumber} ? 'active'">
-                    <a class="page-link" th:text="${i + 1}" th:href="@{|list?page=${i}|}"></a>
+                    <a class="page-link" th:text="${i + 1}"
+                       th:if="${search.equals('') and categoryId == -1}"
+                       th:href="@{|list?page=${i}|}"
+                       tabindex="-1">
+                    </a>
+                    <a class="page-link" th:text="${i + 1}"
+                       th:if="${search.equals('') and categoryId != -1}"
+                       th:href="@{|list?categoryId=${categoryId}&page=${i}|}"
+                       tabindex="-1">
+                    </a>
+                    <a class="page-link" th:text="${i + 1}"
+                       th:if="${!search.equals('') and categoryId == -1}"
+                       th:href="@{|list?search=${search}&page=${i}|}"
+                       tabindex="-1">
+                    </a>
+                    <a class="page-link" th:text="${i + 1}"
+                       th:if="${!search.equals('') and categoryId != -1}"
+                       th:href="@{|list?search=${search}&categoryId=${categoryId}&page=${i}|}"
+                       tabindex="-1">
+                    </a>
                 </li>
                 <!-- Next Link -->
                 <li class="page-item" th:classappend="${pageNumber + 1 == pageSize} ? 'disabled'">
-                    <a class="page-link" th:href="@{|list?page=${pageNumber + 1}|}">Next</a>
+                    <a class="page-link"
+                       th:if="${search.equals('') and categoryId == -1}"
+                       th:href="@{|list?page=${pageNumber + 1}|}"
+                       tabindex="-1">
+                        Next
+                    </a>
+                    <a class="page-link"
+                       th:if="${search.equals('') and categoryId != -1}"
+                       th:href="@{|list?categoryId=${categoryId}&page=${pageNumber + 1}|}"
+                       tabindex="-1">
+                        Next
+                    </a>
+                    <a class="page-link"
+                       th:if="${!search.equals('') and categoryId == -1}"
+                       th:href="@{|list?search=${search}&page=${pageNumber + 1}|}"
+                       tabindex="-1">
+                        Next
+                    </a>
+                    <a class="page-link"
+                       th:if="${!search.equals('') and categoryId != -1}"
+                       th:href="@{|list?search=${search}&categoryId=${categoryId}&page=${pageNumber + 1}|}"
+                       tabindex="-1">
+                        Next
+                    </a>
                 </li>
             </ul>
         </nav>
@@ -103,7 +199,7 @@
 <!-- Add Drink Modal -->
 <div class="modal fade" id="addDrinkModal" tabindex="-1" aria-labelledby="addDrinkModalLabel" aria-hidden="true"
      th:classappend="${showAddDrinkModal} ? 'show' : ''"
-     th:style="${showAddDrinkModal} ? 'display:block' : 'display:none'">
+     th:style="${showAddDrinkModal} ? 'display:block;' : 'display:none;'">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -113,28 +209,24 @@
             <div class="modal-body">
                 <form id="addDrinkForm" method="post" enctype="multipart/form-data" th:object="${food}"
                       th:action="@{/admin/food/add-new}">
+                    <input type="hidden" name="search" th:value="${search}"/>
+                    <input type="hidden" name="categoryId" th:value="${categoryId}"/>
+                    <input type="hidden" name="page" th:value="${pageNumber}"/>
                     <div class="mb-3">
                         <label for="drinkName" class="form-label">Name</label>
-                        <input type="text" class="form-control" id="drinkName" name="name" required>
-                        <div class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+                        <div class="text-danger" th:errors="*{name}"></div>
+                        <input type="text" class="form-control" id="drinkName" name="name" th:field="*{name}" required>
                     </div>
                     <div class="mb-3">
                         <label for="category">Category</label>
-                        <select class="form-control" id="category" name="foodCategory">
+                        <div class="text-danger" th:errors="*{foodCategory}"></div>
+                        <select class="form-control" id="category" name="foodCategory" th:field="*{foodCategory}" required>
                             <option value="" disabled selected>Select Category</option>
-                            <option th:each="category : ${categories}" th:value="${category.id}"
+                            <option th:each="category : ${categories}"
+                                    th:value="${category.id}"
                                     th:text="${category.name}"></option>
                         </select>
-                        <div class="text-danger" th:if="${#fields.hasErrors('foodCategory')}"
-                             th:errors="*{foodCategory}"></div>
                     </div>
-                    <!--                    <div class="mb-3">-->
-                    <!--                        <label for="drinkStatus" class="form-label">Status</label>-->
-                    <!--                        <select class="form-select" id="drinkStatus" name="status" required>-->
-                    <!--                            <option value="true">In menu</option>-->
-                    <!--                            <option value="false">Not in menu</option>-->
-                    <!--                        </select>-->
-                    <!--                    </div>-->
                     <div class="mb-3">
                         <label for="drinkImage" class="form-label">Image</label>
                         <input type="file" class="form-control" id="drinkImage" name="image"
@@ -146,8 +238,9 @@
                     </div>
                     <div class="mb-3">
                         <label for="drinkPrice" class="form-label">Price</label>
-                        <input type="number" class="form-control" id="drinkPrice" name="price" required>
-                        <div class="text-danger" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></div>
+                        <div class="text-danger" th:errors="*{price}"></div>
+                        <input type="number" min="0" class="form-control" id="drinkPrice" name="price" th:field="*{price}"
+                               required>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -178,5 +271,26 @@
 <script th:src="@{/static/assets/js/typeahead.js}"></script>
 <script th:src="@{/static/assets/js/select2.js}"></script>
 <!-- End custom js for this page-->
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    document.addEventListener("DOMContentLoaded", function () {
+        var showModal = /*[[${showAddDrinkModal}]]*/ false;
+        if (showModal) {
+            var addDrinkModal = new bootstrap.Modal(document.getElementById('addDrinkModal'));
+            addDrinkModal.show();
+        }
+
+        document.querySelectorAll('[data-bs-dismiss="modal"]').forEach(function (element) {
+            element.addEventListener('click', function () {
+                var modalEl = document.getElementById('addDrinkModal');
+                var modal = bootstrap.Modal.getInstance(modalEl);
+                modal.hide();
+            });
+        });
+    });
+    /*]]>*/
+</script>
+
 </body>
 </html>

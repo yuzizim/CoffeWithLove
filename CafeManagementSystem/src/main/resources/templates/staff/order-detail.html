@@ -122,9 +122,9 @@
                     <div class="card-header bg-secondary border-0">
                         <h4 class="font-weight-semi-bold m-0">Customer Information</h4>
                     </div>
-                    <div th:if="${messageError}" class="alert alert-danger" role="alert">
-                        <span th:text="${messageError}"></span>
-                    </div>
+                    <!--                    <div th:if="${messageError}" class="alert alert-danger" role="alert">-->
+                    <!--                        <span th:text="${messageError}"></span>-->
+                    <!--                    </div>-->
                     <div class="card-body">
                         <div class="d-flex justify-content-between mb-3 pt-1">
                             <p style="color: red" th:errors="*{customerName}"></p>
@@ -142,7 +142,8 @@
                         </div>
                         <div class="d-flex justify-content-between mb-3 pt-1">
                             <h6 class="font-weight-medium">Order Time</h6>
-                            <h6 class="font-weight-medium" th:text="${order.orderTime}"></h6>
+                            <h6 class="font-weight-medium"
+                                th:text="${#temporals.format(order.orderTime, 'dd/MM/yyyy HH:mm:ss')}"></h6>
                         </div>
                         <div class="d-flex justify-content-between mb-3 pt-1">
                             <h6 class="font-weight-medium">Note</h6>

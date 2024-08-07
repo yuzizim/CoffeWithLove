@@ -31,6 +31,10 @@ public class StaffCartController {
         }
         List<Cart> carts = cartService.getCartByUser(username);
 
+        if (carts.size() == 0) {
+            return "redirect:/staff/manage/menu";
+        }
+
         double totalMoney = 0;
         for (Cart cart : carts) {
             totalMoney += cart.getFood().getPrice() * cart.getQuantity();

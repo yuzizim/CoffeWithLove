@@ -59,7 +59,6 @@
                                             <td th:text="${table.status ? 'Not Empty' : 'Is Empty'}"></td>
                                             <td>
                                                 <!-- Update Button -->
-                                                <!-- Update Button -->
                                                 <button class="btn btn-primary btn-sm update-btn"
                                                         data-bs-toggle="modal"
                                                         th:attr="data-bs-target='#' + 'updateCategoryModal' + ${table.id}">
@@ -126,7 +125,9 @@
 
             <!-- Add Category Modal -->
             <div class="modal fade" id="addCategoryModal" tabindex="-1" aria-labelledby="addCategoryModalLabel"
-                 aria-hidden="true">
+                 aria-hidden="true"
+                 th:classappend="${showAddTableModal} ? 'show' : ''"
+                 th:style="${showAddTableModal} ? 'display:block;' : 'display:none;'">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -186,5 +187,24 @@
 <!-- endinject -->
 <!-- Custom js for this page-->
 <!-- End custom js for this page-->
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    document.addEventListener("DOMContentLoaded", function () {
+        var showModal = /*[[${showAddTableModal}]]*/ false;
+        if (showModal) {
+            var addTableModal = new bootstrap.Modal(document.getElementById('addCategoryModal'));
+            addTableModal.show();
+        }
+
+        document.querySelectorAll('[data-bs-dismiss="modal"]').forEach(function (element) {
+            element.addEventListener('click', function () {
+                var modalEl = document.getElementById('addCategoryModal');
+                var modal = bootstrap.Modal.getInstance(modalEl);
+                modal.hide();
+            });
+        });
+    });
+    /*]]>*/
+</script>
 </body>
 </html>
