@@ -165,6 +165,7 @@ public class AdminFoodController {
         if (result.hasErrors()) {
             List<FoodCategory> foodCategories = foodCategoryService.getFoodCategories();
             model.addAttribute("categories", foodCategories);
+            model.addAttribute("showAddCategoryModal", true);
             return "/admin/products/category";
         }
         if (foodCategoryService.isCategoryExist(foodCategory.getName())) {
@@ -191,6 +192,8 @@ public class AdminFoodController {
         if (result.hasErrors()) {
             List<FoodCategory> foodCategories = foodCategoryService.getFoodCategories();
             model.addAttribute("categories", foodCategories);
+            model.addAttribute("showUpdateCategoryModal", true);
+            model.addAttribute("cateId", id);
             return "/admin/products/category";
         }
         FoodCategory category = foodCategoryService.findById(id);
