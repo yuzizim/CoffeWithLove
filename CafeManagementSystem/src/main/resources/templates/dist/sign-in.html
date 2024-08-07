@@ -17,8 +17,8 @@
             padding: 10px 15px;
             font-size: 16px;
             color: #fff;
-            background-color: #bc7100; //007bff
-            border: none;
+            background-color: #bc7100;
+        / / 007 bff border: none;
             border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.3s ease;
@@ -26,7 +26,8 @@
 
         /* Hover effect for the button */
         #loginBtn:hover {
-            background-color: #834b01; //Mã màu gốc 0056b3
+            background-color: #834b01;
+        / / Mã màu gốc 0056 b3
         }
     </style>
 </head>
@@ -43,82 +44,12 @@
                 <li class="menu-nav__item">
                     <a href="index.html" class="logo menu-nav__link">
                         <img th:src="@{/static/img/favicon.png}"/>
-                        <span class="logo-first">Drip</span>
-                        <span class="logo-last">Cafe</span>
-                    </a>
-                </li>
-                <li class="menu-nav__item">
-                    <a th:href="sign-in.html" class="sign-in menu-nav__link active">
-                        <i class="fa fa-user" aria-hidden="true"></i>
-                        Sign In
-                    </a>
-                    <span class="menu-nav__link" id="slash">/</span>
-                    <a th:href="sign-up.html" class="sign-up menu-nav__link">
-                        Sign Up
-                    </a>
-                </li>
-                <br/>
-                <li class="menu-nav__item">
-                    <a href="index.html" class="menu-nav__link">
-                        Home
-                    </a>
-                </li>
-                <li class="menu-nav__item">
-                    <a th:href="menu.html" class="menu-nav__link">
-                        Menu
-                    </a>
-                </li>
-                <li class="menu-nav__item">
-                    <a th:href="services.html" class="menu-nav__link">
-                        Services
-                    </a>
-                </li>
-                <li class="menu-nav__item">
-                    <a th:href="contact.html" class="menu-nav__link">
-                        Contact
-                    </a>
-                </li>
-                <li class="menu-nav__item">
-                    <a href="#!" class="menu-nav__link cart__openBtn">
-                        <i class="fa fa-cart-plus" aria-hidden="true"></i>
+                        <span class="logo-first">E</span>
+                        <span class="logo-last">Coffee</span>
                     </a>
                 </li>
             </ul>
         </nav>
-    </div>
-    <!-- Shopping Cart -->
-    <div class="cart-overlay">
-        <div class="cart">
-            <div class="cart__closeBtn">
-                <i class="fas fa-window-close"></i>
-            </div>
-            <h2>
-                <i class="fa fa-cart-arrow-down"></i>
-                <span class="span-primary">Shopping</span> Cart
-                <i class="fa fa-cart-arrow-down"></i>
-            </h2>
-
-            <!-- JS will add items here -->
-            <div class="item1-display"></div>
-            <div class="item2-display"></div>
-            <div class="item3-display"></div>
-            <div class="item4-display"></div>
-            <div class="item5-display"></div>
-            <div class="item6-display"></div>
-            <div class="item7-display"></div>
-            <div class="item8-display"></div>
-            <div class="item9-display"></div>
-            <div class="item10-display"></div>
-            <div class="item11-display"></div>
-            <div class="item12-display"></div>
-            <div class="total">
-                <br/>
-                <br/>
-                Your Shopping Cart is empty. <br/>
-                Add items to cart by hovering over/tapping on the images of products
-                on the Menu page.
-            </div>
-        </div>
     </div>
 </header>
 
@@ -153,7 +84,6 @@
                 </div>
                 <a th:href="@{forgotPassword}" class="menu-nav__link" style="color: black">Forgot password?</a>
             </div>
-            <div class="copyright">&copy; Copyright 2022</div>
         </div>
     </section>
 </main>
