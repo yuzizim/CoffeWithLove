@@ -129,7 +129,9 @@
 
             <!-- Add Category Modal -->
             <div class="modal fade" id="addCategoryModal" tabindex="-1" aria-labelledby="addCategoryModalLabel"
-                 aria-hidden="true">
+                 aria-hidden="true"
+                 th:classappend="${showAddCategoryModal} ? 'show' : ''"
+                 th:style="${showAddCategoryModal} ? 'display:block;' : 'display:none;'">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -186,5 +188,33 @@
 <!-- endinject -->
 <!-- Custom js for this page-->
 <!-- End custom js for this page-->
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    document.addEventListener("DOMContentLoaded", function () {
+        var showModal = /*[[${showAddCategoryModal}]]*/ false;
+        var showUpdateCategoryModal = /*[[${showUpdateCategoryModal}]]*/ false;
+        var cateId = /*[[${cateId}]]*/;
+        if (showModal) {
+            var addCategoryModal = new bootstrap.Modal(document.getElementById('updateCategoryModal' + cateId));
+            addCategoryModal.show();
+        }
+
+        if (showUpdateCategoryModal) {
+            var updateCategoryModal = new bootstrap.Modal(document.getElementById('updateCategoryModal' + cateId));
+            updateCategoryModal.show();
+        }
+
+        document.querySelectorAll('[data-bs-dismiss="modal"]').forEach(function (element) {
+            element.addEventListener('click', function () {
+                var modalEl = document.getElementById('addCategoryModal');
+                var modalEl = document.getElementById('updateCategoryModal' + cateId);
+                var modal = bootstrap.Modal.getInstance(modalEl);
+                modal.hide();
+            });
+        });
+    });
+    /*]]>*/
+</script>
 </body>
 </html>
