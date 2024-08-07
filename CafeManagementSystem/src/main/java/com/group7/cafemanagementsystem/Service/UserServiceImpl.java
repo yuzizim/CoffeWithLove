@@ -139,8 +139,17 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    public boolean passwordMatches(String rawPassword, String encodedPassword) {
+        return passwordEncoder.matches(rawPassword, encodedPassword);
+    }
+
     @Override
     public List<Account> findByRole(String role) {
         return userRepository.findAccountByRole(role);
+    }
+
+    @Override
+    public Account findByUserNameForChangePass(String username) {
+        return userRepository.findByUserName(username).get();
     }
 }

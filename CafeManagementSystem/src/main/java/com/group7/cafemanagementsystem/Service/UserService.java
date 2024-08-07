@@ -19,4 +19,6 @@ public interface UserService {
     boolean findByUserName(String username);
 
     List<Account> findByRole(String role);
+
+    Account findByUserNameForChangePass(String username);
 }

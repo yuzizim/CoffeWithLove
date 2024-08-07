@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <title>ECoffee - Revenue</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="Free HTML Templates" name="keywords">
+    <meta content="Free HTML Templates" name="description">
+
+    <!-- Favicon -->
+    <link th:href="@{/static/img/favicon.png}" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap"
+          rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link th:href="@{/static/lib/owlcarousel/assets/owl.carousel.min.css}" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link th:href="@{/static/css/style.css}" rel="stylesheet">
+    <style>
+        .pass_show{position: relative}
+
+        .pass_show .ptxt {
+
+            position: absolute;
+
+            top: 50%;
+
+            right: 10px;
+
+            z-index: 1;
+
+            color: #f36c01;
+
+            margin-top: -10px;
+
+            cursor: pointer;
+
+            transition: .3s ease all;
+
+        }
+
+        .pass_show .ptxt:hover{color: #333333;}
+    </style>
+</head>
+
+<body>
+
+<!-- Navbar Start -->
+<div th:insert="~{staff/navbar :: navbar}"></div>
+<!-- Navbar End -->
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <h2>Change Password</h2>
+            <form th:action="@{/staff/manage/changepass}" th:object="${changePasswordRequest}" method="post">
+                <div class="form-group">
+                    <label for="currentPassword">Current Password</label>
+                    <input type="password" id="currentPassword" th:field="*{currentPassword}" class="form-control" placeholder="Current Password" required>
+                </div>
+                <div class="form-group">
+                    <label for="newPassword">New Password</label>
+                    <input type="password" id="newPassword" th:field="*{newPassword}" class="form-control" placeholder="New Password" required>
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm New Password</label>
+                    <input type="password" id="confirmPassword" th:field="*{confirmPassword}" class="form-control" placeholder="Confirm New Password" required>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Change Password</button>
+                </div>
+                <div th:if="${error}" class="alert alert-danger" role="alert">
+                    <p th:text="${error}"></p>
+                </div>
+            </form>
+        </div>
+    </div>
+</div><!-- Footer Start -->
+<div th:insert="~{staff/footer :: footer}"></div>
+<!-- Footer End -->
+
+
+<!-- Back to Top -->
+<a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
+
+
+<!-- JavaScript Libraries -->
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+<script th:src="@{/static/lib/easing/easing.min.js}"></script>
+<script th:src="@{/static/lib/owlcarousel/owl.carousel.min.js}"></script>
+
+<!-- Contact Javascript File -->
+<script th:src="@{/static/mail/jqBootstrapValidation.min.js}"></script>
+<script th:src="@{/static/mail/contact.js}"></script>
+
+<!-- Template Javascript -->
+<script th:src="@{/static/js/main.js}"></script>
+
+<!--<script th:src="@{/static/js/main.js}"></script>-->
+</body>
+
+</html>

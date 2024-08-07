@@ -23,7 +23,6 @@ public class StaffProfileController {
     private final UserService userService;
     private final UserRepository userRepository;
 
-
     @GetMapping
     public String showProfile(Model model) {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -38,7 +37,7 @@ public class StaffProfileController {
         return "redirect:/auth/login";
     }
 
-    @PostMapping("/staff/manage/profile")
+    @PostMapping
     public String updateProfile(@ModelAttribute Account account, RedirectAttributes redirectAttributes) {
         Optional<Account> existingAccountOpt = userRepository.findById(account.getID());
         if (existingAccountOpt.isPresent()) {
@@ -47,7 +46,6 @@ public class StaffProfileController {
             existingAccount.setFullName(account.getFullName());
             existingAccount.setEmail(account.getEmail());
             existingAccount.setPhoneNumber(account.getPhoneNumber());
-            existingAccount.setAvatar(account.getAvatar());
             userRepository.save(existingAccount);
             redirectAttributes.addFlashAttribute("success", "Profile updated successfully.");
             return "redirect:/staff/manage/profile";

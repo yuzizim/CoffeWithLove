@@ -130,7 +130,7 @@ public class AuthController {
         String output = "";
         Account user = userRepository.findByEmail(forgotPassRequest.getEmail());
         if (user != null) {
-            output = userServiceImpl.sendMail(user);
+            output = userServiceImpl.sendMailReset(user);
         }
         if (output.equals("Success")) {
             return "redirect:/auth/login?success";
@@ -141,14 +141,20 @@ public class AuthController {
     }
 
     @GetMapping("/reset-password/{token}")
-    public String resetPassword(@PathVariable String token, Model model){
+    public String resetPassword(@PathVariable String token, Model model, RedirectAttributes redirectAttributes){
         Optional<RefreshToken> reset = refreshTokenRepository.findByToken(token);
-        if(reset!=null&& userServiceImpl.hasExpiredToken(reset.get().getExpiryDate()));{
-            model.addAttribute("email",reset.get().getAccount().getEmail());
+        if (reset.isPresent() && !userServiceImpl.hasExpiredToken(reset.get().getExpiryDate())) {
+            model.addAttribute("email", reset.get().getAccount().getEmail());
             return "dist/reset-password";
         }
+        if (reset.isPresent() && userServiceImpl.hasExpiredToken(reset.get().getExpiryDate())) {
+            redirectAttributes.addFlashAttribute("error", "Token is expired! Please try again.");
+        } else {
+            redirectAttributes.addFlashAttribute("error", "Something went wrong! Please try again.");
+        }
+        return "redirect:/auth/forgotPassword";
     }
-    //Error set new password
+
     @PostMapping("/reset-password/{token}")
     public String resetPassword(Model model, @ModelAttribute ForgotPassRequest forgotPassRequest) {
         Account user = userRepository.findByEmail(forgotPassRequest.getEmail());
