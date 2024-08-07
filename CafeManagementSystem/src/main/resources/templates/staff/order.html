@@ -93,7 +93,7 @@
                     <td th:text="${order.id}"></td>
                     <td th:text="${order.customerName}"></td>
                     <td th:text="${order.phoneNumber}"></td>
-                    <td th:text="${order.orderTime}"></td>
+                    <td th:text="${#temporals.format(order.orderTime, 'dd/MM/yyyy HH:mm:ss')}"></td>
                     <td th:text="${order.tableFood.name}"></td>
                     <td th:text="'$' + ${order.totalPrice}"></td>
                     <td>

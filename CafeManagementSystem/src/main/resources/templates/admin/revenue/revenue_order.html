@@ -86,7 +86,7 @@
                                             <td th:text="${iter.count}"></td>
                                             <td th:text="${order.customerName}"></td>
                                             <td th:text="${order.phoneNumber}"></td>
-                                            <td th:text="${order.orderTime}"></td>
+                                            <td th:text="${#temporals.format(order.orderTime, 'dd/MM/yyyy HH:mm:ss')}"></td>
                                             <td th:text="'$' + ${order.totalPrice}"></td>
                                             <td th:text="${order.staff.fullName}"></td>
                                             <td>
@@ -96,68 +96,6 @@
                                                     Detail
                                                 </button>
                                             </td>
-
-                                            <!-- Modal -->
-                                            <!--                                            <div class="modal fade" th:id="'orderDetailsModal' + ${order.id}"-->
-                                            <!--                                                 tabindex="-1"-->
-                                            <!--                                                 aria-labelledby="orderDetailsModalLabel" aria-hidden="true">-->
-                                            <!--                                                <div class="modal-dialog modal-lg">-->
-                                            <!--                                                    <div class="modal-content">-->
-                                            <!--                                                        <div class="modal-header">-->
-                                            <!--                                                            <h5 class="modal-title" id="orderDetailsModalLabel">Order-->
-                                            <!--                                                                Details</h5>-->
-                                            <!--                                                            <button type="button" class="btn-close"-->
-                                            <!--                                                                    data-bs-dismiss="modal" aria-label="Close"></button>-->
-                                            <!--                                                        </div>-->
-                                            <!--                                                        <div class="modal-body">-->
-                                            <!--                                                            <div class="form-group">-->
-                                            <!--                                                                <label>Customer Name:</label>-->
-                                            <!--                                                                <p id="customerName"></p>-->
-                                            <!--                                                            </div>-->
-                                            <!--                                                            <div class="form-group">-->
-                                            <!--                                                                <label>Phone Number:</label>-->
-                                            <!--                                                                <p id="phoneNumber"></p>-->
-                                            <!--                                                            </div>-->
-                                            <!--                                                            <div class="form-group">-->
-                                            <!--                                                                <label>Order Time:</label>-->
-                                            <!--                                                                <p id="orderTime"></p>-->
-                                            <!--                                                            </div>-->
-                                            <!--                                                            <div class="form-group">-->
-                                            <!--                                                                <label>Table Name:</label>-->
-                                            <!--                                                                <p id="tableName"></p>-->
-                                            <!--                                                            </div>-->
-                                            <!--                                                            <div class="form-group">-->
-                                            <!--                                                                <label>Products:</label>-->
-                                            <!--                                                                <table class="table">-->
-                                            <!--                                                                    <thead>-->
-                                            <!--                                                                    <tr>-->
-                                            <!--                                                                        <th>Name</th>-->
-                                            <!--                                                                        <th>Quantity</th>-->
-                                            <!--                                                                        <th>Price</th>-->
-                                            <!--                                                                    </tr>-->
-                                            <!--                                                                    </thead>-->
-                                            <!--                                                                    <tbody id="productList">-->
-                                            <!--                                                                    <tr>-->
-                                            <!--                                                                        <td>1</td>-->
-                                            <!--                                                                        <td>1</td>-->
-                                            <!--                                                                        <td>1</td>-->
-                                            <!--                                                                    </tr>-->
-                                            <!--                                                                    </tbody>-->
-                                            <!--                                                                </table>-->
-                                            <!--                                                            </div>-->
-                                            <!--                                                            <div class="form-group">-->
-                                            <!--                                                                <label>Total Price:</label>-->
-                                            <!--                                                                <p id="totalPrice"></p>-->
-                                            <!--                                                            </div>-->
-                                            <!--                                                            <div class="form-group">-->
-                                            <!--                                                                <label>Created By:</label>-->
-                                            <!--                                                                <p id="createdBy"></p>-->
-                                            <!--                                                            </div>-->
-                                            <!--                                                        </div>-->
-                                            <!--                                                    </div>-->
-                                            <!--                                                </div>-->
-                                            <!--                                            </div>-->
-                                            <!-- Modal ends-->
                                         </tr>
                                         <tr class="table-info" style="font-weight: bold">
                                             <td></td>
@@ -210,7 +148,7 @@
                     </div>
                     <div class="form-group">
                         <label style="font-weight: bold">Order Time:</label>
-                        <p th:text="${order.orderTime}"></p>
+                        <p th:text="${#temporals.format(order.orderTime, 'dd/MM/yyyy HH:mm:ss')}"></p>
                     </div>
                     <div class="form-group">
                         <label style="font-weight: bold">Table Name:</label>
