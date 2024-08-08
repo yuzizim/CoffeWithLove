@@ -1,6 +1,7 @@
 package com.group7.cafemanagementsystem.Service;
 
 import com.group7.cafemanagementsystem.Repository.OrderDetailRepository;
+import com.group7.cafemanagementsystem.Repository.OrderTableRepository;
 import com.group7.cafemanagementsystem.model.Cart;
 import com.group7.cafemanagementsystem.model.Food;
 import com.group7.cafemanagementsystem.model.OrderDetail;
@@ -16,10 +17,18 @@ public class OrderDetailServiceImpl implements OrderDetailService {
     private OrderDetailRepository orderDetailRepository;
     private OrderTableService orderTableService;
     private FoodService foodService;
+    private OrderTableRepository orderTableRepository;
 
     @Override
     public void deleteFoodFromOrder(int foodId, int orderId) {
         orderDetailRepository.deleteByFood_IdAndOrderTableId(foodId, orderId);
+        OrderTable order = orderTableService.findById(orderId);
+        double price = 0;
+        for (OrderDetail orderDetail : order.getOrderDetails()) {
+            price += orderDetail.getFood().getPrice() * orderDetail.getQuantity();
+        }
+        order.setTotalPrice(price);
+        orderTableRepository.save(order);
     }
 
     @Override
@@ -64,6 +73,7 @@ public class OrderDetailServiceImpl implements OrderDetailService {
             orderDetail.setQuantity(1);
             orderDetailRepository.save(orderDetail);
         }
-
+        order.setTotalPrice(order.getTotalPrice() + product.getPrice());
+        orderTableRepository.save(order);
     }
 }
