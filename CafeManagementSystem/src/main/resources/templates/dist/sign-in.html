@@ -33,25 +33,7 @@
 </head>
 
 <body>
-<header>
-    <div class="second-header">
-        <div class="menu-btn">
-            <span class="menu-btn__burger"></span>
-        </div>
-
-        <nav class="nav">
-            <ul class="menu-nav">
-                <li class="menu-nav__item">
-                    <a href="index.html" class="logo menu-nav__link">
-                        <img th:src="@{/static/img/favicon.png}"/>
-                        <span class="logo-first">E</span>
-                        <span class="logo-last">Coffee</span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
-    </div>
-</header>
+<div th:insert="~{dist/navbar :: navbar}" th:with="carts=${carts}"></div>
 
 <main>
     <section class="sign-in">
