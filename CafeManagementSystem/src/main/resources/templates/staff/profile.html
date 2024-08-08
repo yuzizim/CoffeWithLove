@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-
 <head>
     <meta charset="utf-8">
     <title>ECoffee - Profile</title>
@@ -13,8 +12,7 @@
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap"
-          rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
@@ -26,7 +24,11 @@
     <link th:href="@{/static/css/style.css}" rel="stylesheet">
     <style>
         body { margin-top: 20px; background-color: #f2f6fc; color: #69707a; }
-        .img-account-profile { height: 10rem; }
+        .img-account-profile { height: 10rem;
+            width: 10rem;
+            object-fit: cover;
+            max-width: 100%;
+            max-height: 100%;}
         .rounded-circle { border-radius: 50% !important; }
         .card { box-shadow: 0 0.15rem 1.75rem 0 rgb(33 40 50 / 15%); }
         .card .card-header { font-weight: 500; }
@@ -55,11 +57,9 @@
                 <div class="card-header">Profile Picture</div>
                 <div class="card-body text-center">
                     <!-- Profile picture image-->
-                    <img class="img-account-profile rounded-circle mb-2" th:src="@{../../static/img/avatar/{filename}(filename=${account.avatar})}" alt="">
+                    <img class="img-account-profile rounded-circle mb-2" id="profilePicture" th:src="@{${account.avatar}}" alt="">
                     <!-- Profile picture help block-->
                     <div class="small font-italic text-muted mb-4">JPG or PNG no larger than 5 MB</div>
-                    <!-- Profile picture upload button-->
-                    <input type="file" class="form-control" id="avatar" name="avatar">
                 </div>
             </div>
         </div>
@@ -68,41 +68,47 @@
             <div class="card mb-4">
                 <div class="card-header">Account Details</div>
                 <div class="card-body">
-                    <form th:action="@{/staff/manage/profile}" th:object="${account}" method="post">
+                    <form th:action="@{/staff/manage/profile}" th:object="${request}" method="post" enctype="multipart/form-data">
                         <!-- Form Group (username)-->
                         <div class="mb-3">
                             <label class="small mb-1" for="inputUsername">Username</label>
-                            <input class="form-control" id="inputUsername" type="text" th:value="${account.userName}" readonly>
+                            <input class="form-control" id="inputUsername" type="text" th:field="*{userName}" readonly>
                         </div>
                         <!-- Form Row-->
                         <div class="row gx-3 mb-3">
                             <!-- Form Group (full name)-->
                             <div class="col-md-6">
                                 <label class="small mb-1" for="inputFullName">Full name</label>
-                                <input class="form-control" id="inputFullName" type="text" th:value="${account.fullName}" name="fullName" placeholder="Enter your full name">
+                                <input class="form-control" id="inputFullName" pattern="[A-Za-z\s]+" title="Full name must only contain letters (A-Z) and spaces" type="text" th:field="*{fullName}" placeholder="Enter your full name">
                             </div>
                             <div class="col-md-6">
                                 <label class="small mb-1" for="role">Role</label>
-                                <input class="form-control" id="role" type="text" th:value="${account.role}" readonly>
+                                <input class="form-control" id="role" type="text" th:field="*{role}" readonly>
                             </div>
                         </div>
                         <!-- Form Group (email address)-->
                         <div class="mb-3">
                             <label class="small mb-1" for="inputEmailAddress">Email address</label>
-                            <input class="form-control" id="inputEmailAddress" type="email" th:value="${account.email}" readonly>
+                            <input class="form-control" id="inputEmailAddress" type="email" th:field="*{email}" readonly>
                         </div>
                         <!-- Form Row-->
                         <div class="row gx-3 mb-3">
                             <!-- Form Group (phone number)-->
                             <div class="col-md-6">
                                 <label class="small mb-1" for="inputPhone">Phone number</label>
-                                <input class="form-control" id="inputPhone" type="tel" th:value="${account.phoneNumber}" name="phoneNumber" placeholder="Enter your phone number">
+                                <input class="form-control" id="inputPhone" pattern="\d{10}" title="Phone number must be 10 digits" type="tel" th:field="*{phoneNumber}" placeholder="Enter your phone number">
                             </div>
                             <!-- Form Group (status)-->
                             <div class="col-md-6">
                                 <label class="small mb-1" for="status">Status</label>
                                 <input class="form-control" id="status" type="text" th:value="${account.status ? 'Active' : 'Inactive'}" readonly>
                             </div>
+                        </div>
+                        <!-- Profile picture upload button-->
+                        <div class="mb-3">
+                            <label class="small mb-1" for="avatar">Profile Picture</label>
+                            <input type="file" class="form-control" id="avatar" name="avatar"
+                                   accept="image/png, image/jpeg" onchange="previewImage()">
                         </div>
                         <!-- Save changes button-->
                         <button class="btn btn-primary" type="submit">Save changes</button>
@@ -131,6 +137,21 @@
 
 <!-- Template Javascript -->
 <!--<script th:src="@{/static/js/main.js}"></script>-->
-</body>
+<script>
+    function previewImage() {
+        const fileInput = document.getElementById('avatar');
+        const file = fileInput.files[0];
+        const reader = new FileReader();
 
+        reader.onloadend = function () {
+            const img = document.getElementById('profilePicture');
+            img.src = reader.result;
+        }
+
+        if (file) {
+            reader.readAsDataURL(file);
+        }
+    }
+</script>
+</body>
 </html>
