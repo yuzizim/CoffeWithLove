@@ -39,6 +39,7 @@ public class AdminFoodController {
             @RequestParam(defaultValue = "8") int size,
             Model model
     ) {
+        search = search.trim();
         PageFoodResponse pageFoodResponse = foodService.getFoodByPage(search, categoryId, page, size);
         List<FoodCategory> foodCategories = foodCategoryService.getFoodCategories();
         model.addAttribute("foods", pageFoodResponse.getFoods());
@@ -60,7 +61,7 @@ public class AdminFoodController {
                               @RequestParam(name = "categoryId") int categoryId,
                               @RequestParam int page,
                               Model model) throws IOException {
-        if (result.hasErrors()) {
+        if (result.hasErrors() || food.getPrice() == 0) {
             PageFoodResponse pageFoodResponse = foodService.getFoodByPage(search, categoryId, page, 8);
             List<FoodCategory> foodCategories = foodCategoryService.getFoodCategories();
             model.addAttribute("foods", pageFoodResponse.getFoods());
@@ -70,6 +71,9 @@ public class AdminFoodController {
             model.addAttribute("categories", foodCategories);
             model.addAttribute("search", search);
             model.addAttribute("categoryId", categoryId);
+            if (food.getPrice() == 0) {
+                model.addAttribute("errorPrice", "Price can not equal 0");
+            }
             model.addAttribute("showAddDrinkModal", true);
             return "/admin/products/product-list";
         }
@@ -80,11 +84,11 @@ public class AdminFoodController {
             redirectAttributes.addFlashAttribute("messageError", messageError);
             return "redirect:/admin/food/list";
         }
-        if (food.getPrice() == 0) {
-            messageError += "Price can not equal 0";
-            redirectAttributes.addFlashAttribute("messageError", messageError);
-            return "redirect:/admin/food/list";
-        }
+//        if (food.getPrice() == 0) {
+//            messageError += "Price can not equal 0";
+//            redirectAttributes.addFlashAttribute("messageError", messageError);
+//            return "redirect:/admin/food/list";
+//        }
         String image = StringUtils.cleanPath(multipartFile.getOriginalFilename());
         Food savedFood = foodService.createDrink(food, image);
         String uploadDir = "src/main/resources/static/img/food";

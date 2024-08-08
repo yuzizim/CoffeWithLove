@@ -2,6 +2,7 @@ package com.group7.cafemanagementsystem.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
@@ -28,9 +29,13 @@ public class OrderTable {
     private LocalDateTime orderTime;
 
     @Column(name = "CustomerName")
+    @Pattern(regexp = "^[a-zA-Z0-9 ]*$", message = "Username can only contain letters")
+    @NotBlank(message = "Customer name can not be blank")
     private String customerName;
 
     @Column(name = "PhoneNumber")
+    @NotBlank(message = "Phone number can not be blank")
+    @Pattern(regexp = "^\\d{10}$", message = "Phone number should be 10 digits")
     private String phoneNumber;
 
     @Min(value = 1, message = "Number of people cannot be smaller than 1")

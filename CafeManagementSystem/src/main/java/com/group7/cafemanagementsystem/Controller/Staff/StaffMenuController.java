@@ -32,6 +32,7 @@ public class StaffMenuController {
                               @RequestParam(name = "orderId", defaultValue = "-1") int orderId,
                               @RequestParam(defaultValue = "0") int page,
                               @RequestParam(defaultValue = "9") int size) {
+        search = search.trim();
         if (id == -2) {
             PageFoodResponse response = foodService.getMenuByPageAndSearch(search, page, size);
             model.addAttribute("menu", response.getFoods());

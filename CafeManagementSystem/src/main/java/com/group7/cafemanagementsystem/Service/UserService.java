@@ -24,4 +24,6 @@ public interface UserService {
     Account findByUserNameForChangePass(String username);
 
     Account updateStaffInfoByAdmin(int staffId, UpdateStaffInfoRequest request, String image);
+
+    Account resetPassword(int id);
 }

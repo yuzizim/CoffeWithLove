@@ -70,11 +70,13 @@
                     <div class="row">
                         <div class="col-md-6 form-group">
                             <label>Customer name</label>
+                            <p style="color: red" th:errors="*{customerName}"></p>
                             <input class="form-control" type="text" placeholder="Customer Name..." name="customerName"
                                    th:field="*{customerName}" required>
                         </div>
                         <div class="col-md-6 form-group">
                             <label>Phone number</label>
+                            <p style="color: red" th:errors="*{phoneNumber}"></p>
                             <input class="form-control" type="text" placeholder="Phone number..." name="phoneNumber"
                                    th:field="*{phoneNumber}" required>
                         </div>

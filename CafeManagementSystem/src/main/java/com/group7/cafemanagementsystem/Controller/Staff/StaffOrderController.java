@@ -125,9 +125,10 @@ public class StaffOrderController {
     public String getOrderList(Model model,
                                @RequestParam(name = "fromDate", required = false) String startDate,
                                @RequestParam(name = "toDate", required = false) String toDate,
-                               @RequestParam(name = "search", required = false) String search,
+                               @RequestParam(name = "search", defaultValue = "") String search,
                                @RequestParam(defaultValue = "0") int page,
                                @RequestParam(defaultValue = "8") int size) {
+        search = search.trim();
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Object principal = authentication.getPrincipal();
         String username;

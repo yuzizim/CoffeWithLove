@@ -24,11 +24,7 @@
     <link th:href="@{/static/css/style.css}" rel="stylesheet">
     <style>
         body { margin-top: 20px; background-color: #f2f6fc; color: #69707a; }
-        .img-account-profile { height: 10rem;
-            width: 10rem;
-            object-fit: cover;
-            max-width: 100%;
-            max-height: 100%;}
+        .img-account-profile { height: 10rem; width: 10rem; object-fit: cover; max-width: 100%; max-height: 100%; }
         .rounded-circle { border-radius: 50% !important; }
         .card { box-shadow: 0 0.15rem 1.75rem 0 rgb(33 40 50 / 15%); }
         .card .card-header { font-weight: 500; }
@@ -109,6 +105,7 @@
                             <label class="small mb-1" for="avatar">Profile Picture</label>
                             <input type="file" class="form-control" id="avatar" name="avatar"
                                    accept="image/png, image/jpeg" onchange="previewImage()">
+                            <span id="fileError" style="color: red; display: none;">Please select a valid image file (JPG or PNG).</span>
                         </div>
                         <!-- Save changes button-->
                         <button class="btn btn-primary" type="submit">Save changes</button>
@@ -142,14 +139,19 @@
         const fileInput = document.getElementById('avatar');
         const file = fileInput.files[0];
         const reader = new FileReader();
+        const errorElement = document.getElementById('fileError');
 
-        reader.onloadend = function () {
-            const img = document.getElementById('profilePicture');
-            img.src = reader.result;
-        }
+        // Check if the file is an image
+        if (file && (file.type === 'image/jpeg' || file.type === 'image/png')) {
+            reader.onloadend = function () {
+                const img = document.getElementById('profilePicture');
+                img.src = reader.result;
+            }
 
-        if (file) {
             reader.readAsDataURL(file);
+            errorElement.style.display = 'none';
+        } else {
+            errorElement.style.display = 'block';
         }
     }
 </script>
