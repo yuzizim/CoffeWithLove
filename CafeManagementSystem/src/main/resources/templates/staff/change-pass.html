@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <title>ECoffee - Change password</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="Free HTML Templates" name="keywords">
+    <meta content="Free HTML Templates" name="description">
+
+    <!-- Favicon -->
+    <link th:href="@{/static/img/favicon.png}" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap"
+          rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link th:href="@{/static/lib/owlcarousel/assets/owl.carousel.min.css}" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link th:href="@{/static/css/style.css}" rel="stylesheet">
+    <style>
+        .pass_show{position: relative}
+
+        .pass_show .ptxt {
+
+            position: absolute;
+
+            top: 50%;
+
+            right: 10px;
+
+            z-index: 1;
+
+            color: #f36c01;
+
+            margin-top: -10px;
+
+            cursor: pointer;
+
+            transition: .3s ease all;
+
+        }
+
+        .pass_show .ptxt:hover{color: #333333;}
+
+        .status {
+            display: inline-block;
+            width: auto;
+            height: auto;
+            text-align: left;
+            font-size: 16px;
+            color: red;
+        }
+
+        .status.valid {
+            color: #28a745;
+        }
+
+        .status.invalid {
+            color: #dc3545;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<!-- Navbar Start -->
+<div th:insert="~{staff/navbar :: navbar}"></div>
+<!-- Navbar End -->
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <h2>Change Password</h2>
+            <form th:action="@{/staff/manage/changepass}" th:object="${changePasswordRequest}" method="post" id="passwordForm">
+                <div class="form-group">
+                    <label for="currentPassword" style="font-weight: bold">Current Password</label>
+                    <input type="password" id="currentPassword" th:field="*{currentPassword}" class="form-control" placeholder="Enter your current password here" required>
+                    <span id="currentPasswordStatus" class="status"></span>
+                </div>
+                <div class="form-group">
+                    <label for="newPassword" style="font-weight: bold">New Password</label>
+                    <input type="password" id="newPassword" th:field="*{newPassword}" class="form-control" placeholder="Enter your new password here" required>
+                    <span id="newPasswordStatus" class="status"></span>
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword" style="font-weight: bold">Confirm New Password</label>
+                    <input type="password" id="confirmPassword" th:field="*{confirmPassword}" class="form-control" placeholder="Enter your new password again" required>
+                    <span id="confirmPasswordStatus" class="status"></span>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Change Password</button>
+                </div>
+                <div th:if="${error}" class="alert alert-danger" role="alert">
+                    <p th:text="${error}"></p>
+                </div>
+            </form>
+        </div>
+    </div>
+</div><!-- Footer Start -->
+<div th:insert="~{staff/footer :: footer}"></div>
+<!-- Footer End -->
+
+
+<!-- Back to Top -->
+<a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
+
+
+<!-- JavaScript Libraries -->
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+<script th:src="@{/static/lib/easing/easing.min.js}"></script>
+<script th:src="@{/static/lib/owlcarousel/owl.carousel.min.js}"></script>
+
+<!-- Contact Javascript File -->
+<script th:src="@{/static/mail/jqBootstrapValidation.min.js}"></script>
+<script th:src="@{/static/mail/contact.js}"></script>
+
+<!-- Template Javascript -->
+<script th:src="@{/static/js/main.js}"></script>
+<script>
+    function validatePassword() {
+        const newPassword = document.getElementById('newPassword').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
+        const currentPassword = document.getElementById('currentPassword').value;
+
+        const passwordPattern = /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}/;
+
+        const currentPasswordStatus = document.getElementById('currentPasswordStatus');
+        const newPasswordStatus = document.getElementById('newPasswordStatus');
+        const confirmPasswordStatus = document.getElementById('confirmPasswordStatus');
+
+        currentPasswordStatus.style.display = 'none';
+        newPasswordStatus.style.display = 'none';
+        confirmPasswordStatus.style.display = 'none';
+
+        if (currentPassword.length > 0) {
+            currentPasswordStatus.style.display = 'inline-block';
+        }
+
+        if (!passwordPattern.test(newPassword)) {
+            newPasswordStatus.className = 'status invalid';
+            newPasswordStatus.textContent = 'Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, and one number.';
+            newPasswordStatus.style.display = 'inline-block';
+        } else {
+            newPasswordStatus.className = 'status valid';
+            newPasswordStatus.textContent = '✓';
+            newPasswordStatus.style.display = 'inline-block';
+        }
+
+        if (confirmPassword !== newPassword) {
+            confirmPasswordStatus.className = 'status invalid';
+            confirmPasswordStatus.textContent = 'Passwords do not match.';
+            confirmPasswordStatus.style.display = 'inline-block';
+        } else if (confirmPassword.length === 0) {
+            confirmPasswordStatus.style.display = 'none';
+        } else {
+            confirmPasswordStatus.className = 'status valid';
+            confirmPasswordStatus.textContent = '✓';
+            confirmPasswordStatus.style.display = 'inline-block';
+        }
+
+        return passwordPattern.test(newPassword) && confirmPassword === newPassword;
+    }
+
+    document.getElementById('newPassword').addEventListener('input', validatePassword);
+    document.getElementById('confirmPassword').addEventListener('input', validatePassword);
+
+    document.getElementById('passwordForm').addEventListener('submit', function(event) {
+        if (!validatePassword()) {
+            event.preventDefault();
+            alert('Please correct the errors in the form before submitting.');
+        }
+    });
+
+    function preventSpace(event) {
+        if (event.key === ' ') {
+            event.preventDefault();
+        }
+    }
+
+    document.getElementById('newPassword').addEventListener('input', validatePassword);
+    document.getElementById('newPassword').addEventListener('keydown', preventSpace);
+    document.getElementById('confirmPassword').addEventListener('input', validatePassword);
+    document.getElementById('confirmPassword').addEventListener('keydown', preventSpace);
+
+    document.getElementById('passwordForm').addEventListener('submit', function(event) {
+        if (!validatePassword()) {
+            event.preventDefault();
+            alert('Please correct the errors in the form before submitting.');
+        }
+    });
+</script>
+</body>
+
+</html>

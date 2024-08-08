@@ -21,6 +21,8 @@ public interface UserService {
 
     List<Account> findByRole(String role);
 
+    Account findByUserNameForChangePass(String username);
+
     Account updateStaffInfoByAdmin(int staffId, UpdateStaffInfoRequest request, String image);
 
     Account resetPassword(int id);

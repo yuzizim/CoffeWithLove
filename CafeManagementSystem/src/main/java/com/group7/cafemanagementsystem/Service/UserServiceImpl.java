@@ -89,14 +89,14 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByUserName(username).isPresent();
     }
 
-    public String sendMail(Account user) {
-        try {
+    public String sendMailReset(Account user){
+        try{
             String resetLink = generateResetToken(user);
 
             SimpleMailMessage message = new SimpleMailMessage();
             message.setTo(user.getEmail());
             message.setSubject("Reset password");
-            message.setText("Hello \n\n" + "Please click on this to reset your password: " + resetLink + ". \n\n" + "Regards \n" + "CoffeWithLove.");
+            message.setText("Hello " + user.getFullName()+ "\n\n" +"Please click on this to reset your password: " + resetLink+". \n\n" + "Regards \n" +"CoffeWithLove.");
             mailSender.send(message);
             return "Success";
         } catch (Exception e) {
@@ -127,10 +127,33 @@ public class UserServiceImpl implements UserService {
     public boolean hasExpiredToken(Instant expiryDate) {
         return Instant.now().isAfter(expiryDate);
     }
+    
+    public String sendMail(Account user, String text, String subject){
+        try{
+            SimpleMailMessage message = new SimpleMailMessage();
+            message.setTo(user.getEmail());
+            message.setSubject(subject);
+            message.setText("Hello "+ user.getFullName()+ "\n\n" +text+ "\n\n" + "Regards \n" +"CoffeWithLove.");
+            mailSender.send(message);
+            return "Success";
+        }catch (Exception e){
+            e.printStackTrace();
+            return "Error";
+        }
+    }
+
+    public boolean passwordMatches(String rawPassword, String encodedPassword) {
+        return passwordEncoder.matches(rawPassword, encodedPassword);
+    }
 
     @Override
     public List<Account> findByRole(String role) {
         return userRepository.findAccountByRole(role);
+    }
+
+    @Override
+    public Account findByUserNameForChangePass(String username) {
+        return userRepository.findByUserName(username).get();
     }
 
     @Override
