@@ -40,10 +40,10 @@
                                 <h4 class="card-title">Revenue of product by day</h4>
                                 <form th:action="@{/admin/revenue}" method="get">
                                     <div class="form-group col-md-3">
-                                        <label for="startDate">Select Date:</label>
+                                        <label for="startDate">Start Date:</label>
                                         <input type="date" class="form-control" id="startDate" name="startDate"
                                                th:value="${startDate}">
-                                        <label for="toDate">Select Date:</label>
+                                        <label for="toDate">To Date:</label>
                                         <input type="date" class="form-control" id="toDate" name="toDate"
                                                th:value="${toDate}">
                                         <button type="submit" class="btn btn-primary mt-2">Submit</button>
@@ -84,8 +84,8 @@
                     <form th:action="@{/admin/revenue/download}" method="get">
                         <input type="hidden" th:value="${startDate}" name="startDate"/>
                         <input type="hidden" th:value="${toDate}" name="toDate"/>
-                        <button type="submit" class="btn btn-info btn-icon-text"> Print <i
-                                class="ti-printer btn-icon-append"></i></button>
+                        <button type="submit" class="btn btn-info btn-icon-text"> Export <i
+                                class="ti-export btn-icon-append"></i></button>
                     </form>
                 </div>
             </div>

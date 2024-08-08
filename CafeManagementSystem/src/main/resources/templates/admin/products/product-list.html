@@ -46,9 +46,37 @@
                         </div>
                     </div>
                 </div>
-                <button class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#addDrinkModal">
-                    Add New Drink
-                </button>
+                <!--                <button class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#addDrinkModal">-->
+                <!--                    Add New Product-->
+                <!--                </button>-->
+                <!--                <form th:action="@{/admin/excel/upload}" method="post" enctype="multipart/form-data">-->
+                <!--                    <input type="file" name="file" id="fileInput" style="display:none;"/>-->
+                <!--                    <button type="button" class="btn btn-primary mt-3"-->
+                <!--                            onclick="document.getElementById('fileInput').click();">-->
+                <!--                        <i class="ti ti-import"></i>-->
+                <!--                        Import From Excel-->
+                <!--                    </button>-->
+                <!--                    <input type="submit" id="submitBtn" style="display:none;"/>-->
+                <!--                </form>-->
+                <!-- Buttons in a single row -->
+                <div class="row mt-3">
+                    <div class="col-md-2 d-flex justify-content-center">
+                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addDrinkModal">
+                            Add New Drink
+                        </button>
+                    </div>
+                    <div class="col-md-2 d-flex justify-content-center">
+                        <form th:action="@{/admin/excel/upload}" method="post" enctype="multipart/form-data">
+                            <input type="file" name="file" id="fileInput" style="display:none;"/>
+                            <button type="button" class="btn btn-primary"
+                                    onclick="document.getElementById('fileInput').click();">
+                                <i class="ti ti-import"></i>
+                                Import From Excel
+                            </button>
+                            <input type="submit" id="submitBtn" style="display:none;"/>
+                        </form>
+                    </div>
+                </div>
 
                 <!-- Search and Filter Section -->
                 <form th:action="@{/admin/food/list}" method="get">
@@ -220,7 +248,8 @@
                     <div class="mb-3">
                         <label for="category">Category</label>
                         <div class="text-danger" th:errors="*{foodCategory}"></div>
-                        <select class="form-control" id="category" name="foodCategory" th:field="*{foodCategory}" required>
+                        <select class="form-control" id="category" name="foodCategory" th:field="*{foodCategory}"
+                                required>
                             <option value="" disabled selected>Select Category</option>
                             <option th:each="category : ${categories}"
                                     th:value="${category.id}"
@@ -239,7 +268,8 @@
                     <div class="mb-3">
                         <label for="drinkPrice" class="form-label">Price</label>
                         <div class="text-danger" th:errors="*{price}"></div>
-                        <input type="number" min="0" class="form-control" id="drinkPrice" name="price" th:field="*{price}"
+                        <div class="text-danger" th:if="${errorPrice}" th:text="${errorPrice}"></div>
+                        <input type="number" class="form-control" id="drinkPrice" name="price" th:field="*{price}"
                                required>
                     </div>
                     <div class="modal-footer">
@@ -290,6 +320,13 @@
         });
     });
     /*]]>*/
+</script>
+<script>
+    document.getElementById('fileInput').addEventListener('change', function () {
+        if (this.files.length > 0) {
+            document.getElementById('submitBtn').click();
+        }
+    });
 </script>
 
 </body>

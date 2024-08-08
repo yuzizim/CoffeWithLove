@@ -196,7 +196,7 @@
         var showUpdateCategoryModal = /*[[${showUpdateCategoryModal}]]*/ false;
         var cateId = /*[[${cateId}]]*/;
         if (showModal) {
-            var addCategoryModal = new bootstrap.Modal(document.getElementById('updateCategoryModal' + cateId));
+            var addCategoryModal = new bootstrap.Modal(document.getElementById('addCategoryModal'));
             addCategoryModal.show();
         }
 
@@ -207,10 +207,12 @@
 
         document.querySelectorAll('[data-bs-dismiss="modal"]').forEach(function (element) {
             element.addEventListener('click', function () {
-                var modalEl = document.getElementById('addCategoryModal');
-                var modalEl = document.getElementById('updateCategoryModal' + cateId);
-                var modal = bootstrap.Modal.getInstance(modalEl);
-                modal.hide();
+                var modalEl1 = document.getElementById('addCategoryModal');
+                var modalEl2 = document.getElementById('updateCategoryModal' + cateId);
+                var modal1 = bootstrap.Modal.getInstance(modalEl1);
+                var modal2 = bootstrap.Modal.getInstance(modalEl2);
+                modal1.hide();
+                modal2.hide();
             });
         });
     });
