@@ -1,5 +1,6 @@
 package com.group7.cafemanagementsystem.Service;
 
+import com.group7.cafemanagementsystem.Repository.RefreshTokenRepository;
 import com.group7.cafemanagementsystem.Repository.UserRepository;
 import com.group7.cafemanagementsystem.Request.LoginRequest;
 import com.group7.cafemanagementsystem.Request.RefreshRequest;
@@ -23,6 +24,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
+import java.util.Optional;
+
 @Service
 @AllArgsConstructor
 public class AuthServiceImpl implements AuthService {
@@ -31,11 +34,18 @@ public class AuthServiceImpl implements AuthService {
     private JwtProvider jwtProvider;
     private PasswordEncoder passwordEncoder;
     private RefreshTokenService refreshTokenService;
+    private RefreshTokenRepository refreshTokenRepository;
 
     @Override
     public String login(Model model, @ModelAttribute LoginRequest request, HttpServletResponse response) {
         String name = request.getUserName();
+        Optional<Account> user = userRepository.findByUserName(name);
+        Account accountOpt = user.get();
+        RefreshToken existingToken = refreshTokenRepository.findByAccount(accountOpt);
         String token = null;
+        if (existingToken != null) {
+            refreshTokenRepository.delete(existingToken);
+        }
         try {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
