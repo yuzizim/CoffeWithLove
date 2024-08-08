@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>ECoffee - Revenue</title>
+    <title>ECoffee - Change password</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="Free HTML Templates" name="keywords">
     <meta content="Free HTML Templates" name="description">
@@ -48,6 +48,24 @@
         }
 
         .pass_show .ptxt:hover{color: #333333;}
+
+        .status {
+            display: inline-block;
+            width: auto;
+            height: auto;
+            text-align: left;
+            font-size: 16px;
+            color: red;
+        }
+
+        .status.valid {
+            color: #28a745;
+        }
+
+        .status.invalid {
+            color: #dc3545;
+        }
+
     </style>
 </head>
 
@@ -60,18 +78,21 @@
     <div class="row">
         <div class="col-md-6 offset-md-3">
             <h2>Change Password</h2>
-            <form th:action="@{/staff/manage/changepass}" th:object="${changePasswordRequest}" method="post">
+            <form th:action="@{/staff/manage/changepass}" th:object="${changePasswordRequest}" method="post" id="passwordForm">
                 <div class="form-group">
-                    <label for="currentPassword">Current Password</label>
-                    <input type="password" id="currentPassword" th:field="*{currentPassword}" class="form-control" placeholder="Current Password" required>
+                    <label for="currentPassword" style="font-weight: bold">Current Password</label>
+                    <input type="password" id="currentPassword" th:field="*{currentPassword}" class="form-control" placeholder="Enter your current password here" required>
+                    <span id="currentPasswordStatus" class="status"></span>
                 </div>
                 <div class="form-group">
-                    <label for="newPassword">New Password</label>
-                    <input type="password" id="newPassword" th:field="*{newPassword}" class="form-control" placeholder="New Password" required>
+                    <label for="newPassword" style="font-weight: bold">New Password</label>
+                    <input type="password" id="newPassword" th:field="*{newPassword}" class="form-control" placeholder="Enter your new password here" required>
+                    <span id="newPasswordStatus" class="status"></span>
                 </div>
                 <div class="form-group">
-                    <label for="confirmPassword">Confirm New Password</label>
-                    <input type="password" id="confirmPassword" th:field="*{confirmPassword}" class="form-control" placeholder="Confirm New Password" required>
+                    <label for="confirmPassword" style="font-weight: bold">Confirm New Password</label>
+                    <input type="password" id="confirmPassword" th:field="*{confirmPassword}" class="form-control" placeholder="Enter your new password again" required>
+                    <span id="confirmPasswordStatus" class="status"></span>
                 </div>
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary">Change Password</button>
@@ -103,8 +124,79 @@
 
 <!-- Template Javascript -->
 <script th:src="@{/static/js/main.js}"></script>
+<script>
+    function validatePassword() {
+        const newPassword = document.getElementById('newPassword').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
+        const currentPassword = document.getElementById('currentPassword').value;
 
-<!--<script th:src="@{/static/js/main.js}"></script>-->
+        const passwordPattern = /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}/;
+
+        const currentPasswordStatus = document.getElementById('currentPasswordStatus');
+        const newPasswordStatus = document.getElementById('newPasswordStatus');
+        const confirmPasswordStatus = document.getElementById('confirmPasswordStatus');
+
+        currentPasswordStatus.style.display = 'none';
+        newPasswordStatus.style.display = 'none';
+        confirmPasswordStatus.style.display = 'none';
+
+        if (currentPassword.length > 0) {
+            currentPasswordStatus.style.display = 'inline-block';
+        }
+
+        if (!passwordPattern.test(newPassword)) {
+            newPasswordStatus.className = 'status invalid';
+            newPasswordStatus.textContent = 'Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, and one number.';
+            newPasswordStatus.style.display = 'inline-block';
+        } else {
+            newPasswordStatus.className = 'status valid';
+            newPasswordStatus.textContent = '✓';
+            newPasswordStatus.style.display = 'inline-block';
+        }
+
+        if (confirmPassword !== newPassword) {
+            confirmPasswordStatus.className = 'status invalid';
+            confirmPasswordStatus.textContent = 'Passwords do not match.';
+            confirmPasswordStatus.style.display = 'inline-block';
+        } else if (confirmPassword.length === 0) {
+            confirmPasswordStatus.style.display = 'none';
+        } else {
+            confirmPasswordStatus.className = 'status valid';
+            confirmPasswordStatus.textContent = '✓';
+            confirmPasswordStatus.style.display = 'inline-block';
+        }
+
+        return passwordPattern.test(newPassword) && confirmPassword === newPassword;
+    }
+
+    document.getElementById('newPassword').addEventListener('input', validatePassword);
+    document.getElementById('confirmPassword').addEventListener('input', validatePassword);
+
+    document.getElementById('passwordForm').addEventListener('submit', function(event) {
+        if (!validatePassword()) {
+            event.preventDefault();
+            alert('Please correct the errors in the form before submitting.');
+        }
+    });
+
+    function preventSpace(event) {
+        if (event.key === ' ') {
+            event.preventDefault();
+        }
+    }
+
+    document.getElementById('newPassword').addEventListener('input', validatePassword);
+    document.getElementById('newPassword').addEventListener('keydown', preventSpace);
+    document.getElementById('confirmPassword').addEventListener('input', validatePassword);
+    document.getElementById('confirmPassword').addEventListener('keydown', preventSpace);
+
+    document.getElementById('passwordForm').addEventListener('submit', function(event) {
+        if (!validatePassword()) {
+            event.preventDefault();
+            alert('Please correct the errors in the form before submitting.');
+        }
+    });
+</script>
 </body>
 
 </html>
