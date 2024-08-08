@@ -41,7 +41,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public PageUserResponse getUserByPage(Boolean status, String search, int page, int size) {
-        if (search == null) search = "";
         List<Account> accounts = new ArrayList<>();
         Pageable paging = PageRequest.of(page, size);
 
@@ -89,22 +88,24 @@ public class UserServiceImpl implements UserService {
     public boolean findByUserName(String username) {
         return userRepository.findByUserName(username).isPresent();
     }
-    public String sendMail(Account user){
-        try{
+
+    public String sendMail(Account user) {
+        try {
             String resetLink = generateResetToken(user);
 
             SimpleMailMessage message = new SimpleMailMessage();
             message.setTo(user.getEmail());
             message.setSubject("Reset password");
-            message.setText("Hello \n\n" +"Please click on this to reset your password: " + resetLink+". \n\n" + "Regards \n" +"CoffeWithLove.");
+            message.setText("Hello \n\n" + "Please click on this to reset your password: " + resetLink + ". \n\n" + "Regards \n" + "CoffeWithLove.");
             mailSender.send(message);
             return "Success";
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return "Error";
         }
     }
-    public String generateResetToken(Account user){
+
+    public String generateResetToken(Account user) {
         RefreshToken existingToken = refreshTokenRepository.findByAccount(user);
         if (existingToken != null) {
             refreshTokenRepository.delete(existingToken);
@@ -116,7 +117,7 @@ public class UserServiceImpl implements UserService {
         resetToken.setToken(uuid.toString());
         resetToken.setExpiryDate(expiryDate);
         RefreshToken token = refreshTokenRepository.save(resetToken);
-        if(token != null){
+        if (token != null) {
             String endpointUrl = "http://localhost:8080/auth/reset-password";
             return endpointUrl + "/" + resetToken.getToken();
         }
@@ -126,6 +127,7 @@ public class UserServiceImpl implements UserService {
     public boolean hasExpiredToken(Instant expiryDate) {
         return Instant.now().isAfter(expiryDate);
     }
+
     @Override
     public List<Account> findByRole(String role) {
         return userRepository.findAccountByRole(role);
@@ -142,6 +144,13 @@ public class UserServiceImpl implements UserService {
         if (!image.equals("")) {
             staff.setAvatar("/static/img/account/" + image);
         }
+        return userRepository.save(staff);
+    }
+
+    @Override
+    public Account resetPassword(int id) {
+        Account staff = findById(id);
+        staff.setPassword(passwordEncoder.encode("123456"));
         return userRepository.save(staff);
     }
 }
