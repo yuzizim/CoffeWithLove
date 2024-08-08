@@ -25,15 +25,16 @@ public class AdminStaffController {
 
     @GetMapping
     public String getStaffList(@RequestParam(required = false) Boolean status,
-                               @RequestParam(required = false, name = "keyword") String search,
+                               @RequestParam(name = "keyword", defaultValue = "") String search,
                                @RequestParam(defaultValue = "0") int page,
                                @RequestParam(defaultValue = "10") int size,
                                Model model) {
+        search = search.trim();
         PageUserResponse response = userService.getUserByPage(status, search, page, size);
         model.addAttribute("staffs", response.getAccounts());
         model.addAttribute("pageNumber", page);
         model.addAttribute("pageSize", response.getTotalPages());
-        model.addAttribute("search", search == null ? "" : search);
+        model.addAttribute("search", search);
         return "/admin/manage-staff/staff-list";
     }
 
@@ -108,5 +109,12 @@ public class AdminStaffController {
 
         redirectAttributes.addFlashAttribute("messageSuccess", "Update success");
         return "redirect:/admin/manage-staff/details/" + id;
+    }
+
+    @GetMapping("/{id}/reset-password")
+    public String resetPassword(@PathVariable int id, RedirectAttributes redirectAttributes) {
+        Account account = userService.resetPassword(id);
+        redirectAttributes.addFlashAttribute("resetSuccess", "Reset password for account " + account.getUserName() + " successfully!");
+        return "redirect:/admin/manage-staff";
     }
 }
