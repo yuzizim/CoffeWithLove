@@ -64,7 +64,7 @@
             <div class="card mb-4">
                 <div class="card-header">Account Details</div>
                 <div class="card-body">
-                    <form th:action="@{/staff/manage/profile}" th:object="${request}" method="post" enctype="multipart/form-data">
+                    <form th:action="@{/staff/manage/profile}" th:object="${request}" id="profile" method="post" enctype="multipart/form-data">
                         <!-- Form Group (username)-->
                         <div class="mb-3">
                             <label class="small mb-1" for="inputUsername">Username</label>
@@ -75,7 +75,7 @@
                             <!-- Form Group (full name)-->
                             <div class="col-md-6">
                                 <label class="small mb-1" for="inputFullName">Full name</label>
-                                <input class="form-control" id="inputFullName" pattern="[A-Za-z\s]+" title="Full name must only contain letters (A-Z) and spaces" type="text" th:field="*{fullName}" placeholder="Enter your full name">
+                                <input class="form-control" id="inputFullName" pattern="[A-Za-z\s]{2,}" title="Full name must only contain letters (A-Z) and spaces" type="text" th:field="*{fullName}" placeholder="Enter your full name">
                             </div>
                             <div class="col-md-6">
                                 <label class="small mb-1" for="role">Role</label>
@@ -154,6 +154,13 @@
             errorElement.style.display = 'block';
         }
     }
+
+    document.getElementById('profile').addEventListener('submit', function(event) {
+        if (!validateFullname()) {
+            event.preventDefault();
+            alert('Please correct the errors in the form before submitting.');
+        }
+    });
 </script>
 </body>
 </html>

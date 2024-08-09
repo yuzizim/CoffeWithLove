@@ -166,15 +166,15 @@
         <div class="img-container">
           <img src="../../static/img/empty.jpg" alt="Table Status" />
           <div class="box__btns">
-            <a href="#!" class="box__btn one__view__openBtn">
-              View menu
-            </a>
-            <a href="#!" class="box__btn order__openBtn" th:attr="data-table-id=${table.id}">
-              View order table
-            </a>
-            <a href="#!" class="box__btn one__cart__button">
-              Add to Cart
-            </a>
+<!--            <a href="#!" class="box__btn one__view__openBtn">-->
+<!--              View menu-->
+<!--            </a>-->
+<!--            <a href="#!" class="box__btn order__openBtn" th:attr="data-table-id=${table.id}">-->
+<!--              View order table-->
+<!--            </a>-->
+<!--            <a href="#!" class="box__btn one__cart__button">-->
+<!--              Add to Cart-->
+<!--            </a>-->
             <h2 th:text="${table.name}" style="color: white"></h2>
             <h3>Status: <span th:text="${table.status ? 'Occupied' : 'Available'}"></span></h3>
           </div>
