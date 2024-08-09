@@ -7,13 +7,19 @@ import java.util.List;
 public interface FoodCategoryService {
     List<FoodCategory> getFoodCategories();
 
+    List<FoodCategory> getFoodCategoriesAll();
+
     FoodCategory createFoodCategory(FoodCategory foodCategory);
 
-    void deleteCategory(int id);
+    String deleteCategory(int id);
 
     FoodCategory findById(int id);
 
     FoodCategory save(FoodCategory foodCategory);
 
     boolean isCategoryExist(String name);
+
+    boolean checkExistCategoryInOrderBeingUsed(int categoryId);
+
+    String changeStatus(int categoryId);
 }

@@ -57,10 +57,15 @@ public class FoodServiceImpl implements FoodService {
     }
 
     @Override
-    public void deleteFood(int id) {
+    public String deleteFood(int id) {
         Food food = getFoodById(id);
+        if (checkFoodIsBeingInOrderNotPaid(id)) {
+            return "error";
+        }
+
         food.setStatus(false);
         foodRepository.save(food);
+        return "success";
     }
 
     @Override
@@ -141,5 +146,11 @@ public class FoodServiceImpl implements FoodService {
     @Override
     public boolean checkExistProduct(String name) {
         return foodRepository.findByName(name) != null;
+    }
+
+    @Override
+    public boolean checkFoodIsBeingInOrderNotPaid(int foodId) {
+        List<Food> foods = foodRepository.checkFoodIsBeingInOrderNotPaid(foodId);
+        return foods.size() > 0;
     }
 }

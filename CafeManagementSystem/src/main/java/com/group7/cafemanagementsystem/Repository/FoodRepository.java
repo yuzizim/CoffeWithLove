@@ -19,7 +19,9 @@ public interface FoodRepository extends JpaRepository<Food, Integer> {
     Page<Food> findByStatusOrderByIdDesc(boolean status, Pageable pageable);
 
     @Query("SELECT f FROM Food f " +
+            " JOIN FoodCategory c ON f.foodCategory.id = c.id" +
             " WHERE f.name LIKE %:search%" +
+            " AND c.status = true" +
             " AND f.foodCategory.id = :categoryId" +
             " ORDER BY f.status DESC, f.id DESC")
     Page<Food> findByStatusOrderByStatusAndSearchAndCategory(@Param("search") String search,
@@ -27,7 +29,9 @@ public interface FoodRepository extends JpaRepository<Food, Integer> {
                                                              Pageable pageable);
 
     @Query("SELECT f FROM Food f " +
+            " JOIN FoodCategory c ON f.foodCategory.id = c.id" +
             " WHERE f.name LIKE %:search%" +
+            " AND c.status = true" +
             " ORDER BY f.status DESC, f.id DESC")
     Page<Food> findByStatusOrderByStatus(@Param("search") String search,
                                          Pageable pageable);
@@ -93,4 +97,14 @@ public interface FoodRepository extends JpaRepository<Food, Integer> {
     List<FoodReportResponse> getTopProducts(Pageable pageable);
 
     Food findByName(String name);
+
+    List<Food> findByFoodCategoryId(int categoryId);
+
+
+    @Query("select f from Food f " +
+            " join OrderDetail od on od.food.id = f.id " +
+            " join OrderTable ot on ot.id = od.orderTable.id " +
+            " where ot.status = false" +
+            " and f.id = :foodId")
+    List<Food> checkFoodIsBeingInOrderNotPaid(@Param("foodId") int foodId);
 }
