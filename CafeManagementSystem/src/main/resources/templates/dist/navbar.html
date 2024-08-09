@@ -21,14 +21,14 @@
         <nav class="nav">
             <ul class="menu-nav">
                 <li class="menu-nav__item">
-                    <a href="index.html" class="logo menu-nav__link">
+                    <a th:href="@{/ECoffee/menu}" class="logo menu-nav__link">
                         <img src="../../static/img/favicon.png"/>
-                        <span class="logo-first">Drip</span>
-                        <span class="logo-last">Cafe</span>
+                        <span class="logo-first">E</span>
+                        <span class="logo-last">Coffee</span>
                     </a>
                 </li>
                 <li class="menu-nav__item">
-                    <a href="sign-in.html" class="sign-in menu-nav__link">
+                    <a th:href="@{/auth/login}" class="sign-in menu-nav__link">
                         <i class="fa fa-user" aria-hidden="true"></i>
                         Sign In
                     </a>
@@ -39,13 +39,10 @@
                 </li>
                 <br/>
                 <li class="menu-nav__item active">
-                    <a href="index.html" class="menu-nav__link"> Home </a>
+                    <a th:href="@{/ECoffee/menu}" class="menu-nav__link"> Home </a>
                 </li>
                 <li class="menu-nav__item">
-                    <a th:href="@{/staff/manage/menu}" class="menu-nav__link"> Menu </a>
-                </li>
-                <li class="menu-nav__item">
-                    <a href="services.html" class="menu-nav__link"> Revenue </a>
+                    <a th:href="@{/ECoffee/tables}" class="menu-nav__link"> Tables </a>
                 </li>
                 <!--                <li class="menu-nav__item">-->
                 <!--                    <a href="contact.html" class="menu-nav__link"> Contact </a>-->
