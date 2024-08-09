@@ -44,33 +44,19 @@
                     </ul>
                 </div>
             </li>
-            <!--            <li class="nav-item">-->
-            <!--                <a class="nav-link" data-bs-toggle="collapse" href="#charts" aria-expanded="false"-->
-            <!--                   aria-controls="charts">-->
-            <!--                    <i class="icon-bar-graph menu-icon"></i>-->
-            <!--                    <span class="menu-title">Charts</span>-->
-            <!--                    <i class="menu-arrow"></i>-->
-            <!--                </a>-->
-            <!--                <div class="collapse" id="charts">-->
-            <!--                    <ul class="nav flex-column sub-menu">-->
-            <!--                        <li class="nav-item"><a class="nav-link" href="../pages/charts/chartjs.html">ChartJs</a></li>-->
-            <!--                    </ul>-->
-            <!--                </div>-->
-            <!--            </li>-->
             <li class="nav-item">
-                <a class="nav-link" data-bs-toggle="collapse" href="#tables" aria-expanded="false"
+                <a class="nav-link" th:href="@{/admin/table}"
                    aria-controls="tables">
                     <i class="icon-grid-2 menu-icon"></i>
                     <span class="menu-title">Table</span>
-                    <i class="menu-arrow"></i>
                 </a>
-                <div class="collapse" id="tables">
-                    <ul class="nav flex-column sub-menu">
-                        <li class="nav-item">
-                            <a class="nav-link" th:href="@{/admin/table}">Manage Table</a>
-                        </li>
-                    </ul>
-                </div>
+                <!--                <div class="collapse" id="tables">-->
+                <!--                    <ul class="nav flex-column sub-menu">-->
+                <!--                        <li class="nav-item">-->
+                <!--                            <a class="nav-link" th:href="@{/admin/table}">Manage Table</a>-->
+                <!--                        </li>-->
+                <!--                    </ul>-->
+                <!--                </div>-->
             </li>
             <li class="nav-item">
                 <a class="nav-link" data-bs-toggle="collapse" href="#icons" aria-expanded="false" aria-controls="icons">
@@ -87,19 +73,18 @@
                 </div>
             </li>
             <li class="nav-item">
-                <a class="nav-link" data-bs-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
+                <a class="nav-link" th:href="@{/admin/manage-staff}" aria-controls="auth">
                     <i class="icon-head menu-icon"></i>
                     <span class="menu-title">Manage Staff</span>
-                    <i class="menu-arrow"></i>
                 </a>
-                <div class="collapse" id="auth">
-                    <ul class="nav flex-column sub-menu">
-                        <!--                        <li class="nav-item"><a class="nav-link" th:href="@{/admin/manage-staff/register}">-->
-                        <!--                            Register </a>-->
-                        <!--                        </li>-->
-                        <li class="nav-item"><a class="nav-link" th:href="@{/admin/manage-staff}"> Staff list </a></li>
-                    </ul>
-                </div>
+<!--                <div class="collapse" id="auth">-->
+                <!--                    <ul class="nav flex-column sub-menu">-->
+                <!--                        &lt;!&ndash;                        <li class="nav-item"><a class="nav-link" th:href="@{/admin/manage-staff/register}">&ndash;&gt;-->
+                <!--                        &lt;!&ndash;                            Register </a>&ndash;&gt;-->
+                <!--                        &lt;!&ndash;                        </li>&ndash;&gt;-->
+                <!--                        <li class="nav-item"><a class="nav-link" th:href="@{/admin/manage-staff}"> Staff list </a></li>-->
+                <!--                    </ul>-->
+                <!--                </div>-->
             </li>
             <!--            <li class="nav-item">-->
             <!--                <a class="nav-link" data-bs-toggle="collapse" href="#error" aria-expanded="false" aria-controls="error">-->
