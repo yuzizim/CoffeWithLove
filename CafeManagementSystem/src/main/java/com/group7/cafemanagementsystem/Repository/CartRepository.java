@@ -11,8 +11,8 @@ import java.util.List;
 public interface CartRepository extends JpaRepository<Cart, Integer> {
     List<Cart> findByAccount_UserName(String username);
 
-    Cart findByFood_Id(int id);
+    Cart findByFood_IdAndAccount_UserName(int foodId, String userName);
 
     @Transactional
-    void deleteByFood_Id(int id);
+    void deleteByFood_IdAndAccount_UserName(int id, String userName);
 }

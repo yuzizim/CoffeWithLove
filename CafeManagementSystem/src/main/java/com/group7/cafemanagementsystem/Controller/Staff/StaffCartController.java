@@ -50,31 +50,47 @@ public class StaffCartController {
     @GetMapping("/update-quantity/{id}")
     public String updateQuantity(@PathVariable int id,
                                  @RequestParam(name = "quantityChange") int quantity) {
-        int a = quantity;
-        Cart cart = cartService.updateQuantity(id, quantity);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Object principal = authentication.getPrincipal();
+
+        String username;
+        if (principal instanceof UserDetails) {
+            username = ((UserDetails) principal).getUsername();
+        } else {
+            username = principal.toString();
+        }
+        Cart cart = cartService.updateQuantity(id, quantity, username);
         return "redirect:/staff/manage/cart";
     }
 
     @GetMapping("/delete/{id}")
     public String deleteItemFromCart(@PathVariable int id) {
-        cartService.deleteItemFromCart(id);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Object principal = authentication.getPrincipal();
+        String username;
+        if (principal instanceof UserDetails) {
+            username = ((UserDetails) principal).getUsername();
+        } else {
+            username = principal.toString();
+        }
+        cartService.deleteItemFromCart(id, username);
         return "redirect:/staff/manage/cart";
     }
 
     @GetMapping("/add/{id}")
     public String addItemWithQuantity(@PathVariable int id,
                                       @RequestParam(name = "quantity") int quantity) {
-        if (cartService.checkItemExistInCart(id)) {
-            cartService.updateQuantity(id, quantity);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Object principal = authentication.getPrincipal();
+        String username;
+        if (principal instanceof UserDetails) {
+            username = ((UserDetails) principal).getUsername();
         } else {
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            Object principal = authentication.getPrincipal();
-            String username;
-            if (principal instanceof UserDetails) {
-                username = ((UserDetails) principal).getUsername();
-            } else {
-                username = principal.toString();
-            }
+            username = principal.toString();
+        }
+        if (cartService.checkItemExistInCart(id, username)) {
+            cartService.updateQuantity(id, quantity, username);
+        } else {
             List<Cart> carts = cartService.getCartByUser(username);
 
             cartService.addItemToCart(id, username, quantity);
