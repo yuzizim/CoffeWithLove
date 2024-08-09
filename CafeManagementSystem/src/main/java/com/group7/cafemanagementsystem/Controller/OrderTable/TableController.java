@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
 @Controller
-@RequestMapping("/tables")
+@RequestMapping("/ECoffee/tables")
 public class TableController {
 
     private final TableFoodService tableFoodService;
@@ -25,7 +25,7 @@ public class TableController {
         this.orderTableService = orderTableService;
     }
 
-    @GetMapping("/view")
+    @GetMapping
     public String viewTables(Model model) {
         List<TableFood> tables = tableFoodService.getAllTables();
         model.addAttribute("tables", tables);
