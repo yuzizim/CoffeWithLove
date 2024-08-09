@@ -9,9 +9,11 @@ import java.util.List;
 
 @Repository
 public interface TableFoodRepository extends JpaRepository<TableFood, Integer> {
-    List<TableFood> findByStatusFalse();
+    List<TableFood> findAllByActiveTrue();
 
-    @Query("SELECT t from TableFood t ORDER BY t.id DESC ")
+    List<TableFood> findByStatusFalseAndActiveTrue();
+
+    @Query("SELECT t from TableFood t WHERE t.active = true ORDER BY t.id DESC ")
     List<TableFood> findAllOrderById();
 
     TableFood findByName(String tableName);

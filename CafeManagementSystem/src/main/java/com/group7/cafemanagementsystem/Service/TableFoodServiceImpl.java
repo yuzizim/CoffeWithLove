@@ -1,5 +1,7 @@
 package com.group7.cafemanagementsystem.Service;
 
+import com.group7.cafemanagementsystem.Repository.OrderTableRepository;
+import com.group7.cafemanagementsystem.model.OrderTable;
 import com.group7.cafemanagementsystem.model.TableFood;
 import com.group7.cafemanagementsystem.Repository.TableFoodRepository;
 import lombok.AllArgsConstructor;
@@ -11,10 +13,11 @@ import java.util.List;
 @AllArgsConstructor
 public class TableFoodServiceImpl implements TableFoodService {
     private TableFoodRepository tableFoodRepository;
+    private OrderTableRepository orderTableRepository;
 
     @Override
     public List<TableFood> getAllTables() {
-        return tableFoodRepository.findAll();
+        return tableFoodRepository.findAllByActiveTrue();
     }
 
     @Override
@@ -25,6 +28,7 @@ public class TableFoodServiceImpl implements TableFoodService {
     @Override
     public TableFood createTable(TableFood tableFood) {
         tableFood.setStatus(false);
+        tableFood.setActive(true);
         return tableFoodRepository.save(tableFood);
     }
 
@@ -36,8 +40,12 @@ public class TableFoodServiceImpl implements TableFoodService {
     }
 
     @Override
-    public void deleteTable(int id) {
-        tableFoodRepository.deleteById(id);
+    public String deleteTable(int id) {
+        if (checkExistTableInOrder(id)) {
+            return "error";
+        }
+        changeActive(id);
+        return "success";
     }
 
     @Override
@@ -52,7 +60,7 @@ public class TableFoodServiceImpl implements TableFoodService {
 
     @Override
     public List<TableFood> getAllTablesEmpty() {
-        return tableFoodRepository.findByStatusFalse();
+        return tableFoodRepository.findByStatusFalseAndActiveTrue();
     }
 
     @Override
@@ -63,5 +71,18 @@ public class TableFoodServiceImpl implements TableFoodService {
     @Override
     public boolean checkExistTableName(String tableName) {
         return tableFoodRepository.findByName(tableName) != null;
+    }
+
+    @Override
+    public boolean checkExistTableInOrder(int tableId) {
+        OrderTable order = orderTableRepository.findByTableFoodIdAndStatusFalse(tableId);
+        return order != null;
+    }
+
+    @Override
+    public TableFood changeActive(int id) {
+        TableFood table = getTableById(id);
+        table.setActive(!table.isActive());
+        return tableFoodRepository.save(table);
     }
 }

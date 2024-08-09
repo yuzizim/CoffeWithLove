@@ -15,7 +15,7 @@ public interface FoodService {
 
     Food getFoodById(int id);
 
-    void deleteFood(int id);
+    String deleteFood(int id);
 
     Food updateFood(int id, Food food, String image);
 
@@ -38,4 +38,6 @@ public interface FoodService {
     List<FoodReportResponse> getTopProducts(int num);
 
     boolean checkExistProduct(String name);
+
+    boolean checkFoodIsBeingInOrderNotPaid(int foodId);
 }

@@ -84,11 +84,6 @@ public class AdminFoodController {
             redirectAttributes.addFlashAttribute("messageError", messageError);
             return "redirect:/admin/food/list";
         }
-//        if (food.getPrice() == 0) {
-//            messageError += "Price can not equal 0";
-//            redirectAttributes.addFlashAttribute("messageError", messageError);
-//            return "redirect:/admin/food/list";
-//        }
         String image = StringUtils.cleanPath(multipartFile.getOriginalFilename());
         Food savedFood = foodService.createDrink(food, image);
         String uploadDir = "src/main/resources/static/img/food";
@@ -110,8 +105,15 @@ public class AdminFoodController {
     }
 
     @GetMapping("/delete/{id}")
-    public String deleteFood(@PathVariable int id) {
-        foodService.deleteFood(id);
+    public String deleteFood(@PathVariable int id,
+                             RedirectAttributes redirectAttributes) {
+        String messageFoodDelete = foodService.deleteFood(id);
+        if (messageFoodDelete.equals("error")) {
+            redirectAttributes.addFlashAttribute("messageError", "Can not delete this food because it is being in used!");
+            return "redirect:/admin/food/details/" + id;
+        } else if (messageFoodDelete.equals("success")) {
+            redirectAttributes.addFlashAttribute("messageSuccess", "Delete food successfully!");
+        }
         return "redirect:/admin/food/list";
     }
 
@@ -155,7 +157,7 @@ public class AdminFoodController {
 
     @GetMapping("/category")
     public String getCategory(Model model) {
-        List<FoodCategory> foodCategories = foodCategoryService.getFoodCategories();
+        List<FoodCategory> foodCategories = foodCategoryService.getFoodCategoriesAll();
         model.addAttribute("categories", foodCategories);
         model.addAttribute("category", new FoodCategory());
         return "/admin/products/category";
@@ -167,7 +169,7 @@ public class AdminFoodController {
                                  RedirectAttributes redirectAttributes,
                                  Model model) {
         if (result.hasErrors()) {
-            List<FoodCategory> foodCategories = foodCategoryService.getFoodCategories();
+            List<FoodCategory> foodCategories = foodCategoryService.getFoodCategoriesAll();
             model.addAttribute("categories", foodCategories);
             model.addAttribute("showAddCategoryModal", true);
             return "/admin/products/category";
@@ -182,8 +184,13 @@ public class AdminFoodController {
     }
 
     @GetMapping("/category/delete/{id}")
-    public String deleteCategory(@PathVariable int id) {
-        foodCategoryService.deleteCategory(id);
+    public String deleteCategory(@PathVariable int id, RedirectAttributes redirectAttributes) {
+        String messageCategoryDelete = foodCategoryService.deleteCategory(id);
+        if (messageCategoryDelete.equals("error")) {
+            redirectAttributes.addFlashAttribute("messageError", "Can not delete this category because it is being in sale");
+        } else if (messageCategoryDelete.equals("success")) {
+            redirectAttributes.addFlashAttribute("messageSuccess", "Inactive this category successfully");
+        }
         return "redirect:/admin/food/category";
     }
 
@@ -194,7 +201,7 @@ public class AdminFoodController {
                                  RedirectAttributes redirectAttributes,
                                  Model model) {
         if (result.hasErrors()) {
-            List<FoodCategory> foodCategories = foodCategoryService.getFoodCategories();
+            List<FoodCategory> foodCategories = foodCategoryService.getFoodCategoriesAll();
             model.addAttribute("categories", foodCategories);
             model.addAttribute("showUpdateCategoryModal", true);
             model.addAttribute("cateId", id);
@@ -211,5 +218,16 @@ public class AdminFoodController {
             redirectAttributes.addFlashAttribute("messageSuccess", "Update category success");
         }
         return "redirect:/admin/food/category"; // Redirect to the category list or appropriate page
+    }
+
+    @PostMapping("/category/{id}/change-status")
+    public String changeStatusCategory(@PathVariable int id, RedirectAttributes redirectAttributes) {
+        String changeStatusMessage = foodCategoryService.changeStatus(id);
+        if (changeStatusMessage.equals("error")) {
+            redirectAttributes.addFlashAttribute("messageError", "Can not delete this category because it is being used!");
+        } else if (changeStatusMessage.equals("success")) {
+            redirectAttributes.addFlashAttribute("messageSuccess", "Active category successfully");
+        }
+        return "redirect:/admin/food/category";
     }
 }

@@ -4,7 +4,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Drink category</title>
+    <title>Admin - Category</title>
     <!-- plugins:css -->
     <link rel="stylesheet" th:href="@{/static/assets/vendors/feather/feather.css}">
     <link rel="stylesheet" th:href="@{/static/assets/vendors/ti-icons/css/themify-icons.css}">
@@ -52,6 +52,7 @@
                                             <th> #</th>
                                             <th> Category name</th>
                                             <th> Number drink</th>
+                                            <th> Status</th>
                                             <th> Action</th>
                                         </tr>
                                         </thead>
@@ -61,6 +62,15 @@
                                             <td th:text="${category.name}"></td>
                                             <td th:text="${category.foods.size()}"></td>
                                             <td>
+                                                <form th:action="@{/admin/food/category/{id}/change-status(id=${category.id})}"
+                                                      method="post">
+                                                    <button th:id="'status-button-' + ${category.id}"
+                                                            th:text="${category.status == true ? 'Active' : 'Inactive'}"
+                                                            th:class="${category.status == true ? 'btn btn-success' : 'btn btn-danger'}">
+                                                    </button>
+                                                </form>
+                                            </td>
+                                            <td>
                                                 <!-- Update Button -->
                                                 <!-- Update Button -->
                                                 <button class="btn btn-primary btn-sm update-btn"
@@ -69,11 +79,11 @@
                                                     Update
                                                 </button>
                                                 <!-- Delete Button -->
-                                                <a class="btn btn-danger btn-sm"
-                                                   th:href="@{/admin/food/category/delete/{id}(id=${category.id})}"
-                                                   th:onclick="return confirm('Are you sure you want to delete this category?');">
-                                                    Delete
-                                                </a>
+<!--                                                <a class="btn btn-danger btn-sm"-->
+                                                <!--                                                   th:href="@{/admin/food/category/delete/{id}(id=${category.id})}"-->
+                                                <!--                                                   th:onclick="return confirm('Are you sure you want to delete this category?')">-->
+                                                <!--                                                    Delete-->
+                                                <!--                                                </a>-->
                                             </td>
 
                                             <!-- Update Category Modal -->

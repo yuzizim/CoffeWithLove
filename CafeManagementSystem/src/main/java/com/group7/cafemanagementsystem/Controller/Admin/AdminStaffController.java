@@ -57,7 +57,7 @@ public class AdminStaffController {
         }
         String message = "";
         userService.saveAccount(account);
-        return "redirect:/admin/manage-staff/register";
+        return "redirect:/admin/manage-staff";
     }
 
     @PostMapping("/register/change-status/{id}")

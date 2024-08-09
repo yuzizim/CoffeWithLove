@@ -4,7 +4,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Product List</title>
+    <title>Admin - Product Detail</title>
     <!-- plugins:css -->
     <link rel="stylesheet" th:href="@{/static/assets/vendors/feather/feather.css}">
     <link rel="stylesheet" th:href="@{/static/assets/vendors/ti-icons/css/themify-icons.css}">
@@ -53,9 +53,9 @@
                     </aside>
                     <main class="col-lg-6">
                         <div class="ps-lg-3">
-                            <!--                            <div th:if="${messageError}" class="alert alert-danger" role="alert">-->
-                            <!--                                <span th:text="${messageError}"></span>-->
-                            <!--                            </div>-->
+                            <div th:if="${messageError}" class="alert alert-danger" role="alert">
+                                <span th:text="${messageError}"></span>
+                            </div>
                             <h4 class="title text-dark" th:text="${food.name}"></h4>
 
                             <div class="mb-3">

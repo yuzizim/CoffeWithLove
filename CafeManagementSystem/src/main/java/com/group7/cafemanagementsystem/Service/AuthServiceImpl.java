@@ -40,7 +40,13 @@ public class AuthServiceImpl implements AuthService {
     public String login(Model model, @ModelAttribute LoginRequest request, HttpServletResponse response) {
         String name = request.getUserName();
         Optional<Account> user = userRepository.findByUserName(name);
+        if (!user.isPresent()) {
+            return "Username not exist!";
+        }
         Account accountOpt = user.get();
+        if (!accountOpt.isStatus()) {
+            return "Your account has been locked!";
+        }
         RefreshToken existingToken = refreshTokenRepository.findByAccount(accountOpt);
         String token = null;
         if (existingToken != null) {

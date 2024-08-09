@@ -46,7 +46,17 @@ public class AuthController {
     public String login(Model model, @ModelAttribute LoginRequest request, HttpServletResponse response) {
         String token = authService.login(model, request, response);
         if (token.equals("Bad credentials")) {
-            model.addAttribute("error", "Username or password not valid!");
+            model.addAttribute("error", "Password is not correct!");
+            model.addAttribute("user", new LoginRequest());
+            return "/dist/sign-in";
+        }
+        if (token.equals("Username not exist!")) {
+            model.addAttribute("error", "Username not exist");
+            model.addAttribute("user", new LoginRequest());
+            return "/dist/sign-in";
+        }
+        if (token.equals("Your account has been locked!")) {
+            model.addAttribute("error", "Your account has been locked!");
             model.addAttribute("user", new LoginRequest());
             return "/dist/sign-in";
         }
@@ -117,8 +127,9 @@ public class AuthController {
         }
         return "Refresh Token is empty!";
     }
+
     @GetMapping("/forgotPassword")
-    public String forgotPass(Model model){
+    public String forgotPass(Model model) {
         if (!model.containsAttribute("error")) {
             model.addAttribute("error", "");
         }
@@ -134,14 +145,14 @@ public class AuthController {
         }
         if (output.equals("Success")) {
             return "redirect:/auth/login?success";
-        }else {
+        } else {
             redirectAttributes.addFlashAttribute("error", "Failed to send reset email. Please try again.");
             return "redirect:/auth/forgotPassword";
         }
     }
 
     @GetMapping("/reset-password/{token}")
-    public String resetPassword(@PathVariable String token, Model model, RedirectAttributes redirectAttributes){
+    public String resetPassword(@PathVariable String token, Model model, RedirectAttributes redirectAttributes) {
         Optional<RefreshToken> reset = refreshTokenRepository.findByToken(token);
         if (reset.isPresent() && !userServiceImpl.hasExpiredToken(reset.get().getExpiryDate())) {
             model.addAttribute("email", reset.get().getAccount().getEmail());

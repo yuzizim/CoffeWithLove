@@ -4,7 +4,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Drink category</title>
+    <title>Admin - Manage table</title>
     <!-- plugins:css -->
     <link rel="stylesheet" th:href="@{/static/assets/vendors/feather/feather.css}">
     <link rel="stylesheet" th:href="@{/static/assets/vendors/ti-icons/css/themify-icons.css}">
@@ -42,6 +42,9 @@
                                 <div th:if="${messageError}" class="alert alert-danger" role="alert">
                                     <span th:text="${messageError}"></span>
                                 </div>
+                                <div th:if="${messageSuccess}" class="alert alert-success" role="alert">
+                                    <span th:text="${messageSuccess}"></span>
+                                </div>
                                 <div class="table-responsive pt-3">
                                     <table class="table table-bordered">
                                         <thead>
@@ -67,7 +70,7 @@
                                                 <!-- Delete Button -->
                                                 <a class="btn btn-danger btn-sm"
                                                    th:href="@{/admin/table/{id}/delete(id=${table.id})}"
-                                                   th:onclick="return confirm('Are you sure you want to delete this table?')">
+                                                   th:onclick="return confirm('Are you sure you want to inactive this table?')">
                                                     Delete
                                                 </a>
                                             </td>

@@ -19,7 +19,7 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public Cart addItemToCart(int id, String username, int quantity) {
-        Cart existCart = cartRepository.findByFood_Id(id);
+        Cart existCart = cartRepository.findByFood_IdAndAccount_UserName(id, username);
         if (existCart != null) {
             existCart.setQuantity(existCart.getQuantity() + quantity);
             return cartRepository.save(existCart);
@@ -35,8 +35,8 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public Cart updateQuantity(int id, int quantity) {
-        Cart cart = cartRepository.findByFood_Id(id);
+    public Cart updateQuantity(int id, int quantity, String userName) {
+        Cart cart = cartRepository.findByFood_IdAndAccount_UserName(id, userName);
         if (cart.getQuantity() == 1 && quantity == -1) {
             cartRepository.delete(cart);
             return new Cart();
@@ -52,12 +52,12 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public void deleteItemFromCart(int foodId) {
-        cartRepository.deleteByFood_Id(foodId);
+    public void deleteItemFromCart(int foodId, String userName) {
+        cartRepository.deleteByFood_IdAndAccount_UserName(foodId, userName);
     }
 
     @Override
-    public boolean checkItemExistInCart(int foodId) {
-        return cartRepository.findByFood_Id(foodId) != null;
+    public boolean checkItemExistInCart(int foodId, String userName) {
+        return cartRepository.findByFood_IdAndAccount_UserName(foodId, userName) != null;
     }
 }

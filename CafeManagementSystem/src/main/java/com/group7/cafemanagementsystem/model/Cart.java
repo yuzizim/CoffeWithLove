@@ -17,7 +17,8 @@ public class Cart {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @OneToOne
+    @ManyToOne
+    @JoinColumn(name = "food_id")
     private Food food;
 
     private int quantity;
