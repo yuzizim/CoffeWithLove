@@ -74,8 +74,19 @@ public interface OrderTableRepository extends JpaRepository<OrderTable, Integer>
             "    ISNULL(SUM(ot.total_price), 0) AS revenue\n" +
             "FROM Months m\n" +
             "LEFT JOIN order_table ot ON MONTH(ot.order_time) = m.month\n" +
+            "AND ot.status = 1\n" +
             "AND YEAR(ot.order_time) = :year\n" +
             "GROUP BY m.month\n" +
             "ORDER BY m.month", nativeQuery = true)
     List<RevenuePriceRepsonse> getRevenueEachMonth(@Param("year") int year);
+
+    OrderTable findByTableFoodIdAndStatusFalse(int tableId);
+
+    @Query(" select ot " +
+            " from OrderTable as ot " +
+            " join OrderDetail as od on ot.id = od.orderTable.id " +
+            " join Food as f on od.food.id = f.id " +
+            " where ot.status = false " +
+            " and f.foodCategory.id = :cateId")
+    List<OrderTable> findOrderTableHasCategoryBeingUsed(@Param("cateId") int categoryId);
 }
