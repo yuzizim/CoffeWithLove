@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/order-table")
+@RequestMapping("/ECoffee/order-table")
 public class OrderTableController {
     private final OrderTableService orderTableService;
     private final OrderTableRepository orderTableRepository;
@@ -25,7 +25,7 @@ public class OrderTableController {
         this.orderTableRepository = orderTableRepository;
     }
 
-    @GetMapping("/addOrderTable")
+    @GetMapping
     public String addOrderTable(Model model) {
         model.addAttribute("addOrderTableRequest", new AddOrderTableRequest());
         List<TableFood> tableFoods = orderTableService.getAllTableFoods();
@@ -33,7 +33,7 @@ public class OrderTableController {
         return "dist/order-table";
     }
 
-    @PostMapping("/addOrderTable")
+    @PostMapping
     public String addOrderTable(@ModelAttribute AddOrderTableRequest request, Model model) {
         OrderTable orderTable = new OrderTable();
         TableFood tableFood = orderTableService.getTableFoodById(request.getTableFoodId());
@@ -48,6 +48,6 @@ public class OrderTableController {
         orderTable.setNumPeople(request.getNumPeople());
         orderTable.setNote(request.getNote());
         orderTableRepository.save(orderTable);
-        return "redirect:/order-table/addOrderTable";
+        return "redirect:/ECoffee/order-table";
     }
 }

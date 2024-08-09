@@ -5,10 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Drip Cafe - Menu</title>
     <link rel="stylesheet" href="../../static/css/main.css"/>
-    <link
-            href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;700&family=Marck+Script&display=swap"
-            rel="stylesheet"
-    />
+    <link rel="stylesheet" href="../../static/css/menu.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;700&family=Marck+Script&display=swap" rel="stylesheet"/>
     <link rel="icon" href="../../static/img/favicon.png"/>
 </head>
 
@@ -24,28 +22,119 @@
                 <h3>Large size (16 fl oz)</h3>
             </div>
         </div>
-        <div class="flex">
-            <div class="box" th:each="item : ${menu}">
-                <div class="img-container">
-                    <img th:src="${item.images}" alt="image"/>
-                    <div class="box__btns">
-                        <a href="#!" class="box__btn view__openBtn">
-                            View details
-                        </a>
+
+        <!-- Search and Category Filter Start -->
+        <div class="container-fluid pt-5 text-center">
+            <div class="row justify-content-center px-xl-5">
+                <div class="col-lg-6 col-md-8">
+                    <div class="border-bottom mb-4 pb-4">
+                        <h5 class="font-weight-semi-bold mb-4">Filter by category</h5>
+                        <form th:action="@{/ECoffee/menu}" method="get" id="search-form">
+                            <input type="hidden" name="page" value="0"/>
+                            <div class="custom-control custom-radio d-flex align-items-center justify-content-between mb-3">
+                                <input type="radio" class="custom-control-input" id="category-all" name="category" value="-1"
+                                       th:checked="${cateId == -1}"
+                                       onchange="this.form.submit()">
+                                <label class="custom-control-label" for="category-all">All categories</label>
+                            </div>
+                            <div class="custom-control custom-radio d-flex align-items-center justify-content-between mb-3"
+                                 th:each="category : ${categories}">
+                                <input type="radio" class="custom-control-input"
+                                       th:id="'category-' + ${category.id}"
+                                       name="category"
+                                       th:checked="${category.id} == ${cateId}"
+                                       th:value="${category.id}" onchange="this.form.submit()">
+                                <label class="custom-control-label" th:for="'category-' + ${category.id}"
+                                       th:text="${category.name}"></label>
+                            </div>
+                        </form>
                     </div>
                 </div>
-                <h2 th:text="${item.name}"></h2>
-                <h3 th:text="${item.price} + ' $'"></h3>
             </div>
         </div>
+        <!-- Search and Category Filter End -->
+
+        <!-- Menu Items Start -->
+        <div class="container-fluid pt-5">
+            <div class="row pb-3 justify-content-center">
+                <div class="col-lg-9 col-md-12">
+                    <div class="row pb-3">
+                        <div class="col-12 pb-1">
+                            <div class="d-flex align-items-center justify-content-between mb-4">
+                                <form th:action="@{/ECoffee/menu}" method="get" id="searchForm">
+                                    <div class="input-group">
+                                        <input type="hidden" name="category" th:value="${cateId}"/>
+                                        <input type="text" class="form-control" placeholder="Search by name" name="search" th:value="${search}" autocomplete="off">
+                                    </div>
+                                </form>
+
+                            </div>
+                        </div>
+
+                        <div class="flex">
+                            <div class="box" th:each="item : ${menu}">
+                                <div class="img-container">
+                                    <img th:src="${item.images}" alt="image"/>
+                                    <div class="box__btns">
+                                        <a href="#!" class="box__btn view__openBtn">View details</a>
+                                    </div>
+                                </div>
+                                <h2 th:text="${item.name}"></h2>
+                                <h3 th:text="${item.price} + ' $'"></h3>
+                            </div>
+                        </div>
+
+                        <div class="col-12 pb-1" th:if="${menu.size() > 0}">
+                            <nav aria-label="Page navigation">
+                                <ul class="pagination pagination-style-one justify-content-center mb-3">
+                                    <li class="page-item" th:classappend="${pageNumber == 0} ? 'disabled'">
+                                        <a class="page-link" th:href="@{|?category=${cateId}&search=${search}&page=${pageNumber - 1}|}" aria-label="Previous">
+                                            <span aria-hidden="true">&laquo;</span>
+                                            <span class="sr-only">Previous</span>
+                                        </a>
+                                    </li>
+                                    <li class="page-item" th:each="i : ${#numbers.sequence(0, pageSize - 1)}" th:classappend="${i == pageNumber} ? 'active'">
+                                        <a class="page-link" th:text="${i + 1}" th:href="@{|?category=${cateId}&search=${search}&page=${i}|}"></a>
+                                    </li>
+                                    <li class="page-item" th:classappend="${pageNumber + 1 == pageSize} ? 'disabled'">
+                                        <a class="page-link" th:href="@{|?category=${cateId}&search=${search}&page=${pageNumber + 1}|}" aria-label="Next">
+                                            <span aria-hidden="true">&raquo;</span>
+                                            <span class="sr-only">Next</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Menu Items End -->
+
         <div th:insert="~{dist/footer :: footer}"></div>
     </section>
 </main>
+
 <script th:src="@{/static/js/script.js}"></script>
 <script th:src="@{/static/js/menu.js}"></script>
-<script
-        src="https://kit.fontawesome.com/c057664144.js"
-        crossorigin="anonymous"
-></script>
+<script src="https://kit.fontawesome.com/c057664144.js" crossorigin="anonymous"></script>
+<script>
+    function debounce(func, timeout = 300){
+        let timer;
+        return (...args) => {
+            clearTimeout(timer);
+            timer = setTimeout(() => { func.apply(this, args); }, timeout);
+        };
+    }
+
+    function handleSearchInput(event) {
+        document.querySelector('form').submit();
+    }
+
+    const searchInput = document.querySelector('input[name="search"]');
+    searchInput.addEventListener('input', debounce(handleSearchInput, 1000));
+</script>
+
 </body>
 </html>

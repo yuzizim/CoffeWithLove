@@ -68,7 +68,7 @@
                         <!-- Form Group (username)-->
                         <div class="mb-3">
                             <label class="small mb-1" for="inputUsername">Username</label>
-                            <input class="form-control" id="inputUsername" type="text" th:field="*{userName}" readonly>
+                            <input class="form-control" id="inputUsername" type="text" readonly pattern="^[a-zA-Z0-9_]*$" title="Username can only contain letters, numbers, and underscores" th:field="*{userName}">
                         </div>
                         <!-- Form Row-->
                         <div class="row gx-3 mb-3">

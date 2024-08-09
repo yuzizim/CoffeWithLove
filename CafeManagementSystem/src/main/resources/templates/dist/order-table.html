@@ -130,7 +130,7 @@
         <div class="pic-area">
             <div class="pic-area-text">
                 <div id="login-box">
-                    <form id="reservation-form" name="reservation-form" th:action="@{/order-table/addOrderTable}" th:object="${addOrderTableRequest}" method="post">
+                    <form id="reservation-form" name="reservation-form" th:action="@{/ECoffee/order-table}" th:object="${addOrderTableRequest}" method="post">
                         <div class="form-group">
                             <label for="tableF">Table:</label>
                             <select id="tableF" name="tableFoodId" th:field="*{tableFoodId}">
@@ -161,7 +161,7 @@
                             <label for="note">Note:</label>
                             <textarea id="note" th:field="*{note}"></textarea>
                         </div>
-                        <button type="submit" class="btn-order">Add order</button>
+                        <button type="submit" class="btn-order" disabled>Add order</button>
                     </form>
                 </div>
 

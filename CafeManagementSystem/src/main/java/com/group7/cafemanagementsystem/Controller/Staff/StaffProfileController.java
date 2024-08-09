@@ -66,6 +66,13 @@ public class StaffProfileController {
             if (existingAccountOpt.isPresent()) {
 
                 Account existingAccount = existingAccountOpt.get();
+                if (!request.getUserName().equals(username)) {
+                    Optional<Account> accountWithNewUsername = userRepository.findByUserName(request.getUserName());
+                    if (accountWithNewUsername.isPresent()) {
+                        redirectAttributes.addFlashAttribute("error", request.getUserName()+" already exist! Please try another one.");
+                        return "redirect:/staff/manage/profile";
+                    }
+                }
                 existingAccount.setUserName(request.getUserName());
                 existingAccount.setFullName(request.getFullName());
                 existingAccount.setEmail(request.getEmail());
