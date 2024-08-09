@@ -75,7 +75,7 @@
                             <!-- Form Group (full name)-->
                             <div class="col-md-6">
                                 <label class="small mb-1" for="inputFullName">Full name</label>
-                                <input class="form-control" id="inputFullName" pattern="[A-Za-z\s]{2,}" title="Full name must only contain letters (A-Z) and spaces" type="text" th:field="*{fullName}" placeholder="Enter your full name">
+                                <input class="form-control" id="inputFullName" pattern="[A-Za-z\s]+" title="Full name must only contain letters (A-Z) and spaces" type="text" th:field="*{fullName}" placeholder="Enter your full name" required>
                             </div>
                             <div class="col-md-6">
                                 <label class="small mb-1" for="role">Role</label>
@@ -92,7 +92,7 @@
                             <!-- Form Group (phone number)-->
                             <div class="col-md-6">
                                 <label class="small mb-1" for="inputPhone">Phone number</label>
-                                <input class="form-control" id="inputPhone" pattern="\d{10}" title="Phone number must be 10 digits" type="tel" th:field="*{phoneNumber}" placeholder="Enter your phone number">
+                                <input class="form-control" id="inputPhone" pattern="\d{10}" title="Phone number must be 10 digits" type="tel" th:field="*{phoneNumber}" placeholder="Enter your phone number" required>
                             </div>
                             <!-- Form Group (status)-->
                             <div class="col-md-6">
@@ -154,13 +154,6 @@
             errorElement.style.display = 'block';
         }
     }
-
-    document.getElementById('profile').addEventListener('submit', function(event) {
-        if (!validateFullname()) {
-            event.preventDefault();
-            alert('Please correct the errors in the form before submitting.');
-        }
-    });
 </script>
 </body>
 </html>
