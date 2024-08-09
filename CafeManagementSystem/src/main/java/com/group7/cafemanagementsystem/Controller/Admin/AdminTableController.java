@@ -69,8 +69,12 @@ public class AdminTableController {
     public String deleteTable(@PathVariable int id,
                               RedirectAttributes redirectAttributes) {
         String tableName = tableFoodService.getTableById(id).getName();
-        tableFoodService.deleteTable(id);
-        redirectAttributes.addFlashAttribute("messageError", "Delete " + tableName + " success");
+        String deleteMessage = tableFoodService.deleteTable(id);
+        if (deleteMessage.equals("error")) {
+            redirectAttributes.addFlashAttribute("messageError", "Can not delete " + tableName + " because it is being used");
+        } else if (deleteMessage.equals("success")) {
+            redirectAttributes.addFlashAttribute("messageSuccess", "Delete " + tableName + " success");
+        }
         return "redirect:/admin/table";
     }
 }

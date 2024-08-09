@@ -13,7 +13,7 @@ public interface TableFoodService {
 
     TableFood updateTable(int id, String name);
 
-    void deleteTable(int id);
+    String deleteTable(int id);
 
     TableFood updateStatus(int id);
 
@@ -22,4 +22,8 @@ public interface TableFoodService {
     List<TableFood> getAllTablesOrderById();
 
     boolean checkExistTableName(String tableName);
+
+    boolean checkExistTableInOrder(int tableId);
+
+    TableFood changeActive(int id);
 }

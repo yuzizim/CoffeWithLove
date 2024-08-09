@@ -30,6 +30,9 @@ public class TableFood {
     @Column(name = "status")
     private boolean status;
 
+    @Column(name = "active")
+    private boolean active;
+
     @OneToMany(mappedBy = "tableFood", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<OrderTable> orderTables = new HashSet<>();
 }
