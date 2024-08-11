@@ -159,4 +159,10 @@ public class OrderTableServiceImpl implements OrderTableService {
     public List<RevenuePriceRepsonse> getRevenueOfEachMonth(int year) {
         return orderTableRepository.getRevenueEachMonth(year);
     }
+
+    @Override
+    public boolean checkOrderIsPaid(int orderId) {
+        OrderTable order = findById(orderId);
+        return order.isStatus();
+    }
 }

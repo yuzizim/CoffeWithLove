@@ -45,4 +45,6 @@ public interface OrderTableService {
     OrderTable updateCustomerInformation(CustomerOrderRequest request, int orderId);
 
     List<RevenuePriceRepsonse> getRevenueOfEachMonth(int year);
+
+    boolean checkOrderIsPaid(int orderId);
 }
