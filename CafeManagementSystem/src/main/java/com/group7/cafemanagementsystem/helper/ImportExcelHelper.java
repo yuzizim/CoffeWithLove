@@ -21,7 +21,7 @@ import java.util.List;
 @AllArgsConstructor
 public class ImportExcelHelper {
     public static String TYPE = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-    static String[] HEADERs = {"Id", "Name", "Price", "Status", "Category", "Description", "Image"};
+    static String[] HEADERs = {"Id", "Name", "Price", "Status", "Category", "Description"};
     static String SHEET = "Foods";
     private static FoodCategoryService foodCategoryService;
     private static FoodService foodService;
@@ -126,13 +126,6 @@ public class ImportExcelHelper {
                                 skipRow = true;
                             }
                             break;
-                        case 6:
-                            if (currentCell.getCellType() == CellType.STRING) {
-                                product.setImages(currentCell.getStringCellValue());
-                            } else {
-                                skipRow = true;
-                            }
-                            break;
                         default:
                             break;
                     }
@@ -145,6 +138,7 @@ public class ImportExcelHelper {
                 }
 
                 if (!skipRow) {
+                    product.setImages("/static/img/food/none.jpg");
                     foods.add(product);
                 }
             }
