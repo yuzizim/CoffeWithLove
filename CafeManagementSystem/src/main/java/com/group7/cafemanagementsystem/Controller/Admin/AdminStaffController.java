@@ -48,14 +48,18 @@ public class AdminStaffController {
     public String createNewStaff(@Valid @ModelAttribute("user") Account account,
                                  BindingResult result,
                                  Model model) {
-        if (userService.findByUserName(account.getUserName())) {
-            model.addAttribute("msgError", "Username is exist!");
+        if (userService.findByUserName(account.getUserName()) || userService.checkExistEmail(account.getEmail())) {
+            if (userService.findByUserName(account.getUserName())) {
+                model.addAttribute("msgError", "Username is exist!");
+            }
+            if (userService.checkExistEmail(account.getEmail())) {
+                model.addAttribute("msgErrorEmail", "Email is exist!");
+            }
             return "/admin/manage-staff/register";
         }
         if (result.hasErrors()) {
             return "/admin/manage-staff/register";
         }
-        String message = "";
         userService.saveAccount(account);
         return "redirect:/admin/manage-staff";
     }
@@ -86,21 +90,30 @@ public class AdminStaffController {
                                   RedirectAttributes redirectAttributes,
                                   @RequestParam(value = "avatar", required = false) MultipartFile multipartFile,
                                   Model model) throws IOException {
-        if (result.hasErrors()) {
-            Account account = userService.findById(id);
-            model.addAttribute("staff", account);
-            return "/admin/manage-staff/staff-details";
-        }
 
         Account account = userService.findById(id);
-        if (!account.getUserName().equals(request.getUserName())) {
-            if (userService.findByUserName(account.getUserName())) {
-                redirectAttributes.addFlashAttribute("messageError", "User name is exist!");
-                return "redirect:/admin/manage-staff/details/" + id;
-            }
-        }
-
         String image = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+        if (result.hasErrors()
+                || !account.getUserName().equals(request.getUserName())
+                || !account.getEmail().equals(request.getEmail())
+                || (!(image.endsWith(".jpg") || image.endsWith(".png")))) {
+            model.addAttribute("staff", account);
+            if (!account.getUserName().equals(request.getUserName())) {
+                if (userService.findByUserName(request.getUserName())) {
+                    model.addAttribute("errorUsername", "User name is exist!");
+                }
+            }
+            if (!account.getEmail().equals(request.getEmail())) {
+                if (userService.checkExistEmail(request.getEmail())) {
+                    redirectAttributes.addFlashAttribute("errorEmail", "Email is exist");
+                }
+            }
+            // Check if the file has a valid extension
+            if (!(image.endsWith(".jpg") || image.endsWith(".png"))) {
+                model.addAttribute("errorImage", "Invalid file type. Only .jpg and .png are allowed.");
+            }
+            return "/admin/manage-staff/staff-details";
+        }
         Account staff = userService.updateStaffInfoByAdmin(id, request, image);
         if (!image.isEmpty()) {
             String uploadDir = "src/main/resources/static/img/account";
