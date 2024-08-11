@@ -52,66 +52,8 @@
 
 <body>
 <header>
-  <div class="second-header">
-    <div class="menu-btn">
-      <span class="menu-btn__burger"></span>
-    </div>
+  <div th:insert="~{dist/navbar :: navbar}" th:with="carts=${carts}"></div>
 
-    <nav class="nav">
-      <ul class="menu-nav">
-        <li class="menu-nav__item">
-          <a href="index.html" class="logo menu-nav__link">
-            <img src="../../static/img/favicon.png" />
-            <span class="logo-first">Drip</span>
-            <span class="logo-last">Cafe</span>
-          </a>
-        </li>
-        <li class="menu-nav__item">
-          <a href="sign-in.html" class="sign-in menu-nav__link">
-            <i class="fa fa-user" aria-hidden="true"></i>
-            Sign In
-          </a>
-          <span class="menu-nav__link" id="slash">/</span>
-        </li>
-        <br />
-        <li class="menu-nav__item">
-          <a href="index.html" class="menu-nav__link">
-            Home
-          </a>
-        </li>
-        <li class="menu-nav__item">
-          <a href="menu.html" class="menu-nav__link">
-            Menu
-          </a>
-        </li>
-        <li class="menu-nav__item active">
-          <a href="tables/view" class="menu-nav__link">
-            Tables
-          </a>
-        </li>
-        <li class="menu-nav__item">
-          <a href="order-table/addOrderTable" class="menu-nav__link">
-            Order Tables
-          </a>
-        </li>
-        <li class="menu-nav__item">
-          <a href="services.html" class="menu-nav__link">
-            Services
-          </a>
-        </li>
-        <li class="menu-nav__item">
-          <a href="contact.html" class="menu-nav__link">
-            Contact
-          </a>
-        </li>
-        <li class="menu-nav__item">
-          <a href="#!" class="menu-nav__link cart__openBtn">
-            <i class="fa fa-cart-plus" aria-hidden="true"></i>
-          </a>
-        </li>
-      </ul>
-    </nav>
-  </div>
   <!-- Shopping Cart -->
   <div class="cart-overlay">
     <div class="cart">
@@ -166,15 +108,15 @@
         <div class="img-container">
           <img src="../../static/img/empty.jpg" alt="Table Status" />
           <div class="box__btns">
-            <a href="#!" class="box__btn one__view__openBtn">
-              View menu
-            </a>
-            <a href="#!" class="box__btn order__openBtn" th:attr="data-table-id=${table.id}">
-              View order table
-            </a>
-            <a href="#!" class="box__btn one__cart__button">
-              Add to Cart
-            </a>
+<!--            <a href="#!" class="box__btn one__view__openBtn">-->
+<!--              View menu-->
+<!--            </a>-->
+<!--            <a href="#!" class="box__btn order__openBtn" th:attr="data-table-id=${table.id}">-->
+<!--              View order table-->
+<!--            </a>-->
+<!--            <a href="#!" class="box__btn one__cart__button">-->
+<!--              Add to Cart-->
+<!--            </a>-->
             <h2 th:text="${table.name}" style="color: white"></h2>
             <h3>Status: <span th:text="${table.status ? 'Occupied' : 'Available'}"></span></h3>
           </div>

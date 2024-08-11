@@ -2,6 +2,37 @@
     max-width: 1200px;
     margin: 0 auto;
 }
+.d-flex {
+    display: flex;
+}
+
+.align-items-center {
+    align-items: center;
+}
+
+.justify-content-between {
+    justify-content: space-between;
+}
+
+.mr-4 {
+    margin-right: 1.5rem;
+}
+
+.mr-3 {
+    margin-right: 1rem;
+}
+
+.mr-2 {
+    margin-right: 0.5rem;
+}
+
+.w-100 {
+    width: 100%;
+}
+
+.form-control {
+    width: 200px; /* Adjust width as needed */
+}
 
 .text-center {
     text-align: center;
@@ -42,25 +73,118 @@ input[type="radio"].custom-control-input:checked ~ .custom-control-label::before
     border-radius: 10px; /* Optional: rounded corners */
     overflow: hidden; /* Prevent content from overflowing */
     padding: 10px; /* Optional: add padding inside the box */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%; /* Ensure boxes are the same height */
 }
 
 .menu .box img {
     width: 100%;
-    height: auto;
+    height: 200px; /* Set a fixed height for images */
     object-fit: cover; /* Ensure the image covers the container without stretching */
     border-bottom: 1px solid #ddd; /* Add a separator line below the image */
     margin-bottom: 10px; /* Add space below the image */
 }
 
- h1 { text-align: center; margin-top: 30px; margin-bottom: 50px; }
+.menu .box h2 {
+    margin: 10px 0;
+    font-size: 1.5rem;
+    flex-grow: 1; /* Ensure the heading takes available space */
+}
 
-.pagination-style-one a { padding: 7px; background: #135fb4; color: #ffffff; border-radius: 50%; box-shadow: 0px 5px 10px 0px rgba(0,0,0,.1);}
-.pagination-style-one a.selected, .pagination-style-one a:hover, .pagination-style-one a:active, .pagination-style-one a:focus { padding: 12px; box-shadow: 0px 5px 10px 0px rgba(0,0,0,.5);}
+.menu .box h3 {
+    font-size: 1.2rem;
+    color: #333;
+    margin-top: 10px;
+}
 
-.pagination-style-two a { padding: 7px 15px; background: #ff6407; color: #ffffff; border-radius: 5px 25px; box-shadow: 0px 5px 10px 0px rgba(0,0,0,.1);}
-.pagination-style-two a.selected, .pagination-style-two a:hover, .pagination-style-two a:active, .pagination-style-two a:focus { padding: 15px; }
+.pagination {
+    display: flex;
+    justify-content: center; /* Center the pagination */
+    padding: 1rem 0;
+    font-size: 1.2rem; /* Increase the font size */
+}
 
-.pagination-style-three a { padding: 5px 15px; background: #ffffff; color: #ff6407; border-radius: 25px; box-shadow: 0px 5px 10px 0px rgba(0,0,0,.1);}
+.pagination .page-link {
+    color: #fff; /* Change this color as needed */
+    background-color: #333; /* Change this background color as needed */
+    border: none;
+    border-radius: 5px;
+    padding: 0.75rem 1.25rem;
+    margin: 0 0.25rem;
+    font-weight: bold;
+}
 
-.pagination-style-three a.selected, .pagination-style-three a:hover, .pagination-style-three a:active, .pagination-style-three a:focus { background: #ff6407; }
+.pagination .page-link:hover {
+    background-color: #555; /* Hover effect */
+    color: #fff;
+}
 
+.pagination .page-item.active .page-link {
+    background-color: #007bff;
+    border-color: #007bff;
+    color: #fff;
+}
+
+.pagination .page-item.disabled .page-link {
+    background-color: #ccc;
+    color: #777;
+    cursor: not-allowed;
+}
+.pagination-container {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.pagination {
+    display: inline-block;
+}
+
+.pagination li {
+    display: inline;
+}
+.filter-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.filter-container h5 {
+    font-size: 1.5rem;
+    margin-right: 20px;
+}
+
+.custom-control.custom-radio {
+    margin-right: 20px;
+}
+
+#searchForm .form-control {
+    width: auto;
+}
+
+#searchForm .btn {
+    padding-left: 20px;
+    padding-right: 20px;
+}
+.filter-row {
+    width: 100%;
+    justify-content: flex-start;
+    margin-bottom: 20px; /* Add spacing between the filter and search rows */
+}
+.box .img-container {
+    width: 200px; /* Adjust width as needed */
+    height: 200px; /* Adjust height as needed */
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.box .img-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}

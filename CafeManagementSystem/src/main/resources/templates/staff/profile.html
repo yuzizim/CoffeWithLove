@@ -64,7 +64,7 @@
             <div class="card mb-4">
                 <div class="card-header">Account Details</div>
                 <div class="card-body">
-                    <form th:action="@{/staff/manage/profile}" th:object="${request}" method="post" enctype="multipart/form-data">
+                    <form th:action="@{/staff/manage/profile}" th:object="${request}" id="profile" method="post" enctype="multipart/form-data">
                         <!-- Form Group (username)-->
                         <div class="mb-3">
                             <label class="small mb-1" for="inputUsername">Username</label>
@@ -75,7 +75,7 @@
                             <!-- Form Group (full name)-->
                             <div class="col-md-6">
                                 <label class="small mb-1" for="inputFullName">Full name</label>
-                                <input class="form-control" id="inputFullName" pattern="[A-Za-z\s]+" title="Full name must only contain letters (A-Z) and spaces" type="text" th:field="*{fullName}" placeholder="Enter your full name">
+                                <input class="form-control" id="inputFullName" pattern="[A-Za-z\s]+" title="Full name must only contain letters (A-Z) and spaces" type="text" th:field="*{fullName}" placeholder="Enter your full name" required>
                             </div>
                             <div class="col-md-6">
                                 <label class="small mb-1" for="role">Role</label>
@@ -92,7 +92,7 @@
                             <!-- Form Group (phone number)-->
                             <div class="col-md-6">
                                 <label class="small mb-1" for="inputPhone">Phone number</label>
-                                <input class="form-control" id="inputPhone" pattern="\d{10}" title="Phone number must be 10 digits" type="tel" th:field="*{phoneNumber}" placeholder="Enter your phone number">
+                                <input class="form-control" id="inputPhone" pattern="\d{10}" title="Phone number must be 10 digits" type="tel" th:field="*{phoneNumber}" placeholder="Enter your phone number" required>
                             </div>
                             <!-- Form Group (status)-->
                             <div class="col-md-6">
