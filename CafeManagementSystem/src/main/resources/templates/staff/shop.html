@@ -91,7 +91,7 @@
                                 <input type="text" class="form-control" placeholder="Search by name" name="search"
                                        th:value="${search}" id="searchText">
                                 <div class="input-group-append">
-                                    <button type="button" class="btn bg-transparent text-primary">
+                                    <button type="submit" class="btn bg-transparent text-primary">
                                         <i class="fa fa-search"></i>
                                     </button>
                                 </div>
@@ -256,34 +256,34 @@
 <!-- Template Javascript -->
 <script th:src="@{/static/js/main.js}"></script>
 
-<script>
-    $(document).ready(function () {
-        function liveSearch() {
-            let category = $('input[name="category"]:checked').val();
-            $.ajax({
-                url: "/staff/manage/menu",
-                type: "GET",
-                data: {
-                    search: $('#searchText').val(),
-                    category: category,
-                    orderId: $('.orderId').val()
-                },
-                success: function (data) {
-                    // Replace the content of the menu with the new results
-                    $('#menu').html($(data).find('#menu').html());
-                },
-                error: function () {
-                    console.log("Error in live search");
-                }
-            });
-        }
+<!--<script>-->
+<!--    $(document).ready(function () {-->
+<!--        function liveSearch() {-->
+<!--            let category = $('input[name="category"]:checked').val();-->
+<!--            $.ajax({-->
+<!--                url: "/staff/manage/menu",-->
+<!--                type: "GET",-->
+<!--                data: {-->
+<!--                    search: $('#searchText').val(),-->
+<!--                    category: category,-->
+<!--                    orderId: $('.orderId').val()-->
+<!--                },-->
+<!--                success: function (data) {-->
+<!--                    // Replace the content of the menu with the new results-->
+<!--                    $('#menu').html($(data).find('#menu').html());-->
+<!--                },-->
+<!--                error: function () {-->
+<!--                    console.log("Error in live search");-->
+<!--                }-->
+<!--            });-->
+<!--        }-->
 
-        // Trigger search on typing
-        $('#searchText').on('input', function () {
-            liveSearch();
-        });
-    });
-</script>
+<!--        // Trigger search on typing-->
+<!--        $('#searchText').on('input', function () {-->
+<!--            liveSearch();-->
+<!--        });-->
+<!--    });-->
+<!--</script>-->
 
 </body>
 
