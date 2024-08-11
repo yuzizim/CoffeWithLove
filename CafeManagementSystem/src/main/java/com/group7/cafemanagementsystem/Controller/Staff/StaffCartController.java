@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -49,7 +50,8 @@ public class StaffCartController {
 
     @GetMapping("/update-quantity/{id}")
     public String updateQuantity(@PathVariable int id,
-                                 @RequestParam(name = "quantityChange") int quantity) {
+                                 @RequestParam(name = "quantityChange") int quantity,
+                                 RedirectAttributes redirectAttributes) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Object principal = authentication.getPrincipal();
 
@@ -59,7 +61,11 @@ public class StaffCartController {
         } else {
             username = principal.toString();
         }
-        Cart cart = cartService.updateQuantity(id, quantity, username);
+        if (cartService.checkItemExistInCart(id, username)) {
+            Cart cart = cartService.updateQuantity(id, quantity, username);
+        } else {
+            redirectAttributes.addFlashAttribute("messageError", "Can not change quantity this food because it has been remove from cart!");
+        }
         return "redirect:/staff/manage/cart";
     }
 
