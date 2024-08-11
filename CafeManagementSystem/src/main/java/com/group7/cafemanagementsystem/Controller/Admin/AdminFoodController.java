@@ -61,7 +61,9 @@ public class AdminFoodController {
                               @RequestParam(name = "categoryId") int categoryId,
                               @RequestParam int page,
                               Model model) throws IOException {
-        if (result.hasErrors() || food.getPrice() == 0) {
+        String image = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+
+        if (result.hasErrors() || food.getPrice() == 0 || (!(image.endsWith(".jpg") || image.endsWith(".png")))) {
             PageFoodResponse pageFoodResponse = foodService.getFoodByPage(search, categoryId, page, 8);
             List<FoodCategory> foodCategories = foodCategoryService.getFoodCategories();
             model.addAttribute("foods", pageFoodResponse.getFoods());
@@ -74,6 +76,11 @@ public class AdminFoodController {
             if (food.getPrice() == 0) {
                 model.addAttribute("errorPrice", "Price can not equal 0");
             }
+
+            // Check if the file has a valid extension
+            if (!(image.endsWith(".jpg") || image.endsWith(".png"))) {
+                model.addAttribute("errorImage", "Invalid file type. Only .jpg and .png are allowed.");
+            }
             model.addAttribute("showAddDrinkModal", true);
             return "/admin/products/product-list";
         }
@@ -84,7 +91,6 @@ public class AdminFoodController {
             redirectAttributes.addFlashAttribute("messageError", messageError);
             return "redirect:/admin/food/list";
         }
-        String image = StringUtils.cleanPath(multipartFile.getOriginalFilename());
         Food savedFood = foodService.createDrink(food, image);
         String uploadDir = "src/main/resources/static/img/food";
         FileUploadUtil.saveFile(uploadDir, image, multipartFile);
@@ -126,7 +132,8 @@ public class AdminFoodController {
                              Model model) throws IOException {
         Food foodExist = foodService.getFoodById(id);
         food.setImages(foodExist.getImages());
-        if (result.hasErrors() || food.getPrice() == 0) {
+        String image = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+        if (result.hasErrors() || food.getPrice() == 0 || (!(image.endsWith(".jpg") || image.endsWith(".png")))) {
             List<FoodCategory> foodCategories = foodCategoryService.getFoodCategories();
             model.addAttribute("categories", foodCategories);
             model.addAttribute("food", foodExist);
@@ -135,10 +142,14 @@ public class AdminFoodController {
             if (food.getPrice() == 0) {
                 model.addAttribute("messageError", "Price can not be 0");
             }
+            // Check if the file has a valid extension
+            if (!(image.endsWith(".jpg") || image.endsWith(".png"))) {
+                model.addAttribute("errorImage", "Invalid file type. Only .jpg and .png are allowed.");
+            }
             return "/admin/products/product-detail";
         }
 
-        String image = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+
         Food existingFood = foodService.updateFood(id, food, image);
 
         if (!image.isEmpty()) {
