@@ -26,4 +26,6 @@ public interface UserService {
     Account updateStaffInfoByAdmin(int staffId, UpdateStaffInfoRequest request, String image);
 
     Account resetPassword(int id);
+
+    boolean checkExistEmail(String email);
 }

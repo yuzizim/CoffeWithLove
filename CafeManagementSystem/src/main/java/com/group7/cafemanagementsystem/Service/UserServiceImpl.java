@@ -89,14 +89,14 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByUserName(username).isPresent();
     }
 
-    public String sendMailReset(Account user){
-        try{
+    public String sendMailReset(Account user) {
+        try {
             String resetLink = generateResetToken(user);
 
             SimpleMailMessage message = new SimpleMailMessage();
             message.setTo(user.getEmail());
             message.setSubject("Reset password");
-            message.setText("Hello " + user.getFullName()+ "\n\n" +"Please click on this to reset your password: " + resetLink+". \n\n" + "Regards \n" +"CoffeWithLove.");
+            message.setText("Hello " + user.getFullName() + "\n\n" + "Please click on this to reset your password: " + resetLink + ". \n\n" + "Regards \n" + "CoffeWithLove.");
             mailSender.send(message);
             return "Success";
         } catch (Exception e) {
@@ -127,16 +127,16 @@ public class UserServiceImpl implements UserService {
     public boolean hasExpiredToken(Instant expiryDate) {
         return Instant.now().isAfter(expiryDate);
     }
-    
-    public String sendMail(Account user, String text, String subject){
-        try{
+
+    public String sendMail(Account user, String text, String subject) {
+        try {
             SimpleMailMessage message = new SimpleMailMessage();
             message.setTo(user.getEmail());
             message.setSubject(subject);
-            message.setText("Hello "+ user.getFullName()+ "\n\n" +text+ "\n\n" + "Regards \n" +"CoffeWithLove.");
+            message.setText("Hello " + user.getFullName() + "\n\n" + text + "\n\n" + "Regards \n" + "CoffeWithLove.");
             mailSender.send(message);
             return "Success";
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return "Error";
         }
@@ -173,7 +173,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public Account resetPassword(int id) {
         Account staff = findById(id);
-        staff.setPassword(passwordEncoder.encode("123456"));
+        staff.setPassword(passwordEncoder.encode("12345678"));
         return userRepository.save(staff);
+    }
+
+    @Override
+    public boolean checkExistEmail(String email) {
+        Account account = userRepository.findByEmail(email);
+        return account != null;
     }
 }
