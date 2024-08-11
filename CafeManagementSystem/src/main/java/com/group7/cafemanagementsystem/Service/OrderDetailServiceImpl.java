@@ -36,6 +36,16 @@ public class OrderDetailServiceImpl implements OrderDetailService {
         OrderDetail orderDetail = orderDetailRepository.findByOrderTableIdAndFoodId(orderId, foodId);
         if (orderDetail.getQuantity() == 1 && quantity == -1) {
             orderDetailRepository.delete(orderDetail);
+
+            // update total Price of order
+            List<OrderDetail> orderDetails = getOrderDetailsByOrderId(orderId);
+            double totalPrice = 0;
+            for (OrderDetail orderDetail1 : orderDetails) {
+                totalPrice += orderDetail1.getQuantity() * orderDetail1.getFood().getPrice();
+            }
+            OrderTable orderTable = orderTableService.findById(orderId);
+            orderTable.setTotalPrice(totalPrice);
+            orderTableRepository.save(orderTable);
             return new OrderDetail();
         }
         orderDetail.setQuantity(orderDetail.getQuantity() + quantity);
@@ -48,6 +58,7 @@ public class OrderDetailServiceImpl implements OrderDetailService {
         }
         OrderTable orderTable = orderTableService.findById(orderId);
         orderTable.setTotalPrice(totalPrice);
+        orderTableRepository.save(orderTable);
 
         return orderDetailRepository.save(orderDetail);
     }
