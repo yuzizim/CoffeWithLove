@@ -27,29 +27,40 @@ public class StaffMenuController {
 
     @GetMapping("/menu")
     public String displayMenu(Model model,
-                              @RequestParam(name = "category", defaultValue = "-2") int id,
+                              @RequestParam(name = "category", defaultValue = "-1") int id,
                               @RequestParam(name = "search", defaultValue = "") String search,
                               @RequestParam(name = "orderId", defaultValue = "-1") int orderId,
                               @RequestParam(defaultValue = "0") int page,
                               @RequestParam(defaultValue = "9") int size) {
         search = search.trim();
-        if (id == -2) {
+//        if (id == -2) {
+//            PageFoodResponse response = foodService.getMenuByPageAndSearch(search, page, size);
+//            model.addAttribute("menu", response.getFoods());
+//            model.addAttribute("pageSize", response.getTotalPages());
+//        } else {
+//            if (id == -1) {
+//                if (orderId == -1) {
+//                    return "redirect:/staff/manage/menu";
+//                } else {
+//                    return "redirect:/staff/manage/menu?orderId=" + orderId;
+//                }
+//            } else {
+//                PageFoodResponse response = foodService.getFoodByCategoryIdAndSearchKey(id, search, page, size);
+//                model.addAttribute("menu", response.getFoods());
+//                model.addAttribute("pageSize", response.getTotalPages());
+//            }
+//        }
+
+        if(id == -1){
             PageFoodResponse response = foodService.getMenuByPageAndSearch(search, page, size);
             model.addAttribute("menu", response.getFoods());
             model.addAttribute("pageSize", response.getTotalPages());
-        } else {
-            if (id == -1) {
-                if (orderId == -1) {
-                    return "redirect:/staff/manage/menu";
-                } else {
-                    return "redirect:/staff/manage/menu?orderId=" + orderId;
-                }
-            } else {
-                PageFoodResponse response = foodService.getFoodByCategoryIdAndSearchKey(id, search, page, size);
-                model.addAttribute("menu", response.getFoods());
-                model.addAttribute("pageSize", response.getTotalPages());
-            }
+        }else{
+            PageFoodResponse response = foodService.getFoodByCategoryIdAndSearchKey(id, search, page, size);
+            model.addAttribute("menu", response.getFoods());
+            model.addAttribute("pageSize", response.getTotalPages());
         }
+
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Object principal = authentication.getPrincipal();
