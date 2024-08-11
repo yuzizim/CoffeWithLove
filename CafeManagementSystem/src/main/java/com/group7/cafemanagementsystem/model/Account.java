@@ -42,7 +42,7 @@ public class Account {
 
     @Column(name = "phone")
     @NotBlank(message = "Phone number is required")
-    @Pattern(regexp = "^0\\d{9}$", message = "Phone number should be 10 digits")
+    @Pattern(regexp = "^0\\d{9}$", message = "Phone number should be 10 digits and start with 0")
     private String phoneNumber;
 
     @Column(name = "avatar")
