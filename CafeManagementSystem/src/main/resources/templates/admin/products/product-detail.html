@@ -126,6 +126,7 @@
                         <div class="mb-3">
                             <label for="foodImage" class="form-label">Image</label>
                             <input type="file" class="form-control" id="foodImage" name="image">
+                            <div class="text-danger" th:if="${errorImage}" th:text="${errorImage}"></div>
                             <!-- If you want to display the current image -->
                             <img th:if="*{images}" th:src="*{images}" alt="Current Image"
                                  class="img-fluid mt-2">

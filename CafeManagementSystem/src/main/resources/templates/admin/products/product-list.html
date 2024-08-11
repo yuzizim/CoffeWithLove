@@ -260,6 +260,7 @@
                         <label for="drinkImage" class="form-label">Image</label>
                         <input type="file" class="form-control" id="drinkImage" name="image"
                                accept="image/png, image/jpeg" required>
+                        <div class="text-danger" th:if="${errorImage}" th:text="${errorImage}"></div>
                     </div>
                     <div class="mb-3">
                         <label for="drinkDescription" class="form-label">Description</label>

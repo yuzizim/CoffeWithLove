@@ -71,6 +71,23 @@
             </div>
         </form>
     </div>
+    <div class="col-md-1 mb-4">
+        <form th:action="@{/staff/manage/order/list}" method="get">
+            <input type="hidden" name="fromDate" th:value="${startDate}"/>
+            <input type="hidden" name="toDate" th:value="${toDate}"/>
+            <input type="hidden" name="page" th:value="${pageNumber}"/>
+
+            <select class="form-control" id="size" name="size">
+                <option value="10" th:selected="${size == 10}">10</option>
+                <option value="20" th:selected="${size == 20}">20</option>
+                <option value="50" th:selected="${size == 50}">50</option>
+                <option value="100" th:selected="${size == 100}">100</option>
+            </select>
+        </form>
+    </div>
+    <div th:if="${messageError}" class="alert alert-danger text-center" role="alert">
+        <span th:text="${messageError}"></span>
+    </div>
     <div class="row px-xl-5">
         <div class="col-lg-12 table-responsive mb-5">
             <table class="table table-bordered text-center mb-0">
@@ -135,7 +152,7 @@
                 <ul class="pagination justify-content-center mb-3">
                     <li class="page-item" th:classappend="${pageNumber == 0} ? 'disabled'">
                         <a class="page-link"
-                           th:href="@{|?fromDate=${startDate}&toDate=${toDate}&search=${search}&page=${pageNumber - 1}|}"
+                           th:href="@{|?fromDate=${startDate}&toDate=${toDate}&search=${search}&page=${pageNumber - 1}&size=${size}|}"
                            aria-label="Previous">
                             <span aria-hidden="true">&laquo;</span>
                             <span class="sr-only">Previous</span>
@@ -144,11 +161,11 @@
                     <li class="page-item" th:each="i : ${#numbers.sequence(0, pageSize - 1)}"
                         th:classappend="${i == pageNumber} ? 'active'">
                         <a class="page-link" th:text="${i + 1}"
-                           th:href="@{|?fromDate=${startDate}&toDate=${toDate}&search=${search}&page=${i}|}"></a>
+                           th:href="@{|?fromDate=${startDate}&toDate=${toDate}&search=${search}&page=${i}&size=${size}|}"></a>
                     </li>
                     <li class="page-item" th:classappend="${pageNumber + 1 == pageSize} ? 'disabled'">
                         <a class="page-link"
-                           th:href="@{|?fromDate=${startDate}&toDate=${toDate}&search=${search}&page=${pageNumber + 1}|}"
+                           th:href="@{|?fromDate=${startDate}&toDate=${toDate}&search=${search}&page=${pageNumber + 1}&size=${size}|}"
                            aria-label="Next">
                             <span aria-hidden="true">&raquo;</span>
                             <span class="sr-only">Next</span>
@@ -183,6 +200,70 @@
 
 <!-- Template Javascript -->
 <!--<script th:src="@{/static/js/main.js}"></script>-->
+<script>
+    $(document).ready(function () {
+        $('#size').change(function () {
+            var selectedSize = $(this).val();
+            $.ajax({
+                type: 'GET',
+                url: '/staff/manage/order/list', // Your endpoint
+                data: {
+                    fromDate: $('#fromDate').val(),
+                    toDate: $('#toDate').val(),
+                    search: $('#searchText').val(),
+                    page: 0, // Reset to first page on size change
+                    size: selectedSize
+                },
+                success: function (response) {
+                    // Update the table content without refreshing the page
+                    $('.table-responsive').html($(response).find('.table-responsive').html());
+
+                    // Update pagination (if needed)
+                    $('.pagination').html($(response).find('.pagination').html());
+                },
+                error: function () {
+                    alert('Error occurred while updating the table.');
+                }
+            });
+        });
+
+        function updateOrderList() {
+            var selectedSize = $('#size').val();
+            $.ajax({
+                type: 'GET',
+                url: '/staff/manage/order/list', // Your endpoint
+                data: {
+                    fromDate: $('#fromDate').val(),
+                    toDate: $('#toDate').val(),
+                    search: $('#searchText').val(),
+                    page: 0, // Reset to first page on new search
+                    size: selectedSize
+                },
+                success: function (response) {
+                    // Update the table content without refreshing the page
+                    $('.table-responsive').html($(response).find('.table-responsive').html());
+
+                    // Update pagination (if needed)
+                    $('.pagination').html($(response).find('.pagination').html());
+                },
+                error: function () {
+                    alert('Error occurred while updating the table.');
+                }
+            });
+        }
+
+        // Trigger search on typing
+        $('#searchText').on('input', function () {
+            updateOrderList();
+        });
+
+        // Trigger size change
+        $('#size').change(function () {
+            updateOrderList();
+        });
+    });
+
+</script>
 </body>
 
 </html>

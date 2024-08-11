@@ -42,9 +42,11 @@
                         <div class="col-md-3 border-right">
                             <div class="d-flex flex-column align-items-center text-center p-3 py-5"><img
                                     class="rounded-circle mt-5" width="150px"
+                                    id="profilePicture"
                                     th:src="${staff.avatar}">
                                 <input type="file" class="form-control" id="avatar" name="avatar"
-                                       accept="image/png, image/jpeg">
+                                       accept="image/png, image/jpeg" onchange="previewImage()">
+                                <span id="fileError" style="color: red; display: none;">Please select a valid image file (JPG or PNG).</span>
                                 <span class="font-weight-bold" th:text="${staff.fullName}"></span>
                             </div>
                         </div>
@@ -121,5 +123,26 @@
 <!-- endinject -->
 <!-- Custom js for this page-->
 <!-- End custom js for this page-->
+<script>
+    function previewImage() {
+        const fileInput = document.getElementById('avatar');
+        const file = fileInput.files[0];
+        const reader = new FileReader();
+        const errorElement = document.getElementById('fileError');
+
+        // Check if the file is an image
+        if (file && (file.type === 'image/jpeg' || file.type === 'image/png')) {
+            reader.onloadend = function () {
+                const img = document.getElementById('profilePicture');
+                img.src = reader.result;
+            }
+
+            reader.readAsDataURL(file);
+            errorElement.style.display = 'none';
+        } else {
+            errorElement.style.display = 'block';
+        }
+    }
+</script>
 </body>
 </html>
