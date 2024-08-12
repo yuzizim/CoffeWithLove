@@ -15,6 +15,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 @Controller
@@ -53,17 +55,29 @@ public class StaffChangePassController {
             return "staff/change-pass";
         }
 
-        if (!userServiceImpl.passwordMatches(request.getCurrentPassword(), user.getPassword())) {
-            model.addAttribute("error", "Current password is incorrect.");
-            return "staff/change-pass";
-        }
-
-        if (!request.getNewPassword().equals(request.getConfirmPassword())) {
-            model.addAttribute("error", "New passwords do not match.");
-            return "staff/change-pass";
-        }
+//        if (!userServiceImpl.passwordMatches(request.getCurrentPassword(), user.getPassword())) {
+//            model.addAttribute("error", "Current password is incorrect.");
+//            return "staff/change-pass";
+//        }
+//
+//        if (!request.getNewPassword().equals(request.getConfirmPassword())) {
+//            model.addAttribute("error", "New passwords do not match.");
+//            return "staff/change-pass";
+//        }
         user.setPassword(passwordEncoder.encode(request.getNewPassword()));
         userRepository.save(user);
-        return "redirect:/staff/home";
+
+        LocalDateTime time = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String formattedTime = time.format(formatter);
+        String text = "<div style='text-align: left;'>"
+                + "Your password was changed on " + formattedTime + ".<br/><br/>"
+                + "<strong>If you have already done this</strong>, you can safely ignore this email.<br/><br/>"
+                + "<strong>If you have not done this</strong>, please secure your account."
+                + "</div>";
+        userServiceImpl.sendMail(user, text, "Your password had been changed.");
+        model.addAttribute("success", "Your password had been changed.");
+        model.addAttribute("username", username);
+        return "staff/change-pass";
     }
 }

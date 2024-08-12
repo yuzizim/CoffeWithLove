@@ -8,12 +8,15 @@ import com.group7.cafemanagementsystem.Response.PageUserResponse;
 import com.group7.cafemanagementsystem.model.Account;
 import com.group7.cafemanagementsystem.model.Food;
 import com.group7.cafemanagementsystem.model.RefreshToken;
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -127,16 +130,19 @@ public class UserServiceImpl implements UserService {
     public boolean hasExpiredToken(Instant expiryDate) {
         return Instant.now().isAfter(expiryDate);
     }
-    
-    public String sendMail(Account user, String text, String subject){
-        try{
-            SimpleMailMessage message = new SimpleMailMessage();
-            message.setTo(user.getEmail());
-            message.setSubject(subject);
-            message.setText("Hello "+ user.getFullName()+ "\n\n" +text+ "\n\n" + "Regards \n" +"CoffeWithLove.");
+
+    public String sendMail(Account user, String htmlContent, String subject) {
+        try {
+            MimeMessage message = mailSender.createMimeMessage();
+
+            MimeMessageHelper helper = new MimeMessageHelper(message, true);
+            helper.setTo(user.getEmail());
+            helper.setSubject(subject);
+
+            helper.setText("<p>Hello " + user.getFullName() + ",</p>" + htmlContent + "<p>Regards,<br>CoffeeWithLove.</p>", true);
             mailSender.send(message);
             return "Success";
-        }catch (Exception e){
+        } catch (MessagingException e) {
             e.printStackTrace();
             return "Error";
         }
