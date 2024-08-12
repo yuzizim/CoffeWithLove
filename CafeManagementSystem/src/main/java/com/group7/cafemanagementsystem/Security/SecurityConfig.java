@@ -10,6 +10,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.stereotype.Component;
 
@@ -31,9 +32,17 @@ public class SecurityConfig {
                         .requestMatchers("/admin/**").hasAnyAuthority("ADMIN")
                         .requestMatchers("/staff/**").hasAnyAuthority("STAFF")
                         .anyRequest().permitAll())
-                .exceptionHandling(exception -> exception.authenticationEntryPoint(authenticationEntryPoint))
-                .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class);
+                .exceptionHandling(exception -> exception
+                        .authenticationEntryPoint(authenticationEntryPoint)
+                        .accessDeniedHandler(customAccessDeniedHandler())
+                ).addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
+    }
+
+    @Bean
+    public AccessDeniedHandler customAccessDeniedHandler() {
+        return (request, response, accessDeniedException) ->
+                response.sendRedirect(request.getContextPath() + "/403");
     }
 
     @Bean
@@ -46,3 +55,5 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 }
+
+

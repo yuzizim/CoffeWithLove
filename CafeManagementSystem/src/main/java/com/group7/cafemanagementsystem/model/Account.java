@@ -36,12 +36,13 @@ public class Account {
 
     @Column(name = "Password")
     @NotBlank(message = "Password is required")
-    @Size(min = 6, message = "Password should have at least 6 characters")
+    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8,}$", message = "long and include at least one uppercase letter, one lowercase letter, and one number.")
+    @Size(min = 8, message = "Password should have at least 8 characters")
     private String password;
 
     @Column(name = "phone")
     @NotBlank(message = "Phone number is required")
-    @Pattern(regexp = "^\\d{10}$", message = "Phone number should be 10 digits")
+    @Pattern(regexp = "^0\\d{9}$", message = "Phone number should be 10 digits and start with 0")
     private String phoneNumber;
 
     @Column(name = "avatar")

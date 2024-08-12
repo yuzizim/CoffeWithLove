@@ -102,7 +102,7 @@
                     </div>
                 </form>
 
-                <div class="row mt-3">
+                <div id="menu" class="row mt-3">
                     <!-- Single Product -->
                     <div th:each="food : ${foods}" class="col-md-6 col-lg-4 col-xl-3">
                         <div class="card">
@@ -260,6 +260,7 @@
                         <label for="drinkImage" class="form-label">Image</label>
                         <input type="file" class="form-control" id="drinkImage" name="image"
                                accept="image/png, image/jpeg" required>
+                        <div class="text-danger" th:if="${errorImage}" th:text="${errorImage}"></div>
                     </div>
                     <div class="mb-3">
                         <label for="drinkDescription" class="form-label">Description</label>
@@ -327,6 +328,37 @@
             document.getElementById('submitBtn').click();
         }
     });
+
+    // $(document).ready(function () {
+    //     var category = $('#categoryFilter').val(); // Get the initial value of the dropdown
+    //
+    //     $('#categoryFilter').on('change', function () {
+    //         category = $(this).val();  // Update the category variable when the dropdown changes
+    //     });
+    //
+    //     function liveSearch() {
+    //         $.ajax({
+    //             url: "/admin/food/list",
+    //             type: "GET",
+    //             data: {
+    //                 search: $('#search').val(),
+    //                 category: category,
+    //             },
+    //             success: function (data) {
+    //                 // Replace the content of the menu with the new results
+    //                 $('#menu').html($(data).find('#menu').html());
+    //             },
+    //             error: function () {
+    //                 console.log("Error in live search");
+    //             }
+    //         });
+    //     }
+    //
+    //     // Trigger search on typing
+    //     $('#search').on('input', function () {
+    //         liveSearch();
+    //     });
+    // });
 </script>
 
 </body>

@@ -56,8 +56,8 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr th:each="table: ${tables}">
-                                            <td th:text="${table.id}"></td>
+                                        <tr th:each="table, iter: ${tables}">
+                                            <td th:text="${iter.count}"></td>
                                             <td th:text="${table.name}"></td>
                                             <td th:text="${table.status ? 'Not Empty' : 'Is Empty'}"></td>
                                             <td>
@@ -84,7 +84,7 @@
                                                     <div class="modal-content">
                                                         <div class="modal-header">
                                                             <h5 class="modal-title" id="updateCategoryModalLabel">Update
-                                                                Category</h5>
+                                                                Table</h5>
                                                             <button type="button" class="btn-close"
                                                                     data-bs-dismiss="modal" aria-label="Close"></button>
                                                         </div>
@@ -94,7 +94,7 @@
                                                                   th:action="@{/admin/table/{id}/update(id=${table.id})}"
                                                             >
                                                                 <div class="mb-3">
-                                                                    <label for="updateCategoryName" class="form-label">Category
+                                                                    <label for="updateCategoryName" class="form-label">Table
                                                                         Name</label>
                                                                     <input type="text" class="form-control"
                                                                            id="updateCategoryName" name="name"
@@ -106,7 +106,7 @@
                                                                             data-bs-dismiss="modal">Close
                                                                     </button>
                                                                     <button type="submit" class="btn btn-primary">Update
-                                                                        Category
+                                                                        Table
                                                                     </button>
                                                                 </div>
                                                             </form>

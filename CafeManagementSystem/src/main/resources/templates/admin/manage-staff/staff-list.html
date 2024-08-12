@@ -53,10 +53,11 @@
                                               class="form-inline">
                                             <div class="input-group">
                                                 <input type="text" name="keyword" class="form-control"
-                                                       placeholder="Search account" th:value="${search}">
-                                                <div class="input-group-append">
-                                                    <button type="submit" class="mt-2 btn btn-primary">Search</button>
-                                                </div>
+                                                       placeholder="Search account" id="searchText"
+                                                       th:value="${search}">
+<!--                                                <div class="input-group-append">-->
+                                                <!--                                                    <button type="submit" class="mt-2 btn btn-primary">Search</button>-->
+                                                <!--                                                </div>-->
                                             </div>
                                         </form>
                                     </div>
@@ -159,5 +160,30 @@
 <!-- endinject -->
 <!-- Custom js for this page-->
 <!-- End custom js for this page-->
+<script>
+    $(document).ready(function () {
+        function liveSearch() {
+            $.ajax({
+                url: "/admin/manage-staff",
+                type: "GET",
+                data: {
+                    keyword: $('#searchText').val()
+                },
+                success: function (data) {
+                    // Update the table content without refreshing the page
+                    $('.table-responsive').html($(data).find('.table-responsive').html());
+                },
+                error: function () {
+                    console.log("Error in live search");
+                }
+            });
+        }
+
+        // Trigger search on typing
+        $('#searchText').on('input', function () {
+            liveSearch();
+        });
+    });
+</script>
 </body>
 </html>

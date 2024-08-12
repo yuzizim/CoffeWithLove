@@ -57,6 +57,9 @@ public class StaffOrderController {
         }
 
         List<Cart> carts = cartService.getCartByUser(username);
+        if (carts.size() == 0) {
+            return "redirect:/staff/manage/menu";
+        }
 
         double totalMoney = 0;
         for (Cart cart : carts) {
@@ -127,7 +130,7 @@ public class StaffOrderController {
                                @RequestParam(name = "toDate", required = false) String toDate,
                                @RequestParam(name = "search", defaultValue = "") String search,
                                @RequestParam(defaultValue = "0") int page,
-                               @RequestParam(defaultValue = "8") int size) {
+                               @RequestParam(defaultValue = "10") Integer size) {
         search = search.trim();
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Object principal = authentication.getPrincipal();
@@ -171,6 +174,7 @@ public class StaffOrderController {
         model.addAttribute("orders", response.getOrderTables());
         model.addAttribute("pageSize", response.getTotalPages());
         model.addAttribute("pageNumber", page);
+        model.addAttribute("size", size);
         return "/staff/order";
     }
 
@@ -245,8 +249,12 @@ public class StaffOrderController {
     }
 
     @GetMapping("/{id}/delete")
-    public String deleteOrder(@PathVariable int id) {
-        orderTableService.deleteOrderTable(id);
+    public String deleteOrder(@PathVariable int id, RedirectAttributes redirectAttributes) {
+        if (orderTableService.checkOrderIsPaid(id)) {
+            redirectAttributes.addFlashAttribute("messageError", "Can not delete this order because it has been paid.");
+        } else {
+            orderTableService.deleteOrderTable(id);
+        }
         return "redirect:/staff/manage/order/list";
     }
 }
