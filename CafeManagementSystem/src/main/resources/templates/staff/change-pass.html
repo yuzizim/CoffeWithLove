@@ -25,30 +25,6 @@
     <!-- Customized Bootstrap Stylesheet -->
     <link th:href="@{/static/css/style.css}" rel="stylesheet">
     <style>
-        .pass_show{position: relative}
-
-        .pass_show .ptxt {
-
-            position: absolute;
-
-            top: 50%;
-
-            right: 10px;
-
-            z-index: 1;
-
-            color: #f36c01;
-
-            margin-top: -10px;
-
-            cursor: pointer;
-
-            transition: .3s ease all;
-
-        }
-
-        .pass_show .ptxt:hover{color: #333333;}
-
         .status {
             display: inline-block;
             width: auto;
@@ -65,7 +41,29 @@
         .status.invalid {
             color: #dc3545;
         }
+        /* Style for the password input field with the toggle */
+        .password-container {
+            position: relative;
+        }
 
+        .password-container {
+            position: relative;
+        }
+
+        /* Styling for the eye icon */
+        .toggle-password {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            font-size: 20px;
+        }
+
+        /* Style for the input fields */
+        input[type="password"] {
+            padding-right: 40px; /* Space for the toggle icon */
+        }
     </style>
 </head>
 
@@ -80,18 +78,31 @@
             <h2>Change Password</h2>
             <form th:action="@{/staff/manage/changepass}" th:object="${changePasswordRequest}" method="post" id="passwordForm">
                 <div class="form-group">
+                    <!-- Flash messages -->
+                    <div class="alert alert-success" th:if="${success}" th:text="${success}"></div>
+                    <div class="alert alert-danger" th:if="${error}" th:text="${error}"></div>
+
                     <label for="currentPassword" style="font-weight: bold">Current Password</label>
-                    <input type="password" id="currentPassword" th:field="*{currentPassword}" class="form-control" placeholder="Enter your current password here" required>
+                    <div class="password-container">
+                        <input type="password" id="currentPassword" th:field="*{currentPassword}" class="form-control" placeholder="Enter your current password here" required>
+                        <span class="toggle-password" onclick="togglePasswordVisibility('currentPassword', this)">🙈</span>
+                    </div>
                     <span id="currentPasswordStatus" class="status"></span>
                 </div>
                 <div class="form-group">
                     <label for="newPassword" style="font-weight: bold">New Password</label>
-                    <input type="password" id="newPassword" th:field="*{newPassword}" class="form-control" placeholder="Enter your new password here" required>
+                    <div class="password-container">
+                        <input type="password" id="newPassword" th:field="*{newPassword}" class="form-control" placeholder="Enter your new password here" required>
+                        <span class="toggle-password" onclick="togglePasswordVisibility('newPassword', this)">🙈</span>
+                    </div>
                     <span id="newPasswordStatus" class="status"></span>
                 </div>
                 <div class="form-group">
                     <label for="confirmPassword" style="font-weight: bold">Confirm New Password</label>
-                    <input type="password" id="confirmPassword" th:field="*{confirmPassword}" class="form-control" placeholder="Enter your new password again" required>
+                    <div class="password-container">
+                        <input type="password" id="confirmPassword" th:field="*{confirmPassword}" class="form-control" placeholder="Enter your new password again" required>
+                        <span class="toggle-password" onclick="togglePasswordVisibility('confirmPassword', this)">🙈</span>
+                    </div>
                     <span id="confirmPasswordStatus" class="status"></span>
                 </div>
                 <div class="form-group">
@@ -185,9 +196,7 @@
         }
     }
 
-    document.getElementById('newPassword').addEventListener('input', validatePassword);
     document.getElementById('newPassword').addEventListener('keydown', preventSpace);
-    document.getElementById('confirmPassword').addEventListener('input', validatePassword);
     document.getElementById('confirmPassword').addEventListener('keydown', preventSpace);
 
     document.getElementById('passwordForm').addEventListener('submit', function(event) {
@@ -196,6 +205,13 @@
             alert('Please correct the errors in the form before submitting.');
         }
     });
+
+    function togglePasswordVisibility(passwordFieldId, toggleIcon) {
+        const passwordField = document.getElementById(passwordFieldId);
+        const type = passwordField.type === 'password' ? 'text' : 'password';
+        passwordField.type = type;
+        toggleIcon.textContent = type === 'text' ? '🙉' : '🙈';
+    }
 </script>
 </body>
 

@@ -5,10 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Drip Cafe - Sign In</title>
     <link rel="stylesheet" th:href="@{/static/css/main.css}"/>
-    <link
-            href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;700&family=Marck+Script&display=swap"
-            rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;700&family=Marck+Script&display=swap" rel="stylesheet"/>
     <link rel="icon" type="image/png" th:href="@{/static/img/favicon.png}"/>
 
     <style>
@@ -18,16 +15,44 @@
             font-size: 16px;
             color: #fff;
             background-color: #bc7100;
-        / / 007 bff border: none;
+            border: none;
             border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.3s ease;
+            z-index: 10; /* Ensure button stays above background elements */
+            position: relative;
         }
 
         /* Hover effect for the button */
         #loginBtn:hover {
             background-color: #834b01;
-        / / Mã màu gốc 0056 b3
+        }
+
+        /* Style the input field with the password toggle */
+        .password-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        /* Additional styling for the eye icon */
+        #togglePassword {
+            cursor: pointer;
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #333;
+            font-size: 20px;
+        }
+
+        /* Style for the input fields */
+        input[type="password"], input[type="text"] {
+            padding-right: 40px; /* Space for the toggle icon */
+            padding: 10px;
+            font-size: 14px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            width: 300px;
         }
     </style>
 </head>
@@ -49,20 +74,15 @@
                     >
                         <label>Username: </label> <br/>
                         <p style="color: red" th:text="${error}"></p>
-                        <input
-                                type="text"
-                                name="userid"
-                                id="userid"
-                                pattern="[a-zA-Z0-9]+"
-                                th:field="*{userName}"
-                                required
-                        /><br/>
+                        <input type="text" name="userid" id="userid" pattern="[a-zA-Z0-9]+" th:field="*{userName}" required/><br/>
                         <label>Password: </label> <br/>
-                        <input type="password" name="pswrd" id="pswrd" th:field="*{password}" required/><br/>
-                        <br/>
+                        <div class="password-container">
+                            <input type="password" name="pswrd" id="pswrd" th:field="*{password}" required/>
+                            <span id="togglePassword" onclick="togglePassword()">🙈</span>
+                        </div>
+                        <br/><br/>
                         <button type="submit" id="loginBtn">Submit</button>
                     </form>
-
                 </div>
                 <a th:href="@{forgotPassword}" class="menu-nav__link" style="color: black">Forgot password?</a>
             </div>
@@ -70,9 +90,15 @@
     </section>
 </main>
 <script th:src="@{/static/js/script.js}"></script>
-<script
-        src="https://kit.fontawesome.com/c057664144.js"
-        crossorigin="anonymous"
-></script>
+<script src="https://kit.fontawesome.com/c057664144.js" crossorigin="anonymous"></script>
+<script>
+    function togglePassword() {
+        const passwordField = document.getElementById('pswrd');
+        const toggleIcon = document.getElementById('togglePassword');
+        const type = passwordField.type === 'password' ? 'text' : 'password';
+        passwordField.type = type;
+        toggleIcon.textContent = type === 'text' ? '🙉' : '🙈';
+    }
+</script>
 </body>
 </html>

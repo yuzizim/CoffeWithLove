@@ -63,4 +63,19 @@ public class HomeController {
         model.addAttribute("username", username);
         return "/staff/navbar";
     }
+
+    @GetMapping("/navbarGuest")
+    public String displayNavbarGuest(Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Object principal = authentication.getPrincipal();
+
+        String username;
+        if (principal instanceof UserDetails) {
+            username = ((UserDetails) principal).getUsername();
+        } else {
+            username = principal.toString();
+        }
+        model.addAttribute("username", username);
+        return "/dist/navbar";
+    }
 }
