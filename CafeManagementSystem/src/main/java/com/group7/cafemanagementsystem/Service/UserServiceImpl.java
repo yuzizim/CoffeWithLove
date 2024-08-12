@@ -182,4 +182,9 @@ public class UserServiceImpl implements UserService {
         staff.setPassword(passwordEncoder.encode("123456"));
         return userRepository.save(staff);
     }
+    @Override
+    public boolean checkExistEmail(String email) {
+        Account account = userRepository.findByEmail(email);
+        return account != null;
+    }
 }
