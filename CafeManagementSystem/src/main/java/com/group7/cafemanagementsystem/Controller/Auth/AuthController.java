@@ -144,6 +144,7 @@ public class AuthController {
             output = userServiceImpl.sendMailReset(user);
         }
         if (output.equals("Success")) {
+            model.addAttribute("error", "We had sent you an email to reset your password!");
             return "redirect:/auth/login?success";
         } else {
             redirectAttributes.addFlashAttribute("error", "Failed to send reset email. Please try again.");
