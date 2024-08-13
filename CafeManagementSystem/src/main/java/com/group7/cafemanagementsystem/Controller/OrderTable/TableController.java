@@ -6,6 +6,9 @@ import com.group7.cafemanagementsystem.model.OrderTable;
 import com.group7.cafemanagementsystem.model.TableFood;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -27,8 +30,17 @@ public class TableController {
 
     @GetMapping
     public String viewTables(Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Object principal = authentication.getPrincipal();
+        String username;
+        if (principal instanceof UserDetails) {
+            username = ((UserDetails) principal).getUsername();
+        } else {
+            username = principal.toString();
+        }
         List<TableFood> tables = tableFoodService.getAllTables();
         model.addAttribute("tables", tables);
+        model.addAttribute("username", username);
         return "/dist/tables";
     }
 
