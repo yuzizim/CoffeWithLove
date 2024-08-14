@@ -56,6 +56,9 @@ public class ImportExcelHelper {
 
                 // skip header
                 if (rowNumber == 0) {
+                    if (currentRow.getLastCellNum() != HEADERs.length) {
+                        throw new IllegalArgumentException("The Excel file has an incorrect number of columns. Expected: " + HEADERs.length + ", Found: " + currentRow.getLastCellNum());
+                    }
                     rowNumber++;
                     continue;
                 }
