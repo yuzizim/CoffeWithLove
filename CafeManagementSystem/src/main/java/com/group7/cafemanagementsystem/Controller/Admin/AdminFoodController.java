@@ -63,7 +63,7 @@ public class AdminFoodController {
                               Model model) throws IOException {
         String image = StringUtils.cleanPath(multipartFile.getOriginalFilename());
 
-        if (result.hasErrors() || food.getPrice() == 0 || (!(image.endsWith(".jpg") || image.endsWith(".png")))) {
+        if (result.hasErrors() || food.getPrice() == 0 || (!(image.endsWith(".jpg") || image.endsWith(".png")) && !image.equals(""))) {
             PageFoodResponse pageFoodResponse = foodService.getFoodByPage(search, categoryId, page, 8);
             List<FoodCategory> foodCategories = foodCategoryService.getFoodCategories();
             model.addAttribute("foods", pageFoodResponse.getFoods());
@@ -78,7 +78,7 @@ public class AdminFoodController {
             }
 
             // Check if the file has a valid extension
-            if (!(image.endsWith(".jpg") || image.endsWith(".png"))) {
+            if (!(image.endsWith(".jpg") || image.endsWith(".png")) && !image.equals("")) {
                 model.addAttribute("errorImage", "Invalid file type. Only .jpg and .png are allowed.");
             }
             model.addAttribute("showAddDrinkModal", true);
@@ -133,7 +133,7 @@ public class AdminFoodController {
         Food foodExist = foodService.getFoodById(id);
         food.setImages(foodExist.getImages());
         String image = StringUtils.cleanPath(multipartFile.getOriginalFilename());
-        if (result.hasErrors() || food.getPrice() == 0 || (!(image.endsWith(".jpg") || image.endsWith(".png")))) {
+        if (result.hasErrors() || food.getPrice() == 0 || (!(image.endsWith(".jpg") || image.endsWith(".png")) && !image.equals(""))) {
             List<FoodCategory> foodCategories = foodCategoryService.getFoodCategories();
             model.addAttribute("categories", foodCategories);
             model.addAttribute("food", foodExist);
@@ -143,7 +143,7 @@ public class AdminFoodController {
                 model.addAttribute("messageError", "Price can not be 0");
             }
             // Check if the file has a valid extension
-            if (!(image.endsWith(".jpg") || image.endsWith(".png"))) {
+            if (!(image.endsWith(".jpg") || image.endsWith(".png")) && !image.equals("")) {
                 model.addAttribute("errorImage", "Invalid file type. Only .jpg and .png are allowed.");
             }
             return "/admin/products/product-detail";

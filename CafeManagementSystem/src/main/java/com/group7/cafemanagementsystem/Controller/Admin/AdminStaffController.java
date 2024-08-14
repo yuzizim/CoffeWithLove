@@ -96,7 +96,7 @@ public class AdminStaffController {
         if (result.hasErrors()
                 || !account.getUserName().equals(request.getUserName())
                 || !account.getEmail().equals(request.getEmail())
-                || (!(image.endsWith(".jpg") || image.endsWith(".png")))) {
+                || (!(image.endsWith(".jpg") || image.endsWith(".png")) && !image.equals(""))) {
             model.addAttribute("staff", account);
             if (!account.getUserName().equals(request.getUserName())) {
                 if (userService.findByUserName(request.getUserName())) {
@@ -109,7 +109,7 @@ public class AdminStaffController {
                 }
             }
             // Check if the file has a valid extension
-            if (!(image.endsWith(".jpg") || image.endsWith(".png"))) {
+            if (!(image.endsWith(".jpg") || image.endsWith(".png")) && !image.equals("")) {
                 model.addAttribute("errorImage", "Invalid file type. Only .jpg and .png are allowed.");
             }
             return "/admin/manage-staff/staff-details";
