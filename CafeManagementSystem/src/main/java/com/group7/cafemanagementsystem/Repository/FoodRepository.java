@@ -107,4 +107,6 @@ public interface FoodRepository extends JpaRepository<Food, Integer> {
             " where ot.status = false" +
             " and f.id = :foodId")
     List<Food> checkFoodIsBeingInOrderNotPaid(@Param("foodId") int foodId);
+
+    Food findByIdAndStatusTrue(int id);
 }

@@ -1,7 +1,10 @@
 package com.group7.cafemanagementsystem.Controller.Staff;
 
+import com.group7.cafemanagementsystem.Repository.CartRepository;
 import com.group7.cafemanagementsystem.Service.CartService;
+import com.group7.cafemanagementsystem.Service.FoodService;
 import com.group7.cafemanagementsystem.model.Cart;
+import com.group7.cafemanagementsystem.model.Food;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,7 +20,9 @@ import java.util.List;
 @AllArgsConstructor
 @RequestMapping("/staff/manage/cart")
 public class StaffCartController {
+    private final CartRepository cartRepository;
     private CartService cartService;
+    private FoodService foodService;
 
     @GetMapping
     public String displayCart(Model model) {
@@ -38,8 +43,15 @@ public class StaffCartController {
 
         double totalMoney = 0;
         for (Cart cart : carts) {
+            if (!foodService.checkFoodInMenu(cart.getFood().getId())) {
+                cartService.deleteItemFromCart(cart.getFood().getId(), username);
+            }
+        }
+        carts = cartService.getCartByUser(username);
+        for (Cart cart : carts) {
             totalMoney += cart.getFood().getPrice() * cart.getQuantity();
         }
+
 
         model.addAttribute("carts", carts);
         model.addAttribute("totalMoney", totalMoney);
@@ -60,6 +72,12 @@ public class StaffCartController {
             username = ((UserDetails) principal).getUsername();
         } else {
             username = principal.toString();
+        }
+        Food food = foodService.getFoodById(id);
+        if (!foodService.checkFoodInMenu(id)) {
+            cartService.deleteItemFromCart(id, username);
+            redirectAttributes.addFlashAttribute("messageError", "Sorry, Product " + food.getName() + " has been deleted by admin!");
+            return "redirect:/staff/manage/cart";
         }
         if (cartService.checkItemExistInCart(id, username)) {
             Cart cart = cartService.updateQuantity(id, quantity, username);
