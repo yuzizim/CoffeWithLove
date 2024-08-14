@@ -20,7 +20,7 @@ public class CustomerOrderRequest {
     private String customerName;
 
     @NotBlank(message = "Phone is not empty")
-    @Pattern(regexp = "\\d{10}", message = "Phone number must be exactly 10 digits")
+    @Pattern(regexp = "^0\\d{9}$", message = "Phone number must be exactly 10 digits and start with 0")
     @Column(name = "PhoneNumber")
     private String phoneNumber;
 
