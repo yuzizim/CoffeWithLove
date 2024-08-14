@@ -35,7 +35,7 @@ public class OrderTable {
 
     @Column(name = "PhoneNumber")
     @NotBlank(message = "Phone number can not be blank")
-    @Pattern(regexp = "^\\d{10}$", message = "Phone number should be 10 digits")
+    @Pattern(regexp = "^0\\d{9}$", message = "Phone number should be 10 digits and start with 0")
     private String phoneNumber;
 
     @Min(value = 1, message = "Number of people cannot be smaller than 1")
