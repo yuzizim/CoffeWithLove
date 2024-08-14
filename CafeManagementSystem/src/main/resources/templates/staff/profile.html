@@ -155,6 +155,41 @@
 <!-- Template Javascript -->
 <!--<script th:src="@{/static/js/main.js}"></script>-->
 <script>
+    document.getElementById('profile').addEventListener('submit', function(event) {
+        const validation = validateForm();
+        if (!validation.isValid) {
+            event.preventDefault();
+            alert(validation.message);
+        }
+    });
+
+    function validateForm() {
+        // Check if the full name contains only letters and spaces
+        const fullName = document.getElementById('inputFullName').value;
+        const fullNamePattern = /^[A-Za-z\s]+$/;
+        if (!fullNamePattern.test(fullName)) {
+            return { isValid: false, message: 'Full name must contain only letters and spaces.' };
+        }
+
+        // Check if the phone number is exactly 10 digits
+        const phoneNumber = document.getElementById('inputPhone').value;
+        const phonePattern = /^0\d{9}$/;
+        if (!phonePattern.test(phoneNumber)) {
+            return { isValid: false, message: 'Phone number must be exactly 10 digits and start with 0.' };
+        }
+
+        // Check if a valid profile picture is selected
+        const fileInput = document.getElementById('avatar');
+        const file = fileInput.files[0];
+        if (file && (file.type !== 'image/jpeg' && file.type !== 'image/png')) {
+            return { isValid: false, message: 'Please select a valid image file (JPG or PNG).' };
+        }
+
+        document.getElementById('profile').submit();
+        return { isValid: true, message: '' };
+    }
+
+
     function previewImage() {
         const fileInput = document.getElementById('avatar');
         const file = fileInput.files[0];
@@ -181,7 +216,8 @@
 
     function submitForm() {
         $('#confirmUpdateModal').modal('hide');
-        document.getElementById('profile').submit();
+        const form = document.getElementById('profile');
+        form.dispatchEvent(new Event('submit', { 'bubbles': true }));
     }
 </script>
 </body>

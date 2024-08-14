@@ -60,44 +60,57 @@ input[type="radio"].custom-control-input:checked ~ .custom-control-label::before
 .menu .flex {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between; /* Space between items */
-    gap: 20px; /* Add some space between boxes */
+    gap: 20px;
+    justify-content: space-between; /* Ensure items have space between them */
 }
 
 .menu .box {
-    flex: 1 1 calc(33.333% - 20px); /* Ensure three boxes per row with a 20px gap */
-    max-width: calc(33.333% - 20px); /* Prevent boxes from exceeding one-third of the row */
-    box-sizing: border-box; /* Include padding and border in the box size */
+    flex: 1 1 calc(33.333% - 20px); /* Set width to 33.333% minus the gap */
+    max-width: calc(33.333% - 20px); /* Ensure max-width matches the calculated width */
     text-align: center;
-    background-color: #f9f9f9; /* Example background color */
-    border-radius: 10px; /* Optional: rounded corners */
-    overflow: hidden; /* Prevent content from overflowing */
-    padding: 10px; /* Optional: add padding inside the box */
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    overflow: hidden;
+    padding: 10px;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    height: 100%; /* Ensure boxes are the same height */
+    justify-content: center;
+    height: 400px; /* Keep the height of the box */
+    box-sizing: border-box;
+}
+
+.box .img-container {
+    width: 200px;
+    height: 200px; /* Đảm bảo ảnh là hình vuông */
+    overflow: hidden;
+    position: relative;
+    margin: 0 auto; /* Đảm bảo ảnh nằm giữa box */
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .menu .box img {
     width: 100%;
     height: 200px; /* Set a fixed height for images */
     object-fit: cover; /* Ensure the image covers the container without stretching */
-    border-bottom: 1px solid #ddd; /* Add a separator line below the image */
-    margin-bottom: 10px; /* Add space below the image */
+    margin: 0 auto; /* Center the image horizontally */
+    display: block;
 }
 
 .menu .box h2 {
-    margin: 10px 0;
+    margin-top: 20px;
     font-size: 1.5rem;
-    flex-grow: 1; /* Ensure the heading takes available space */
+    text-align: center;
 }
 
 .menu .box h3 {
     font-size: 1.2rem;
     color: #333;
     margin-top: 10px;
+    text-align: center;
 }
+
 
 .pagination {
     display: flex;
@@ -188,3 +201,47 @@ input[type="radio"].custom-control-input:checked ~ .custom-control-label::before
     height: 100%;
     object-fit: cover;
 }
+
+/*Overlay details*/
+.one__view {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    overflow-y: auto;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.one__view.one__showview {
+    display: block;
+}
+
+.product-detail-content {
+    background: #fff;
+    padding: 20px;
+    max-width: 600px;
+    margin: 5% auto;
+    position: relative;
+}
+
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 24px;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.one__transparentBcg {
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.no-scroll {
+    overflow: hidden;
+}
+
