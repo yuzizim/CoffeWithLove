@@ -33,8 +33,8 @@
                         Sign In
                     </a>
                     <a th:if="${!#strings.equals(username, 'anonymousUser')&& username != null}" class="sign-in menu-nav__link" th:text="'Welcome ' + ${username}"></a>
-                    <span class="menu-nav__link" id="slash">/</span>
-                    <a th:href="@{/auth/logout}" class="sign-up menu-nav__link">
+                    <span th:if="${!#strings.equals(username, 'anonymousUser')&& username != null}" class="menu-nav__link" id="slash">/</span>
+                    <a th:if="${!#strings.equals(username, 'anonymousUser')&& username != null}" th:href="@{/auth/logout}" class="sign-up menu-nav__link">
                         Logout
                     </a>
                 </li>
