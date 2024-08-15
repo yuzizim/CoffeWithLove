@@ -83,7 +83,8 @@ public interface FoodRepository extends JpaRepository<Food, Integer> {
             " where ot.status = true " +
             " and ot.orderTime >= :startDate " +
             " and ot.orderTime < :endDate " +
-            " group by f.name, f.price")
+            " group by f.name, f.price" +
+            " order by numSale desc")
     List<FoodRevenueResponse> getFoodRevenueByDay(@Param("startDate") LocalDateTime startDate,
                                                   @Param("endDate") LocalDateTime endDate);
 
