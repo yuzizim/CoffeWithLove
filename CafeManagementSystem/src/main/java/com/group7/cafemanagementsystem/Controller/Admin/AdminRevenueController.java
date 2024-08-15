@@ -21,6 +21,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -40,7 +41,8 @@ public class AdminRevenueController {
     @GetMapping
     public String getRevenue(@RequestParam(name = "startDate", required = false) String startDate,
                              @RequestParam(name = "toDate", required = false) String toDate,
-                             Model model) {
+                             Model model,
+                             RedirectAttributes redirectAttributes) {
         if (startDate == null && toDate == null) {
             LocalDate currentDate = LocalDate.now();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -49,6 +51,10 @@ public class AdminRevenueController {
         }
         LocalDateTime startDateTime = DateUtil.changeStringToLocalDateTime(startDate);
         LocalDateTime toDateTime = DateUtil.changeStringToLocalDateTime(toDate);
+        if (startDateTime.isAfter(toDateTime)) {
+            redirectAttributes.addFlashAttribute("messageError", "To Date can not smaller than Start Date!");
+            return "redirect:/admin/revenue";
+        }
         List<FoodRevenueResponse> revenueResponses = foodService.getFoodRevenueByDay(startDateTime, toDateTime.plusDays(1));
         int totalSale = 0;
         double totalPrice = 0;
@@ -77,7 +83,7 @@ public class AdminRevenueController {
         LocalDateTime startDateTime = DateUtil.changeStringToLocalDateTime(startDate);
         LocalDateTime toDateTime = DateUtil.changeStringToLocalDateTime(toDate);
 
-        List<FoodRevenueResponse> revenueResponses = foodService.getFoodRevenueByDay(startDateTime, toDateTime);
+        List<FoodRevenueResponse> revenueResponses = foodService.getFoodRevenueByDay(startDateTime, toDateTime.plusDays(1));
         ByteArrayInputStream in = ExcelHelper.tutorialsToExcel(revenueResponses);
 
         String filename = "revenue_" + startDate + "_to_" + toDate + ".xlsx";
@@ -93,7 +99,8 @@ public class AdminRevenueController {
     public String getRevenueByOrder(@RequestParam(name = "startDate", required = false) String startDate,
                                     @RequestParam(name = "toDate", required = false) String toDate,
                                     @RequestParam(name = "staffId", defaultValue = "-1", required = false) int staffId,
-                                    Model model) {
+                                    Model model,
+                                    RedirectAttributes redirectAttributes) {
         if (startDate == null && toDate == null) {
             LocalDate currentDate = LocalDate.now();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -102,6 +109,11 @@ public class AdminRevenueController {
         }
         LocalDateTime startDateTime = DateUtil.changeStringToLocalDateTime(startDate);
         LocalDateTime toDateTime = DateUtil.changeStringToLocalDateTime(toDate);
+
+        if (startDateTime.isAfter(toDateTime)) {
+            redirectAttributes.addFlashAttribute("messageError", "To Date can not smaller than Start Date!");
+            return "redirect:/admin/revenue/order";
+        }
 
         List<OrderTable> orders = orderTableService.getRevenueByOrder(startDateTime, toDateTime.plusDays(1), staffId);
         List<Account> staffs = userService.findByRole("STAFF");

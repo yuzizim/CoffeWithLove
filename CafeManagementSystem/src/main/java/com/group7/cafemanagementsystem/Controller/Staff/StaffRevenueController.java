@@ -23,6 +23,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -42,7 +43,8 @@ public class StaffRevenueController {
     @GetMapping
     public String getRevenueOfStaff(Model model,
                                     @RequestParam(name = "fromDate", required = false) String startDate,
-                                    @RequestParam(name = "toDate", required = false) String toDate) {
+                                    @RequestParam(name = "toDate", required = false) String toDate,
+                                    RedirectAttributes redirectAttributes) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Object principal = authentication.getPrincipal();
         String username;
@@ -64,6 +66,11 @@ public class StaffRevenueController {
         }
         LocalDateTime startDateTime = DateUtil.changeStringToLocalDateTime(startDate);
         LocalDateTime toDateTime = DateUtil.changeStringToLocalDateTime(toDate);
+
+        if (startDateTime.isAfter(toDateTime)) {
+            redirectAttributes.addFlashAttribute("messageError", "To Date can not smaller than Start Date!");
+            return "redirect:/staff/manage/revenue";
+        }
 
         List<FoodRevenueResponse> foodRevenueResponses = foodService.getFoodRevenueByStaffAndDay(account.getID(), startDateTime, toDateTime.plusDays(1));
 
