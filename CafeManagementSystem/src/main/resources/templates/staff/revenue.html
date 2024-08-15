@@ -49,6 +49,9 @@
 
 <!-- Revenue Start -->
 <div class="container-fluid pt-5">
+    <div th:if="${messageError}" class="alert alert-danger col-md-8" role="alert">
+        <span th:text="${messageError}"></span>
+    </div>
     <div class="col-lg-12 mb-4">
         <form method="get">
             <div class="d-flex justify-content-between">
