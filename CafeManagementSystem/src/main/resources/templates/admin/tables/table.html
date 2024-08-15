@@ -59,7 +59,12 @@
                                         <tr th:each="table, iter: ${tables}">
                                             <td th:text="${iter.count}"></td>
                                             <td th:text="${table.name}"></td>
-                                            <td th:text="${table.status ? 'Not Empty' : 'Is Empty'}"></td>
+                                            <td>
+                                                <button type="button" class="btn btn-sm"
+                                                        th:text="${table.status ? 'Not Empty' : 'Is Empty'}"
+                                                        th:classappend="${table.status ? 'btn-warning' : 'btn-success'}">
+                                                </button>
+                                            </td>
                                             <td>
                                                 <!-- Update Button -->
                                                 <button class="btn btn-primary btn-sm update-btn"

@@ -2,6 +2,7 @@ package com.group7.cafemanagementsystem.Controller.Staff;
 
 import com.group7.cafemanagementsystem.Request.CustomerOrderRequest;
 import com.group7.cafemanagementsystem.Service.CartService;
+import com.group7.cafemanagementsystem.Service.FoodService;
 import com.group7.cafemanagementsystem.Service.OrderDetailService;
 import com.group7.cafemanagementsystem.Service.OrderTableService;
 import com.group7.cafemanagementsystem.model.Cart;
@@ -13,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -23,6 +25,7 @@ public class StaffOrderDetailController {
     private CartService cartService;
     private OrderTableService orderTableService;
     private OrderDetailService orderDetailService;
+    private FoodService foodService;
 
     @GetMapping("/{id}")
     public String getOrderDetail(@PathVariable int id,
@@ -83,8 +86,14 @@ public class StaffOrderDetailController {
 
     @PostMapping("/add/product/{id}")
     public String addProductIntoOrder(@PathVariable int id,
-                                      @RequestParam("orderId") int orderId) {
-        orderDetailService.addProductIntoOrder(orderId, id);
+                                      @RequestParam("orderId") int orderId,
+                                      RedirectAttributes redirectAttributes) {
+        if (!foodService.checkFoodInMenu(id)) {
+            redirectAttributes.addFlashAttribute("messageError", "Can not add this food because it has been deleted by admin!");
+        } else {
+            orderDetailService.addProductIntoOrder(orderId, id);
+            redirectAttributes.addFlashAttribute("messageSuccess", "Add to order success.");
+        }
         return "redirect:/staff/manage/menu?orderId=" + orderId;
     }
 }

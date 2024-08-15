@@ -40,4 +40,6 @@ public interface FoodService {
     boolean checkExistProduct(String name);
 
     boolean checkFoodIsBeingInOrderNotPaid(int foodId);
+
+    boolean checkFoodInMenu(int id);
 }

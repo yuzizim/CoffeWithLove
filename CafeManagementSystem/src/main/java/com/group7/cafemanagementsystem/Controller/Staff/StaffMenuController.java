@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -51,11 +52,11 @@ public class StaffMenuController {
 //            }
 //        }
 
-        if(id == -1){
+        if (id == -1) {
             PageFoodResponse response = foodService.getMenuByPageAndSearch(search, page, size);
             model.addAttribute("menu", response.getFoods());
             model.addAttribute("pageSize", response.getTotalPages());
-        }else{
+        } else {
             PageFoodResponse response = foodService.getFoodByCategoryIdAndSearchKey(id, search, page, size);
             model.addAttribute("menu", response.getFoods());
             model.addAttribute("pageSize", response.getTotalPages());
@@ -84,7 +85,7 @@ public class StaffMenuController {
     }
 
     @PostMapping("/add-to-cart/{id}")
-    public String addItemToCart(@PathVariable int id) {
+    public String addItemToCart(@PathVariable int id, RedirectAttributes redirectAttributes) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Object principal = authentication.getPrincipal();
 
@@ -95,7 +96,12 @@ public class StaffMenuController {
             username = principal.toString();
         }
 
-        cartService.addItemToCart(id, username, 1);
+        if (!foodService.checkFoodInMenu(id)) {
+            redirectAttributes.addFlashAttribute("messageError", "Can not add this food because it has been deleted by admin!");
+        } else {
+            cartService.addItemToCart(id, username, 1);
+            redirectAttributes.addFlashAttribute("messageSuccess", "Add to cart success.");
+        }
         return "redirect:/staff/manage/menu";
     }
 }

@@ -81,6 +81,14 @@
 
         <!-- Shop Product Start -->
         <div class="col-lg-9 col-md-12">
+            <div class="row">
+                <div th:if="${messageError}" class="alert alert-danger" role="alert">
+                    <span th:text="${messageError}"></span>
+                </div>
+                <div th:if="${messageSuccess}" class="alert alert-success" role="alert">
+                    <span th:text="${messageSuccess}"></span>
+                </div>
+            </div>
             <div class="row pb-3">
                 <div class="col-12 pb-1">
                     <div class="d-flex align-items-center justify-content-between mb-4">

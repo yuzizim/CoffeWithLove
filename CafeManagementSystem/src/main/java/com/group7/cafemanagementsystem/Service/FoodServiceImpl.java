@@ -153,4 +153,9 @@ public class FoodServiceImpl implements FoodService {
         List<Food> foods = foodRepository.checkFoodIsBeingInOrderNotPaid(foodId);
         return foods.size() > 0;
     }
+
+    @Override
+    public boolean checkFoodInMenu(int id) {
+        return foodRepository.findByIdAndStatusTrue(id) != null;
+    }
 }

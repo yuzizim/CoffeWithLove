@@ -5,6 +5,7 @@ import com.group7.cafemanagementsystem.Repository.UserRepository;
 import com.group7.cafemanagementsystem.Request.CustomerOrderRequest;
 import com.group7.cafemanagementsystem.Response.PageOrderResponse;
 import com.group7.cafemanagementsystem.Service.CartService;
+import com.group7.cafemanagementsystem.Service.FoodService;
 import com.group7.cafemanagementsystem.Service.OrderTableService;
 import com.group7.cafemanagementsystem.Service.TableFoodService;
 import com.group7.cafemanagementsystem.Utils.DateUtil;
@@ -44,6 +45,7 @@ public class StaffOrderController {
     private OrderTableService orderTableService;
     private UserRepository userRepository;
     private BillRepository billRepository;
+    private FoodService foodService;
 
     @GetMapping
     public String orderScreen(Model model) {
@@ -63,8 +65,15 @@ public class StaffOrderController {
 
         double totalMoney = 0;
         for (Cart cart : carts) {
+            if (!foodService.checkFoodInMenu(cart.getFood().getId())) {
+                cartService.deleteItemFromCart(cart.getFood().getId(), username);
+            }
+        }
+        carts = cartService.getCartByUser(username);
+        for (Cart cart : carts) {
             totalMoney += cart.getFood().getPrice() * cart.getQuantity();
         }
+
 
         List<TableFood> tableFoods = tableFoodService.getAllTablesEmpty();
 
