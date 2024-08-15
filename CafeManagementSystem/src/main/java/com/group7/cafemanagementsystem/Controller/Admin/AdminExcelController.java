@@ -24,6 +24,12 @@ public class AdminExcelController {
     public String uploadFile(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes) {
         String message = "";
 
+        if (file.getSize() > 2 * 1024 * 1024) { // 2MB in bytes
+            message = "File size exceeds limit. Please upload a file smaller than 2MB.";
+            redirectAttributes.addFlashAttribute("messageError", message);
+            return "redirect:/admin/food/list";
+        }
+
         if (ImportExcelHelper.hasExcelFormat(file)) {
             try {
                 excelService.save(file);

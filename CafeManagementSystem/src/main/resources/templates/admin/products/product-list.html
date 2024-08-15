@@ -271,6 +271,7 @@
                         <div class="text-danger" th:errors="*{price}"></div>
                         <div class="text-danger" th:if="${errorPrice}" th:text="${errorPrice}"></div>
                         <input type="number" class="form-control" id="drinkPrice" name="price" th:field="*{price}"
+                               step="0.01"
                                required>
                     </div>
                     <div class="modal-footer">
