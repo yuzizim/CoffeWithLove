@@ -139,7 +139,7 @@ public class UserServiceImpl implements UserService {
             helper.setTo(user.getEmail());
             helper.setSubject(subject);
 
-            helper.setText("<p>Hello " + user.getFullName() + ",</p>" + htmlContent + "<p>Regards,<br>CoffeeWithLove.</p>", true);
+            helper.setText("<p>Hello " + user.getFullName() + ",</p>" + htmlContent + "<p>Regards,<br>ECoffee<br>CoffeeWithLove.</p>", true);
             mailSender.send(message);
             return "Success";
         } catch (MessagingException e) {
