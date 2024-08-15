@@ -56,7 +56,7 @@ public class AuthController {
             return "/dist/sign-in";
         }
         if (token.equals("Your account has been locked!")) {
-            model.addAttribute("error", "Your account has been locked!");
+            model.addAttribute("error", "Your account has been blocked!");
             model.addAttribute("user", request);
             return "/dist/sign-in";
         }
