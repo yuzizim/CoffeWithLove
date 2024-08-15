@@ -102,7 +102,7 @@ public class StaffRevenueController {
         // get account by username
         Account account = userRepository.findByUserName(userName).get();
 
-        List<FoodRevenueResponse> revenueResponses = foodService.getFoodRevenueByStaffAndDay(account.getID(), startDateTime, toDateTime);
+        List<FoodRevenueResponse> revenueResponses = foodService.getFoodRevenueByStaffAndDay(account.getID(), startDateTime, toDateTime.plusDays(1));
         ByteArrayInputStream in = ExcelHelper.tutorialsToExcel(revenueResponses);
 
         String filename = "revenue_" + startDate + "_to_" + toDate + ".xlsx";
