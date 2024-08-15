@@ -183,13 +183,6 @@
     document.getElementById('newPassword').addEventListener('input', validatePassword);
     document.getElementById('confirmPassword').addEventListener('input', validatePassword);
 
-    document.getElementById('passwordForm').addEventListener('submit', function(event) {
-        if (!validatePassword()) {
-            event.preventDefault();
-            alert('Please correct the errors in the form before submitting.');
-        }
-    });
-
     function preventSpace(event) {
         if (event.key === ' ') {
             event.preventDefault();

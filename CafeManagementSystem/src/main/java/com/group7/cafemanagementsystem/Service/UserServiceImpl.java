@@ -99,7 +99,7 @@ public class UserServiceImpl implements UserService {
             SimpleMailMessage message = new SimpleMailMessage();
             message.setTo(user.getEmail());
             message.setSubject("Reset password");
-            message.setText("Hello " + user.getFullName()+ "\n\n" +"Please click on this to reset your password: " + resetLink+". \n\n" + "Regards \n" +"CoffeWithLove.");
+            message.setText("Hello " + user.getFullName()+ "\n\n" +"Please click on this to reset your password: " + resetLink+". \n\n" + "Regards \n"+"ECoffee \n" +"CoffeeWithLove.");
             mailSender.send(message);
             return "Success";
         } catch (Exception e) {
@@ -139,7 +139,7 @@ public class UserServiceImpl implements UserService {
             helper.setTo(user.getEmail());
             helper.setSubject(subject);
 
-            helper.setText("<p>Hello " + user.getFullName() + ",</p>" + htmlContent + "<p>Regards,<br>CoffeeWithLove.</p>", true);
+            helper.setText("<p>Hello " + user.getFullName() + ",</p>" + htmlContent + "<p>Regards,<br>ECoffee<br>CoffeeWithLove.</p>", true);
             mailSender.send(message);
             return "Success";
         } catch (MessagingException e) {

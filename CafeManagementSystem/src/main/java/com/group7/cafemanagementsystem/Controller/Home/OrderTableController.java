@@ -1,4 +1,4 @@
-package com.group7.cafemanagementsystem.Controller.OrderTable;
+package com.group7.cafemanagementsystem.Controller.Home;
 
 import com.group7.cafemanagementsystem.Repository.OrderTableRepository;
 import com.group7.cafemanagementsystem.Request.AddOrderTableRequest;
@@ -11,7 +11,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/ECoffee/order-table")

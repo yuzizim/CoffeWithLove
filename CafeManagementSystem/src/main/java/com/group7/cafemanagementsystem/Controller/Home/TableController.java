@@ -1,10 +1,8 @@
-package com.group7.cafemanagementsystem.Controller.OrderTable;
+package com.group7.cafemanagementsystem.Controller.Home;
 
 import com.group7.cafemanagementsystem.Service.OrderTableService;
 import com.group7.cafemanagementsystem.Service.TableFoodService;
-import com.group7.cafemanagementsystem.model.OrderTable;
 import com.group7.cafemanagementsystem.model.TableFood;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
