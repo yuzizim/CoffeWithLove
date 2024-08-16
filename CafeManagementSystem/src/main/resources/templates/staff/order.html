@@ -49,6 +49,9 @@
 
 <!-- Order Start -->
 <div class="container-fluid pt-5">
+    <div th:if="${errorDate}" class="alert alert-danger col-md-6" role="alert">
+        <span th:text="${errorDate}"></span>
+    </div>
     <div class="col-lg-12 mb-4">
         <form th:action="@{/staff/manage/order/list}" method="get">
             <div class="d-flex justify-content-between">

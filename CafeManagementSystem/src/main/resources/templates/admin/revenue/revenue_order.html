@@ -40,19 +40,19 @@
                                 <h4 class="card-title">Order Statistics</h4>
                                 <form th:action="@{/admin/revenue/order}" method="get">
                                     <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
+                                        <div class="row col-md-6">
+                                            <div class="form-group col-md-6">
                                                 <label for="startDate">Start Date:</label>
                                                 <input type="date" class="form-control" id="startDate" name="startDate"
                                                        th:value="${startDate}">
                                             </div>
-                                            <div class="form-group">
+                                            <div class="form-group col-md-6">
                                                 <label for="toDate">To Date:</label>
                                                 <input type="date" class="form-control" id="toDate" name="toDate"
                                                        th:value="${toDate}">
                                             </div>
                                         </div>
-                                        <div class="col-md-4 align-items-end">
+                                        <div class="mt-4 col-md-4 align-items-end">
                                             <select class="form-select" aria-label="Select Category" name="staffId">
                                                 <option selected value="-1">Select staff</option>
                                                 <option th:each="staff : ${staffs}"
@@ -62,9 +62,12 @@
                                                 </option>
                                             </select>
                                         </div>
-                                        <div class="col-md-2">
+                                        <div class="mt-4 col-md-2">
                                             <button type="submit" class="btn btn-primary mt-2">Submit</button>
                                         </div>
+                                    </div>
+                                    <div th:if="${messageError}" class="alert alert-danger col-md-6" role="alert">
+                                        <span th:text="${messageError}"></span>
                                     </div>
                                 </form>
 

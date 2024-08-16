@@ -76,6 +76,21 @@
                             <input type="submit" id="submitBtn" style="display:none;"/>
                         </form>
                     </div>
+                    <div class="col-md-2 d-flex justify-content-center">
+                        <form th:action="@{/admin/excel/download/template}" method="post">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="ti ti-download"></i>
+                                Download Template
+                            </button>
+                        </form>
+                    </div>
+                    <div class="col-md-2 d-flex justify-content-center">
+                        <a th:if="${errorFilePath}"
+                           th:href="@{/admin/excel/downloadErrorReport(errorFilePath=${errorFilePath})}"
+                           download="Error_Products.xlsx">
+                            Download Error Report
+                        </a>
+                    </div>
                 </div>
 
                 <!-- Search and Filter Section -->
@@ -271,6 +286,7 @@
                         <div class="text-danger" th:errors="*{price}"></div>
                         <div class="text-danger" th:if="${errorPrice}" th:text="${errorPrice}"></div>
                         <input type="number" class="form-control" id="drinkPrice" name="price" th:field="*{price}"
+                               step="0.01"
                                required>
                     </div>
                     <div class="modal-footer">

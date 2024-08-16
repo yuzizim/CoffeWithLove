@@ -39,15 +39,22 @@
                             <div class="card-body">
                                 <h4 class="card-title">Revenue of product by day</h4>
                                 <form th:action="@{/admin/revenue}" method="get">
-                                    <div class="form-group col-md-3">
-                                        <label for="startDate">Start Date:</label>
-                                        <input type="date" class="form-control" id="startDate" name="startDate"
-                                               th:value="${startDate}">
-                                        <label for="toDate">To Date:</label>
-                                        <input type="date" class="form-control" id="toDate" name="toDate"
-                                               th:value="${toDate}">
-                                        <button type="submit" class="btn btn-primary mt-2">Submit</button>
+                                    <div class="row">
+                                        <div class="form-group col-md-3">
+                                            <label for="startDate">Start Date:</label>
+                                            <input type="date" class="form-control" id="startDate" name="startDate"
+                                                   th:value="${startDate}">
+                                        </div>
+                                        <div class="form-group col-md-3">
+                                            <label for="toDate">To Date:</label>
+                                            <input type="date" class="form-control" id="toDate" name="toDate"
+                                                   th:value="${toDate}">
+                                        </div>
                                     </div>
+                                    <div th:if="${messageError}" class="alert alert-danger col-md-6" role="alert">
+                                        <span th:text="${messageError}"></span>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary mt-2">Submit</button>
                                 </form>
 
                                 <div class="table-responsive pt-3">

@@ -139,7 +139,8 @@ public class StaffOrderController {
                                @RequestParam(name = "toDate", required = false) String toDate,
                                @RequestParam(name = "search", defaultValue = "") String search,
                                @RequestParam(defaultValue = "0") int page,
-                               @RequestParam(defaultValue = "10") Integer size) {
+                               @RequestParam(defaultValue = "10") Integer size,
+                               RedirectAttributes redirectAttributes) {
         search = search.trim();
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Object principal = authentication.getPrincipal();
@@ -171,6 +172,11 @@ public class StaffOrderController {
         }
         LocalDateTime startDateTime = DateUtil.changeStringToLocalDateTime(startDate);
         LocalDateTime toDateTime = DateUtil.changeStringToLocalDateTime(toDate);
+
+        if (startDateTime.isAfter(toDateTime)) {
+            redirectAttributes.addFlashAttribute("errorDate", "To Date can not smaller than Start Date!");
+            return "redirect:/staff/manage/order/list";
+        }
 
         // get all order
         PageOrderResponse response = orderTableService.findOrdersByStaffAndDateRangeAndSearchTerm(account.getID(), startDateTime, toDateTime, search, page, size);

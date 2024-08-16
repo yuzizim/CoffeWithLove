@@ -47,17 +47,17 @@ public class AuthController {
         String token = authService.login(model, request, response);
         if (token.equals("Bad credentials")) {
             model.addAttribute("error", "Password is not correct!");
-            model.addAttribute("user", new LoginRequest());
+            model.addAttribute("user", request);
             return "/dist/sign-in";
         }
         if (token.equals("Username not exist!")) {
             model.addAttribute("error", "Username not exist");
-            model.addAttribute("user", new LoginRequest());
+            model.addAttribute("user", request);
             return "/dist/sign-in";
         }
         if (token.equals("Your account has been locked!")) {
-            model.addAttribute("error", "Your account has been locked!");
-            model.addAttribute("user", new LoginRequest());
+            model.addAttribute("error", "Your account has been blocked!");
+            model.addAttribute("user", request);
             return "/dist/sign-in";
         }
 
