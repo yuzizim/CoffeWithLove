@@ -133,14 +133,17 @@ public class AdminFoodController {
         Food foodExist = foodService.getFoodById(id);
         food.setImages(foodExist.getImages());
         String image = StringUtils.cleanPath(multipartFile.getOriginalFilename());
-        if (result.hasErrors() || food.getPrice() == 0 || (!(image.endsWith(".jpg") || image.endsWith(".png")) && !image.equals(""))) {
+        if (result.hasErrors() || food.getPrice() == 0 || (!(image.endsWith(".jpg") || image.endsWith(".png")) && !image.equals("")) || foodService.checkExistProduct(food.getName())) {
             List<FoodCategory> foodCategories = foodCategoryService.getFoodCategories();
             model.addAttribute("categories", foodCategories);
             model.addAttribute("food", foodExist);
             model.addAttribute("foodModal", food);
             model.addAttribute("showUpdateDrinkModal", true);
+            if(foodService.checkExistProduct(food.getName())){
+                model.addAttribute("errorName", "Can not add duplicate product name");
+            }
             if (food.getPrice() == 0) {
-                model.addAttribute("messageError", "Price can not be 0");
+                model.addAttribute("messageError", "Price cannot be smaller than 0");
             }
             // Check if the file has a valid extension
             if (!(image.endsWith(".jpg") || image.endsWith(".png")) && !image.equals("")) {
