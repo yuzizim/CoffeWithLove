@@ -54,12 +54,23 @@
             border: 1px solid #ccc;
             width: 300px;
         }
+        .flash-notice {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            border-radius: 5px;
+            color: #fff;
+            background-color: #28a745;
+            z-index: 1000;
+            display: none;
+        }
     </style>
 </head>
 
 <body>
 <div th:insert="~{dist/navbar :: navbar}" th:with="carts=${carts}"></div>
-
+<div th:if="${message != null}" class="flash-notice" id="flash-notice" th:text="${message}"></div>
 <main>
     <section class="sign-in">
         <div class="pic-area">
@@ -98,6 +109,15 @@
         const type = passwordField.type === 'password' ? 'text' : 'password';
         passwordField.type = type;
         toggleIcon.textContent = type === 'text' ? '🙉' : '🙈';
+    }
+
+        // Show flash notice
+        const flashNotice = document.getElementById("flash-notice");
+        if (flashNotice) {
+        flashNotice.style.display = "block";
+        setTimeout(() => {
+        flashNotice.style.display = "none";
+    }, 5000);
     }
 </script>
 </body>
