@@ -51,6 +51,7 @@ public class MenuController {
         model.addAttribute("pageNumber", page);
         model.addAttribute("cateId", id);
         model.addAttribute("search", search);
+        model.addAttribute("size", size);
         return "/dist/menu";
     }
 

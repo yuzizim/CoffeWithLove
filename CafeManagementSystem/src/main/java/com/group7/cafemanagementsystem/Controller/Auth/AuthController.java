@@ -137,15 +137,19 @@ public class AuthController {
     }
 
     @PostMapping("/forgotPassword")
-    public String forgotPass(Model model, @ModelAttribute ForgotPassRequest forgotPassRequest, RedirectAttributes redirectAttributes) {
+    public String forgotPass(@ModelAttribute ForgotPassRequest forgotPassRequest, RedirectAttributes redirectAttributes) {
         String output = "";
         Account user = userRepository.findByEmail(forgotPassRequest.getEmail());
         if (user != null) {
             output = userServiceImpl.sendMailReset(user);
         }
+        if (user == null){
+            redirectAttributes.addFlashAttribute("error","Email did not matched any account! Please try again.");
+            return "redirect:/auth/forgotPassword";
+        }
         if (output.equals("Success")) {
-            model.addAttribute("error", "We had sent you an email to reset your password!");
-            return "redirect:/auth/login?success";
+            redirectAttributes.addFlashAttribute("message", "We had sent you an email to reset your password!");
+            return "redirect:/auth/login";
         } else {
             redirectAttributes.addFlashAttribute("error", "Failed to send reset email. Please try again.");
             return "redirect:/auth/forgotPassword";
@@ -168,7 +172,7 @@ public class AuthController {
     }
 
     @PostMapping("/reset-password/{token}")
-    public String resetPassword(Model model, @ModelAttribute ForgotPassRequest forgotPassRequest) {
+    public String resetPassword(Model model, @ModelAttribute ForgotPassRequest forgotPassRequest,RedirectAttributes redirectAttributes) {
         Account user = userRepository.findByEmail(forgotPassRequest.getEmail());
         RefreshToken existingToken = refreshTokenRepository.findByAccount(user);
         if (user != null) {
@@ -176,6 +180,7 @@ public class AuthController {
             userRepository.save(user);
             refreshTokenRepository.delete(existingToken);
         }
+        redirectAttributes.addFlashAttribute("message", "Password had changed successful!");
         return "redirect:/auth/login";
     }
 }

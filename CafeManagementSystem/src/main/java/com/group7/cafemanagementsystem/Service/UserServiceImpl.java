@@ -99,7 +99,7 @@ public class UserServiceImpl implements UserService {
             SimpleMailMessage message = new SimpleMailMessage();
             message.setTo(user.getEmail());
             message.setSubject("Reset password");
-            message.setText("Hello " + user.getFullName()+ "\n\n" +"Please click on this to reset your password: " + resetLink+". \n\n" + "Regards \n"+"ECoffee \n" +"CoffeeWithLove.");
+            message.setText("Hello " + user.getFullName() + "\n\n" + "Please click on this to reset your password: " + resetLink + ". \n\n" + "Regards \n" + "ECoffee \n" + "CoffeeWithLove.");
             mailSender.send(message);
             return "Success";
         } catch (Exception e) {
